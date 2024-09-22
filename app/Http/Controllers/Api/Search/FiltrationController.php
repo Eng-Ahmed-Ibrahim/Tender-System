@@ -98,78 +98,90 @@ public function showFilters($cat_id)
 
 
     public function applyFilters(Request $request, $cat_id)
-    {
+{
+    // Initialize the query with category ID
     $query = NormalAds::where('cat_id', $cat_id);
 
-    // Fetch all filters for the current category
+    // Search by title if provided in the request
+    if ($request->has('title')) {
+        $title = $request->input('title');
+        $query->where('title', 'like', '%' . $title . '%');
+    }
+
+    // Fetch the filters related to the category
     $filters = Filter::where('cat_id', $cat_id)->get();
 
     foreach ($filters as $filter) {
         $filterName = $filter->filter_name;
         $filterType = $filter->filter_type;
-        $relation = $filter->relation_name; // Relation to the related model (e.g., Cars, Houses)
+        $relation = $filter->relation_name;
 
-        if ($request->has($filterName)) {
-            $value = $request->input($filterName);
+        $value = $request->input($filterName);
 
+        if ($value || $filterType === 'min_max') {
             if ($filterType == 'text' || $filterType == 'select' || $filterType == 'number') {
-                if ($relation) {
-                    $query->whereHas($relation, function ($q) use ($filterName, $value) {
-                        $q->where($filterName, 'like', '%' . $value . '%');
-                    });
-                } else {
-                    $query->where($filterName, 'like', '%' . $value . '%');
-                }
-            }
-            elseif ($filterType == 'checkbox' && $filterName == 'features') {
-                $selectedFeatures = $request->input('features', []);
-                if (!empty($selectedFeatures)) {
-                    $query->whereHas($relation, function ($q) use ($selectedFeatures) {
-                        $q->whereIn('feature_id', $selectedFeatures);
-                    });
-                }
-            }
-        }
-
-        // Handle min_max filters (with or without relation)
-        if ($filterType == 'min_max') {
-            $minInput = $request->input('min_' . $filterName);
-            $maxInput = $request->input('max_' . $filterName);
-
-            // Apply min filter
-            if ($minInput) {
-                if ($relation) {
-                    // Apply the min filter via relation
-                    $query->whereHas($relation, function ($q) use ($filterName, $minInput) {
-                        $q->where($filterName, '>=', $minInput);
-                    });
-                } else {
-                    // Apply the min filter directly on NormalAds
-                    $query->where($filterName, '>=', $minInput);
-                }
-            }
-
-            // Apply max filter
-            if ($maxInput) {
-                if ($relation) {
-                    // Apply the max filter via relation
-                    $query->whereHas($relation, function ($q) use ($filterName, $maxInput) {
-                        $q->where($filterName, '<=', $maxInput);
-                    });
-                } else {
-                    // Apply the max filter directly on NormalAds
-                    $query->where($filterName, '<=', $maxInput);
-                }
+                $this->applyTextSelectNumberFilter($query, $filterName, $value, $relation);
+            } elseif ($filterType == 'checkbox' && $filterName == 'features') {
+                $this->applyCheckboxFilter($query, $relation, $request->input('features', []));
+            } elseif ($filterType == 'min_max') {
+                $this->applyMinMaxFilter($query, $request, $filterName, $relation);
             }
         }
     }
 
-    // Execute the query and get the filtered results
+    // Get the filtered results
     $normalAds = $query->get();
 
-
-        return NormalAdResource::collection($normalAds);
+    // Return the results as a collection of NormalAdResource
+    return NormalAdResource::collection($normalAds);
+}
+    
+    private function applyTextSelectNumberFilter(&$query, $filterName, $value, $relation)
+    {
+        if ($relation) {
+            $query->whereHas($relation, function ($q) use ($filterName, $value) {
+                $q->where($filterName, 'like', '%' . $value . '%');
+            });
+        } else {
+            $query->where($filterName, 'like', '%' . $value . '%');
+        }
     }
+    
+    private function applyCheckboxFilter(&$query, $relation, $selectedFeatures)
+    {
+        if (!empty($selectedFeatures)) {
+            $query->whereHas($relation, function ($q) use ($selectedFeatures) {
+                $q->whereIn('feature_id', $selectedFeatures);
+            });
+        }
+    }
+    
+    private function applyMinMaxFilter(&$query, $request, $filterName, $relation)
+    {
+        $minInput = $request->input('min_' . $filterName);
+        $maxInput = $request->input('max_' . $filterName);
+    
+        if ($minInput) {
+            if ($relation) {
+                $query->whereHas($relation, function ($q) use ($filterName, $minInput) {
+                    $q->where($filterName, '>=', $minInput);
+                });
+            } else {
+                $query->where($filterName, '>=', $minInput);
+            }
+        }
+    
+        if ($maxInput) {
+            if ($relation) {
+                $query->whereHas($relation, function ($q) use ($filterName, $maxInput) {
+                    $q->where($filterName, '<=', $maxInput);
+                });
+            } else {
+                $query->where($filterName, '<=', $maxInput);
+            }
+        }
+    }
+    
 
 
 }
