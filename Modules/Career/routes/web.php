@@ -1,0 +1,22 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Modules\Career\Http\Controllers\CareerController;
+use Modules\Career\Http\Controllers\CareerCategoryController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::group([], function () {
+    Route::resource('career', CareerController::class)->names('career');
+    Route::resource('careerCategories', CareerCategoryController::class);
+
+});

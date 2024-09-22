@@ -1,0 +1,11 @@
+{
+    "name": "Bike",
+    "alias": "bike",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Bike\\Providers\\BikeServiceProvider"
+    ],
+    "files": []
+}
