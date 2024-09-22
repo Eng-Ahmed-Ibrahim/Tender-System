@@ -97,18 +97,25 @@ public function showFilters($cat_id)
     }
 
 
-    public function applyFilters(Request $request, $cat_id)
+ public function applyFilters(Request $request, $cat_id)
 {
-    // Initialize the query with category ID
     $query = NormalAds::where('cat_id', $cat_id);
 
-    // Search by title if provided in the request
+
     if ($request->has('title')) {
         $title = $request->input('title');
-        $query->where('title', 'like', '%' . $title . '%');
+        $this->applyTextSelectNumberFilter($query, 'title', $title, null);
     }
 
-    // Fetch the filters related to the category
+    if($sortType = $request->input('sort')){
+        $this->sort($query, $sortType);
+    }
+
+
+
+
+
+  
     $filters = Filter::where('cat_id', $cat_id)->get();
 
     foreach ($filters as $filter) {
@@ -135,6 +142,30 @@ public function showFilters($cat_id)
     // Return the results as a collection of NormalAdResource
     return NormalAdResource::collection($normalAds);
 }
+
+private function sort(&$query, $sortType)
+{
+    switch ($sortType) {
+        case 'latest':
+            $query->orderBy('created_at', 'desc'); 
+            break;
+        case 'oldest':
+            $query->orderBy('created_at', 'asc'); 
+            break;
+        case 'high_price':
+            $query->orderBy('price', 'desc'); 
+            break;
+        case 'low_price':
+            $query->orderBy('price', 'asc'); 
+            break;
+        default:
+            $query->orderBy('created_at', 'desc'); 
+            break;
+    }
+}
+
+
+
     
     private function applyTextSelectNumberFilter(&$query, $filterName, $value, $relation)
     {
