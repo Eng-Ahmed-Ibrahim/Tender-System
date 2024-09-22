@@ -41,63 +41,25 @@ class NormalCustomerController extends Controller
     $normalAdResources = NormalAdResource::collection($normalAds);
     $normalAdsCount = $normalAds->count();
 
-    $cars = Cars::with('category')->where('customer_id', $customerId)->get();
-    $carAdResources = CarAdResource::collection($cars);
-    $carsCount = $cars->count();
 
-    $bikes = Bike::with('category')->where('customer_id', $customerId)->get();
-    $bikeAdResources = BikeAdResource::collection($bikes);
-    $bikesCount = $bikes->count();
 
-    $houses = House::with('category')->where('customer_id', $customerId)->get();
-    $houseAdResources = PropertyAdResource::collection($houses);
-    $housesCount = $houses->count();
-
-    $mobiles = Mobiles::with('category')->where('customer_id', $customerId)->get();
-    $mobilesAdResources = MobileAdResource::collection($mobiles);
-    $mobilesCount = $mobiles->count();
-
-    $careers = Careers::with('category')->where('customer_id', $customerId)->get();
-    $careerAdResources = CareerAdResource::collection($careers);
-    $careersCount = $careers->count();
-
-    $commercial = CommercialAd::with('category')->where('customer_id', $customerId)->get();
+    $commercial = CommercialAd::where('customer_id', $customerId)->get();
     $commercialAdResources = CommercialResource::collection($commercial);
     $commercialCount = $commercial->count();
 
-    $totalAdsCount = $normalAdsCount + $carsCount + $bikesCount + $housesCount + $mobilesCount + $careersCount + $commercialCount;
+    $totalAdsCount = $normalAdsCount + $commercialCount;
 
     return response()->json([
         'normal_ads' => [
             'count' => $normalAdsCount,
             'data' => $normalAdResources,
-        ],
-        'car_ads' => [
-            'count' => $carsCount,
-            'data' => $carAdResources,
-        ],
-        'bikes' => [
-            'count' => $bikesCount,
-            'data' => $bikeAdResources,
-        ],
-        'houses' => [
-            'count' => $housesCount,
-            'data' => $houseAdResources,
-        ],
-        'mobiles' => [
-            'count' => $mobilesCount,
-            'data' => $mobilesAdResources,
-        ],
-        'careers' => [
-            'count' => $careersCount,
-            'data' => $careerAdResources,
-        ],
+     
         'commercials' => [
             'count' => $commercialCount,
             'data' => $commercialAdResources,
         ],
-        'total_count' => $totalAdsCount, // Total count of all ads
-    ], 200);
+        'total_count' => $totalAdsCount, 
+    ], 200]);
 }
 
     
