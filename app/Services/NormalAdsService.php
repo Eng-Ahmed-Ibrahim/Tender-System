@@ -16,7 +16,6 @@ public function storeNormalAd(Request $request)
             'cat_id' => 'required|integer',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'is_active' => 'required|boolean',
             'address' => 'required',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -31,6 +30,7 @@ public function storeNormalAd(Request $request)
 
         $normalAd = new NormalAds($validatedData);
         $normalAd->country_id = $countryId;
+        $normalAd->is_active = false;
         $normalAd->save();
 
         if ($request->hasFile('images')) {
