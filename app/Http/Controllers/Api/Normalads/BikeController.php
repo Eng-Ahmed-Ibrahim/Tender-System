@@ -12,6 +12,7 @@ use Modules\Bike\Models\BikeImages;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\BikeAdResource;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\NormalAdResource;
 use Modules\Bike\Models\BikeSpecification;
 
@@ -172,89 +173,98 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        // Ensure the user is authenticated
-        if (!Auth::check()) {
-            return response()->json(['error' => 'You must be logged in to update an ad.'], 401);
-        }
-
-        $user = Auth::user();
-
-        // Validate the request
-        $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'cat_id' => 'sometimes|required|exists:bike_categories,id',
-             'images.*' => 'nullable|max:2048',
-            'features.*' => 'exists:bike_features,id',
-            'model' => 'nullable|string|max:255',
-            'year' => 'nullable|integer|min:1900|max:' . date('Y'),
-            'kilo_meters' => 'nullable|numeric|min:0',
-            'status' => 'nullable|string|max:255',
-            'location' => 'nullable|string|max:255',
-            'price' => 'sometimes|numeric',
-        ]);
-
-        // Find the bike to update
-        $bike = Bike::findOrFail($id);
-
-        // Check if the user is authorized to update this bike (e.g., check if they own it)
-        if ($bike->customer_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized to update this bike.'], 403);
-        }
-
-        // Update bike attributes
-        $bike->title = $request->input('title', $bike->title);
-        $bike->cat_id = $request->input('cat_id', $bike->cat_id);
-        $bike->price = $request->input('price', $bike->price);
-        $bike->is_active = false;
-        $bike->save();
-
-        // Handle images
-        if ($request->hasFile('images')) {
-            // Delete existing images if needed
-            BikeImages::where('bike_id', $bike->id)->delete();
-            
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('bike_images', 'public');
-                BikeImages::create([
-                    'photo' => $path,
-                    'bike_id' => $bike->id,
-                ]);
+   
+        public function update(Request $request, $id)
+        {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric',
+                'cat_id' => 'required|exists:categories,id',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'features.*' => 'nullable|exists:bike_features,id',
+            ]);
+        
+            // Find the ad by its ID
+            $ad = NormalAds::findOrFail($id);
+        
+            // Update the ad fields
+            $ad->update([
+                'title' => $validatedData['title'],
+                'country_id' => Auth::guard('customer')->user()->country,
+                'cat_id' => $validatedData['cat_id'],
+                'address' => $validatedData['address'],
+                'description' => $validatedData['description'],
+                'price' => $validatedData['price'],
+                'is_active' => false, // Keep the current active status
+            ]);
+        
+            // Update the photo if a new one is uploaded
+            if ($request->hasFile('photo')) {
+                // Delete the old photo if exists
+                if ($ad->photo) {
+                    Storage::disk('public')->delete($ad->photo);
+                }
+        
+                // Store the new photo
+                $photoPath = $request->file('photo')->store('photos', 'public');
+                $ad->update(['photo' => $photoPath]);
             }
+        
+            // Handle additional images if uploaded
+            if ($request->hasFile('images')) {
+                // Optionally, delete old images if you want to replace them entirely
+                // $ad->images()->delete();
+        
+                // Save new images
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('images', 'public');
+                    $ad->images()->create([
+                        'image_path' => $imagePath,
+                    ]);
+                }
+            }
+        
+            // Find the associated bike record and update it
+            $bike = $ad->bikes;
+        
+            if ($bike) {
+                $bike->update([
+                    'color' => $request->input('color'),
+                    'year' => $request->input('year'),
+                    'kilo_meters' => $request->input('kilo_meters'),
+                ]);
+        
+                // Sync the features
+                if ($request->has('features')) {
+                    $bike->features()->sync($request->input('features'));
+                }
+            } else {
+                // Handle the case if there's no bike associated yet
+                $bike = new Bike([
+                    'color' => $request->input('color'),
+                    'year' => $request->input('year'),
+                    'kilo_meters' => $request->input('kilo_meters'),
+                    'normal_id' => $ad->id,
+                ]);
+                $bike->save();
+        
+                if ($request->has('features')) {
+                    $bike->features()->sync($request->input('features'));
+                }
+            }
+        
+            // Optionally, handle translation updates
+            $this->translateAndSave($request->all(), 'update');
+
+            return response()->json(['success' => 'Bike updated successfully.'], 200);
+
         }
-
-        // Handle features
-        if ($request->has('features')) {
-            $bike->features()->sync($request->input('features'));
-        }
-
-        // Update bike specifications
-        $specification = BikeSpecification::where('bike_id', $bike->id)->first();
-        if ($specification) {
-            $specification->update([
-                'model' => $request->input('model'),
-                'year' => $request->input('year'),
-                'kilo_meters' => $request->input('kilo_meters'),
-                'status' => $request->input('status'),
-                'location' => $request->input('location'),
-            ]);
-        } else {
-            BikeSpecification::create([
-                'model' => $request->input('model'),
-                'year' => $request->input('year'),
-                'kilo_meters' => $request->input('kilo_meters'),
-                'status' => $request->input('status'),
-                'location' => $request->input('location'),
-                'bike_id' => $bike->id,
-            ]);
-        }
-
-        // Translate and save
-        $this->translateAndSave($request->all(), 'update');
-
-        return response()->json(['success' => 'Bike updated successfully.'], 200);
-    }
+        
+    
 
 
     /**

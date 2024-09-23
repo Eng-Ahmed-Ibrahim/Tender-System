@@ -113,72 +113,77 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function updateNormalAd(Request $request, $id)
     {
-     
-        // Find the ad by ID and ensure it belongs to the authenticated customer
-        $ad = NormalAds::where('id', $id)
-            ->where('customer_id', Auth::guard('customer')->id())
-            ->first();
-    
-        if (!$ad) {
-            return response()->json(['error' => 'Ad not found or you do not have permission to update it.'], 404);
-        }
-    
-        // Validate the input fields
+        // Validate the incoming request data
         $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'cat_id' => 'sometimes|required|integer',
+            'title' => 'required|string|max:255',
+            'cat_id' => 'required|integer',
             'description' => 'nullable|string',
-            'price' => 'sometimes|required|numeric',
-            'photo' => 'nullable|image|max:2048',
+            'price' => 'required|numeric',
+            'address' => 'required|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        // Handle the photo update
+        // Find the existing ad by its ID
+        $normalAd = NormalAds::findOrFail($id);
+    
+        // Handle the main photo if a new one is uploaded
         if ($request->hasFile('photo')) {
             // Delete the old photo if it exists
-            if ($ad->photo) {
-                Storage::disk('public')->delete($ad->photo);
+            if ($normalAd->photo) {
+                Storage::disk('public')->delete($normalAd->photo);
             }
     
             // Store the new photo
-            $ad->photo = $request->file('photo')->store('photos', 'public');
+            $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
         }
     
-        // Update fields conditionally
-        if ($request->filled('title')) {
-            $ad->title = $validatedData['title'];
-        }
-        if ($request->filled('cat_id')) {
-            $ad->cat_id = $validatedData['cat_id'];
-        }
-        if ($request->filled('description')) {
-            $ad->description = $validatedData['description'];
-        }
-        if ($request->filled('price')) {
-            $ad->price = $validatedData['price'];
-        }
+        // Update the ad fields
+        $customer = Auth::guard('customer')->user();
+        $countryId = $customer ? $customer->country_id : $request->session()->get('country_id');
     
-        // Save the updated ad
-        $ad->save();
+        $normalAd->update([
+            'title' => $validatedData['title'],
+            'cat_id' => $validatedData['cat_id'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'address' => $validatedData['address'],
+            'photo' => $validatedData['photo'] ?? $normalAd->photo, // Keep existing photo if not updated
+            'country_id' => $countryId,
+            'customer_id' => $customer->id,
+        ]);
     
+        // Handle additional images if new ones are uploaded
         if ($request->hasFile('images')) {
+            // Delete the old images if they exist
+            foreach ($normalAd->images as $image) {
+                Storage::disk('public')->delete($image->image_path);
+                $image->delete();
+            }
+    
+            // Store the new images
             $images = $request->file('images');
             foreach ($images as $image) {
                 $imagePath = $image->store('normal_ads_images', 'public');
     
                 ImageNormalAds::create([
-                    'normal_ads_id' => $ad->id,
+                    'normal_ads_id' => $normalAd->id,
                     'image_path' => $imagePath,
                 ]);
             }
         }
     
-        // Translate and save the updated data
         $this->translateAndSave($request->all(), 'update');
     
         return response()->json(['message' => 'Ad updated successfully.']);
+    
     }
+    
+        // Translate and save the updated data
+ 
+    
     
     
     /**

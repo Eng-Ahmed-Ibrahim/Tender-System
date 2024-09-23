@@ -168,90 +168,84 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    protected function updateAd(Request $request, $id)
     {
-        // Ensure the user is authenticated
-        if (!Auth::check()) {
-            return response()->json(['error' => 'You must be logged in to update an ad.'], 401);
-        }
-    
-        $user = Auth::user();
-    
-        // Validate the request
-        $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'cat_id' => 'sometimes|required|exists:house_categories,id', 
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'features.*' => 'exists:features,id',
-            'room_no' => 'nullable|integer',
-            'area' => 'nullable|string',
-            'location' => 'nullable|string',
-            'view' => 'nullable|string',
-            'building_no' => 'nullable|string',
-            'history' => 'nullable|string',
-            'price' => 'sometimes|required|numeric',
-            'is_active' => 'nullable|boolean',
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'cat_id' => 'required|exists:categories,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'features.*' => 'nullable|exists:features,id',
         ]);
     
-        // Find the house to update
-        $house = House::findOrFail($id);
+        // Find the existing ad by its ID
+        $ad = NormalAds::findOrFail($id);
     
-        // Check if the user is authorized to update this house ad
-        if ($house->customer_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized to update this house.'], 403);
+        // Handle the main photo if a new one is uploaded
+        if ($request->hasFile('photo')) {
+            // Delete the old photo if it exists
+            if ($ad->photo) {
+                Storage::disk('public')->delete($ad->photo);
+            }
+    
+            // Store the new photo
+            $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
+            $ad->photo = $validatedData['photo'];
         }
     
-        // Update house attributes only if they are present in the request
-        $house->title = $request->input('title', $house->title);
-        $house->cat_id = $request->input('cat_id', $house->cat_id);
-        $house->price = $request->input('price', $house->price);
-        $house->is_active = false;
-        $house->save();
+        // Update the ad fields
+        $customer = Auth::guard('customer')->user();
+        $countryId = $customer->country;
     
-        // Handle image updates
+        $ad->update([
+            'title' => $validatedData['title'],
+            'country_id' => $countryId,
+            'cat_id' => $validatedData['cat_id'],
+            'address' => $validatedData['address'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'photo' => $ad->photo, // Keep the existing photo if not updated
+        ]);
+    
+        // Handle additional images if new ones are uploaded
         if ($request->hasFile('images')) {
-            // Delete existing images
-            HouseImage::where('house_id', $house->id)->delete();
+            // Delete the old images if they exist
+            foreach ($ad->images as $image) {
+                Storage::disk('public')->delete($image->image_path);
+                $image->delete();
+            }
     
-            // Store new images
+            // Store the new images
             foreach ($request->file('images') as $image) {
-                $path = $image->store('house_images', 'public');
-                HouseImage::create([
-                    'image' => $path,
-                    'house_id' => $house->id,
+                $imagePath = $image->store('images', 'public');
+                $ad->images()->create([
+                    'image_path' => $imagePath,
                 ]);
             }
         }
     
-        // Update features
+        // Find the associated House record and update it
+        $house = $ad->house;
+    
+        $house->update([
+            'room_no' => $request->input('room_no'),
+            'area' => $request->input('area'),
+            'location' => $request->input('location'),
+            'view' => $request->input('view'),
+            'building_no' => $request->input('building_no'),
+            'history' => $request->input('history'),
+        ]);
+    
+        // Update the features associated with the house
         if ($request->has('features')) {
             $house->features()->sync($request->input('features'));
         }
     
-        // Update or create house details
-        $houseDetails = HouseDetails::where('house_id', $house->id)->first();
-        if ($houseDetails) {
-            $houseDetails->update([
-                'room_no' => $request->input('room_no', $houseDetails->room_no),
-                'area' => $request->input('area', $houseDetails->area),
-                'location' => $request->input('location', $houseDetails->location),
-                'view' => $request->input('view', $houseDetails->view),
-                'building_no' => $request->input('building_no', $houseDetails->building_no),
-                'history' => $request->input('history', $houseDetails->history),
-            ]);
-        } else {
-            HouseDetails::create([
-                'house_id' => $house->id,
-                'room_no' => $request->input('room_no'),
-                'area' => $request->input('area'),
-                'location' => $request->input('location'),
-                'view' => $request->input('view'),
-                'building_no' => $request->input('building_no'),
-                'history' => $request->input('history'),
-            ]);
-        }
-    
-        // Translate and save
+        // Translate and save (assuming you have a method for this)
         $this->translateAndSave($request->all(), 'update');
     
         return response()->json(['success' => 'House updated successfully.', 'ad' =>  $house], 200);

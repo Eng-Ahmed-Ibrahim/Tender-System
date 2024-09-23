@@ -175,92 +175,86 @@ class MobileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Ensure the user is authenticated
-        if (!Auth::check()) {
-            return response()->json(['error' => 'You must be logged in to update a mobile ad.'], 401);
-        }
-    
-        $user = Auth::user();
-    
-        // Check if the user has permission to update the ad
-        if ($user->role_id !== 2) {
-            return response()->json(['error' => 'You do not have permission to update this mobile ad.'], 403);
-        }
-    
-        // Find the mobile ad by ID
-        $mobile = Mobiles::find($id);
-    
-        if (!$mobile) {
-            return response()->json(['error' => 'Mobile not found.'], 404);
-        }
-    
-        // Validate the input fields
+        // Validate the incoming request data
         $validatedData = $request->validate([
-            'title' => 'sometimes|required|string',
-            'cat_id' => 'sometimes|required|exists:electronic_categories,id',
-            'storage' => 'sometimes|required|string',
-            'ram' => 'sometimes|required|string',
-            'disply_size' => 'sometimes|required|string',
-            'sim_no' => 'sometimes|required|integer',
-            'description' => 'sometimes|required|string',
-            'status' => 'sometimes|required|string',
-            'mobile_images.*' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'price' => 'sometimes|required|numeric',
-            'is_active' => 'nullable|boolean',
+            'title' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'cat_id' => 'required|exists:categories,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'storage' => 'required|string',
+            'ram' => 'required|string',
+            'disply_size' => 'required|string',
+            'sim_no' => 'required|integer',
+            'status' => 'required',
         ]);
     
-        // Update fields for the mobile ad
-        if ($request->filled('title')) {
-            $mobile->title = $validatedData['title'];
-        }
-        if ($request->filled('cat_id')) {
-            $mobile->cat_id = $validatedData['cat_id'];
-        }
-        if ($request->filled('price')) {
-            $mobile->price = $validatedData['price'];
-        }
-        if ($request->has('is_active')) {
-            $mobile->is_active = $validatedData['is_active'];
-        }
-        $mobile->save();
+        // Find the existing ad by its ID
+        $ad = NormalAds::findOrFail($id);
     
-        // Update phone features
-        $phoneFeatures = $mobile->phoneFeatures;
-        if ($request->filled('storage')) {
-            $phoneFeatures->storage = $validatedData['storage'];
-        }
-        if ($request->filled('ram')) {
-            $phoneFeatures->ram = $validatedData['ram'];
-        }
-        if ($request->filled('disply_size')) {
-            $phoneFeatures->disply_size = $validatedData['disply_size'];
-        }
-        if ($request->filled('sim_no')) {
-            $phoneFeatures->sim_no = $validatedData['sim_no'];
-        }
-        if ($request->filled('status')) {
-            $phoneFeatures->status = $validatedData['status'];
-        }
-        if ($request->filled('description')) {
-            $phoneFeatures->description = $validatedData['description'];
-        }
-        $phoneFeatures->save();
+        // Update the ad fields
+        $ad->update([
+            'title' => $validatedData['title'],
+            'country_id' => Auth::guard('customer')->user()->country,
+            'cat_id' => $validatedData['cat_id'],
+            'address' => $validatedData['address'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'is_active' => $ad->is_active, // Keep the current active status
+        ]);
     
-        // Handle image updates
-        if ($request->hasFile('mobile_images')) {
-            foreach ($request->file('mobile_images') as $file) {
-                $path = $file->store('public/mobiles');
-                $mobile->images()->create([
-                    'photo_path' => Storage::url($path),
+        // Update the photo if a new one is uploaded
+        if ($request->hasFile('photo')) {
+            // Delete the old photo if it exists
+            if ($ad->photo) {
+                Storage::disk('public')->delete($ad->photo);
+            }
+    
+            // Store the new photo
+            $photoPath = $request->file('photo')->store('photos', 'public');
+            $ad->update(['photo' => $photoPath]);
+        }
+    
+        // Update additional images if new ones are uploaded
+        if ($request->hasFile('images')) {
+            // Delete the old images if they exist
+            foreach ($ad->images as $image) {
+                Storage::disk('public')->delete($image->image_path);
+                $image->delete();
+            }
+    
+            // Store the new images
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('images', 'public');
+                $ad->images()->create([
+                    'image_path' => $imagePath,
                 ]);
             }
         }
     
-        // Call translation method
-        $this->translateAndSave($request->all(), 'update');
+        // Find the related mobile record and update it
+        $mobile = Mobiles::where('normal_id', $ad->id)->firstOrFail();
     
+        // Update the mobile fields
+        $mobile->update([
+            'storage' => $request->storage,
+            'ram' => $request->ram,
+            'disply_size' => $request->disply_size,
+            'sim_no' => $request->sim_no,
+            'status' => $request->status,
+        ]);
+    
+        // Optionally, handle translation updates
+        $this->translateAndSave($request->all(), 'update');
+        
         return response()->json(['success' => 'Mobile ad updated successfully.'], 200);
+
     }
+    
+    
+    
     
     /**
      * Remove the specified resource from storage.

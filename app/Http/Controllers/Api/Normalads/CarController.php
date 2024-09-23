@@ -15,6 +15,7 @@ use Modules\Car\Models\CarFeature;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\CarAdResource;
+use Illuminate\Support\Facades\Storage;
 use Modules\Car\Models\CarSpecifaction;
 use App\Http\Resources\NormalAdResource;
 
@@ -195,73 +196,106 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        $car = Cars::findOrFail($id);
-
-        // Ensure the user is authorized to update this car ad
-        $customer = Auth::guard('customer')->user();
-        if ($car->customer_id !== $customer->id) {
-            return response()->json(['error' => 'Unauthorized to update this car ad.'], 403);
-        }
-
-        // Validate request data
-        $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'cat_id' => 'sometimes|required|exists:car_categories,id',
-            'images.*' => 'nullable|image|max:2048',
-            'features' => 'nullable|array',
-            'features.*' => 'exists:car_features,id',
-            'price' => 'sometimes|required|numeric',
-            'is_active' => 'nullable|boolean',
-            'model' => 'nullable|string',
-            'year' => 'nullable|integer',
-            'kilo_meters' => 'nullable|numeric',
-            'fuel_type' => 'nullable|string',
-            'location' => 'nullable|string',
-        ]);
-
-   
-
-    
-        $car->title = $request->input('title', $car->title);
-        $car->cat_id = $request->input('cat_id', $car->cat_id);
-        $car->price = $request->input('price', $car->price);
-        $car->is_active = false;
-        $car->save();
-
-        if ($request->hasFile('images')) {
-            CarImages::where('car_id', $car->id)->delete();
-
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('car_images', 'public');
-                CarImages::create([
-                    'photo' => $path,
-                    'car_id' => $car->id,
-                ]);
+  
+        public function update(Request $request, $id)
+        {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric',
+                'cat_id' => 'required|exists:categories,id',
+                'brand_id' => 'required|exists:brands,id',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'features.*' => 'nullable|exists:car_features,id',
+            ]);
+        
+            // Find the ad by its ID
+            $ad = NormalAds::findOrFail($id);
+        
+            // Update the ad fields
+            $ad->update([
+                'title' => $validatedData['title'],
+                'country_id' => Auth::guard('customer')->user()->country_id,
+                'customer_id' => Auth::guard('customer')->user()->id,
+                'cat_id' => $validatedData['cat_id'],
+                'address' => $validatedData['address'],
+                'description' => $validatedData['description'],
+                'price' => $validatedData['price'],
+                'is_active' => false, // Keep the current active status
+            ]);
+        
+            // Update the main photo if a new one is uploaded
+            if ($request->hasFile('photo')) {
+                // Delete the old photo if exists
+                if ($ad->photo) {
+                    Storage::disk('public')->delete($ad->photo);
+                }
+        
+                // Store the new photo
+                $photoPath = $request->file('photo')->store('photos', 'public');
+                $ad->update(['photo' => $photoPath]);
             }
+        
+            // Handle additional images if uploaded
+            if ($request->hasFile('images')) {
+                // Optionally, delete old images if you want to replace them entirely
+                // $ad->images()->delete();
+        
+                // Save new images
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('images', 'public');
+                    $ad->images()->create([
+                        'image_path' => $imagePath,
+                    ]);
+                }
+            }
+        
+            // Find the associated car record and update it
+            $car = $ad->cars; // Assuming there is a `car` relationship defined in `NormalAds` model
+        
+            if ($car) {
+                $car->update([
+                    'color' => $request->input('color'),
+                    'year' => $request->input('year'),
+                    'kilo_meters' => $request->input('kilo_meters'),
+                    'fuel_type' => $request->input('fuel_type'),
+                    'brand_id' => $validatedData['brand_id'],
+                ]);
+        
+                // Sync the features
+                if ($request->has('features')) {
+                    $car->features()->sync($request->input('features'));
+                }
+            } else {
+                // Handle the case if there's no car associated yet
+                $car = new Cars([
+                    'color' => $request->input('color'),
+                    'year' => $request->input('year'),
+                    'kilo_meters' => $request->input('kilo_meters'),
+                    'fuel_type' => $request->input('fuel_type'),
+                    'brand_id' => $validatedData['brand_id'],
+                    'normal_id' => $ad->id,
+                ]);
+                $car->save();
+        
+                if ($request->has('features')) {
+                    $car->features()->sync($request->input('features'));
+                }
+            }
+        
+            // Optionally, handle translation updates
+            $this->translateAndSave($request->all(), 'update');
+
+            return response()->json(['success' => 'Car updated successfully.'], 200);
+
         }
+        
+    
+    
 
-        // Update car features if provided
-        if ($request->has('features')) {
-            $car->features()->sync($validatedData['features']);
-        }
-
-        $specification = CarSpecifaction::where('car_id', $car->id)->first();
-        if ($specification) {
-            $specification->update([
-                'model' => $request->input('model'),
-                'year' => $request->input('year'),
-                'kilo_meters' => $request->input('kilo_meters'),
-                'fuel_type' => $request->input('fuel_type'),
-                'location' => $request->input('location'),
-        ]);
-
-        $this->translateAndSave($request->all(), 'update');
-
-        return response()->json(['success' => 'Car ad updated successfully.'], 200);
-    }
-    }
     /**
      * Remove the specified resource from storage.
      */

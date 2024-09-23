@@ -10,6 +10,7 @@ use App\Services\AdLimitServices;
 use Modules\Career\Models\Careers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\NormalAdResource;
 
 class CareerController extends Controller
@@ -155,36 +156,54 @@ public function index(Request $request)
      */
     public function update(Request $request, $id)
     {
-        // Ensure the user is authenticated
-        if (!Auth::check()) {
-            return response()->json(['error' => 'You must be logged in to update an ad.'], 401);
-        }
-    
-        $user = Auth::user();
-    
-        // Check if the user has permission to update the ad
-        if ($user->role_id !== 2) {
-            return response()->json(['error' => 'You do not have permission to update this career.'], 403);
-        }
-    
-        // Find the career ad by ID
-        $career = Careers::find($id);
-    
-        if (!$career) {
-            return response()->json(['error' => 'Career not found.'], 404);
-        }
-    
-        // Validate the input fields
+        // Validate the incoming request data
         $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
+            'title' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'cat_id' => 'sometimes|required|exists:career_categories,id',
-            'experience_year' => 'sometimes|required|string',
-            'experience_level' => 'sometimes|required|string',
-            'cv_file' => 'nullable|file|mimes:pdf,doc,docx',
+            'cat_id' => 'required|exists:categories,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'experience_year' => 'required|string',
+            'experience_level' => 'required|string',
+            'cv_file' => 'nullable|file|mimes:pdf,doc,docx',  // Make cv_file nullable for update
         ]);
     
-        // Handle the CV file update
+        // Find the existing ad by its ID
+        $ad = NormalAds::findOrFail($id);
+    
+        // Update the ad fields
+        $ad->update([
+            'title' => $validatedData['title'],
+            'country_id' => Auth::guard('customer')->user()->country,
+            'cat_id' => $validatedData['cat_id'],
+            'address' => $validatedData['address'],
+            'description' => $validatedData['description'],
+            'price' => 0,
+            'is_active' => $ad->is_active, // Keep the current active status
+        ]);
+    
+        // Update the photo if a new one is uploaded
+        if ($request->hasFile('photo')) {
+            // Delete the old photo if it exists
+            if ($ad->photo) {
+                Storage::disk('public')->delete($ad->photo);
+            }
+    
+            // Store the new photo
+            $photoPath = $request->file('photo')->store('photos', 'public');
+            $ad->update(['photo' => $photoPath]);
+        }
+    
+        // Find the related career record and update it
+        $career = Careers::where('normal_id', $ad->id)->firstOrFail();
+    
+        // Update the career fields
+        $career->update([
+            'experience_year' => $request->experience_year,
+            'experience_level' => $request->experience_level,
+        ]);
+    
+        // Update the CV file if a new one is uploaded
         if ($request->hasFile('cv_file')) {
             // Delete the old CV file if it exists
             if ($career->cv_file) {
@@ -192,34 +211,17 @@ public function index(Request $request)
             }
     
             // Store the new CV file
-            $career->cv_file = $request->file('cv_file')->store('cv_files', 'public');
+            $cvPath = $request->file('cv_file')->store('cv_files', 'public');
+            $career->update(['cv_file' => $cvPath]);
         }
     
-        // Update fields conditionally
-        if ($request->filled('title')) {
-            $career->title = $validatedData['title'];
-        }
-        if ($request->filled('description')) {
-            $career->description = $validatedData['description'];
-        }
-        if ($request->filled('cat_id')) {
-            $career->cat_id = $validatedData['cat_id'];
-        }
-        if ($request->filled('experience_year')) {
-            $career->experience_year = $validatedData['experience_year'];
-        }
-        if ($request->filled('experience_level')) {
-            $career->experience_level = $validatedData['experience_level'];
-        }
-    
-        // Save the updated career ad
-        $career->save();
-    
-        // Translate and save the updated data
+        // Optionally, handle translation updates
         $this->translateAndSave($request->all(), 'update');
-    
-        return response()->json(['success' => 'Career updated successfully.'], 200);
+
+        return response()->json(['success' => 'Car updated successfully.'], 200);
+
     }
+    
     
 
     /**
