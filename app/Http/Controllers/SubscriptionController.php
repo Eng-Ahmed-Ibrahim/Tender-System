@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TranslateText;
 use Illuminate\Http\Request;
 use App\Models\SubscriptionPlan;
 
