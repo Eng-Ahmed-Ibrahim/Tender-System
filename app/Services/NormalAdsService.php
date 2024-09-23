@@ -18,6 +18,7 @@ public function storeNormalAd(Request $request)
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'address' => 'required',
+            'images*.'=>'nullable',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -33,8 +34,11 @@ public function storeNormalAd(Request $request)
 
         $countryId = $customer ? $customer->country_id :$request->session()->get('country_id');
 
+
         $normalAd = new NormalAds($validatedData);
         $normalAd->country_id = $countryId;
+        $normalAd->customer_id = $customer->id;
+
         $normalAd->is_active = false;
         $normalAd->save();
 
