@@ -134,11 +134,13 @@ public function index(Request $request)
         ]);
     
         $customer = Auth::guard('customer')->user();
-        $countryId = $customer->country_id;    
+        $countryId = $customer->country_id;
+        $customerId = $customer->id;
 
         $ad = new NormalAds([
             'title' => $validatedData['title'],
             'country_id' => $countryId,
+            'customer_id' => $customerId,
             'cat_id' => $validatedData['cat_id'],
             'address' => $validatedData['address'],
             'description' => $validatedData['description'],
