@@ -113,7 +113,7 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function updateNormalAd(Request $request, $id)
+    public function update(Request $request, $id)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
