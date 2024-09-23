@@ -73,9 +73,7 @@ public function index(Request $request)
 }
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         if (!Auth::check()) {
@@ -146,7 +144,7 @@ public function index(Request $request)
         }
     
         $bike = new Bike([
-            'model' => $request->input('model'),
+            'color' => $request->input('color'),
             'year' => $request->input('year'),
             'kilo_meters' => $request->input('kilo_meters'),
             'normal_id' => $ad->id,
