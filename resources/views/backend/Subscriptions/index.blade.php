@@ -87,7 +87,6 @@
                 </td>
                 <td>
                     <!-- Edit and Delete Actions -->
-                    <a href="{{ route('subscriptions.edit', $plan->id) }}" class="btn btn-warning btn-sm">{{ __('Edit') }}</a>
                     <form action="{{ route('subscriptions.destroy', $plan->id) }}" method="POST" style="display: inline-block;">
                         @csrf
                         @method('DELETE')
