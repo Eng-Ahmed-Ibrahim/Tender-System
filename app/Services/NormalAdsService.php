@@ -5,6 +5,7 @@ use App\Models\NormalAds;
 use App\Jobs\TranslateText;
 use Illuminate\Http\Request;
 use App\Models\ImageNormalAds;
+use Illuminate\Support\Facades\Auth;
 
 class NormalAdsService
 {
@@ -26,7 +27,11 @@ public function storeNormalAd(Request $request)
             $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
         }
 
-        $countryId = $request->session()->get('country_id');
+        $customer = Auth::uard('customer')->user();
+
+        
+
+        $countryId = $customer ? $customer->country_id :$request->session()->get('country_id');
 
         $normalAd = new NormalAds($validatedData);
         $normalAd->country_id = $countryId;
