@@ -50,7 +50,6 @@
                 <th>{{ __('Experience Year') }}</th>
                 <th>{{ __('Experience Level') }}</th>
                 <th>{{ __('CV File') }}</th>
-                <th>{{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -61,14 +60,7 @@
                     <td>{{ $career->experience_year }}</td>
                     <td>{{ $career->experience_level }}</td>
                     <td><a href="{{ asset('storage/' . $career->cv_file) }}" target="_blank">{{ __('View CV') }}</a></td>
-                    <td>
-                        <a href="{{ route('career.edit', $career->id) }}" class="btn btn-success">{{ __('Edit') }}</a>
-                        <form action="{{ route('career.destroy', $career->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
-                        </form>
-                    </td>
+                    
                 </tr>
             @endforeach
         </tbody>

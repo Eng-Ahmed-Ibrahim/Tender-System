@@ -55,37 +55,23 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>{{ __('Title') }}</th>
-                                    <th>{{ __('Category') }}</th>
                                     <th>{{ __('Storage') }}</th>
                                     <th>{{ __('RAM') }}</th>
                                     <th>{{ __('Display Size') }}</th>
                                     <th>{{ __('SIM Number') }}</th>
-                                    <th>{{ __('Status') }}</th>
-                                    <th>{{ __('Description') }}</th>
-                                    <th>{{ __('Images') }}</th>
+                          
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($mobiles as $index => $mobile)
-                                    @foreach($mobile->phoneFeatures as $feature)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ __($mobile->title) }}</td>
-                                            <td>{{ __($mobile->category->title) }}</td> <!-- Assuming Mobile model has a category relationship -->
-                                            <td>{{ __($feature->storage) }}</td>
-                                            <td>{{ __($feature->ram) }}</td>
-                                            <td>{{ __($feature->disply_size) }}</td>
-                                            <td>{{ __($feature->sim_no) }}</td>
-                                            <td>{{ __($feature->status) }}</td>
-                                            <td>{{ __($feature->description) }}</td>
-                                            <td>
-                                                @foreach($mobile->images as $image)
-                                                    <img src="{{ $image->photo_path }}" alt="{{ __('Mobile Image') }}" style="width: 50px; height: auto;">
-                                                @endforeach
-                                            </td>
+                                            <td>{{ __($mobile->storage) }}</td>
+                                            <td>{{ __($mobile->ram) }}</td>
+                                            <td>{{ __($mobile->disply_size) }}</td>
+                                            <td>{{ __($mobile->sim_no) }}</td>
+                                          
                                         </tr>
-                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>

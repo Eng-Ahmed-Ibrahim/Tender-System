@@ -63,7 +63,6 @@
                         <th>{{__('Category')}}</th>
                         <th>{{__('brand')}}</th>
                         <th>{{__('Features')}}</th>
-                        <th>{{__('Actions')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,15 +82,7 @@
                                 {{__('No features available')}}
                                 @endif
                             </td>
-                            <td>
-                                <a href="{{ route('car.show', $car->id) }}" class="btn btn-primary btn-sm">{{__('View')}}</a>
-                                <a href="{{ route('car.edit', $car->id) }}" class="btn btn-warning btn-sm">{{__('Edit')}}</a>
-                                <form action="{{ route('car.destroy', $car->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">{{__('Delete')}}</button>
-                                </form>
-                            </td>
+                        
                         </tr>
                     @endforeach
                 </tbody>

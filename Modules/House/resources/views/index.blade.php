@@ -61,7 +61,6 @@
                     <th>{{__('Images')}}</th>
                     <th>{{__('Title')}}</th>
                     <th>{{__('Description')}}</th>
-                    <th>{{__('Actions')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,16 +71,7 @@
                         </td>
                         <td>{{ $house->title }}</td>
                         <td>{{ $house->description }}</td>
-                        <td>
-                            <a href="{{ route('house.show', $house->id) }}" class="btn btn-info btn-sm">{{__('View')}}</a>
-                            <a href="{{ route('house.edit', $house->id) }}" class="btn btn-success btn-sm">{{__('Edit')}}</a>
-                            @if($house->phone)
-                                <a href="tel:{{ $house->phone }}" class="btn btn-primary btn-sm">Call</a>
-                            @endif
-                            @if($house->whatsapp)
-                                <a href="https://wa.me/{{ $house->whatsapp }}" class="btn btn-success btn-sm" target="_blank">WhatsApp</a>
-                            @endif
-                        </td>
+                      
                     </tr>
                 @empty
                     <tr>

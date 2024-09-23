@@ -26,8 +26,7 @@
                             <th>{{ __('Category') }}</th>
                             <th>{{ __('Images') }}</th>
                             <th>{{ __('Features') }}</th>
-                            <th>{{ __('Specifications') }}</th>
-                            <th>{{ __('Actions') }}</th>
+                          
                         </tr>
                     </thead>
                     <tbody>
@@ -58,14 +57,7 @@
                                 @endif
                             </td>
                         
-                            <td>
-                                <a href="{{ route('bike.edit', $bike->id) }}" class="btn btn-warning btn-sm">{{ __('Edit') }}</a>
-                                <form action="{{ route('bike.destroy', $bike->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ __('Are you sure you want to delete this bike offer?') }}')">{{ __('Delete') }}</button>
-                                </form>
-                            </td>
+                          
                         </tr>
                         @endforeach
                     </tbody>

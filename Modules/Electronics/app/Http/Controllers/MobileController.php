@@ -23,7 +23,7 @@ class MobileController extends Controller
      */
     public function index()
     {
-        $mobiles = Mobiles::with(['phoneFeatures', 'images'])->paginate(10);
+        $mobiles = Mobiles::paginate(10);
         return view('electronics::mobiles.index',compact('mobiles'));
     }
 
