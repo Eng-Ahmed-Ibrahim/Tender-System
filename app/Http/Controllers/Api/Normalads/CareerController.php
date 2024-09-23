@@ -103,7 +103,8 @@ public function index(Request $request)
             'cv_file' => 'required|file|mimes:pdf,doc,docx',
         ]);
     
-        $countryId = $request->session()->get('country_id');
+        $customer = Auth::guard('customer')->user();
+        $countryId = $customer->country;
     
         $ad = new NormalAds([
             'title' => $validatedData['title'],

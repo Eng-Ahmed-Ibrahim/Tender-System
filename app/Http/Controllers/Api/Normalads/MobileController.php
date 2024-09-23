@@ -111,7 +111,8 @@ class MobileController extends Controller
             'status' => 'required',
         ]);
     
-        $countryId = $request->session()->get('country_id');
+        $customer = Auth::guard('customer')->user();
+        $countryId = $customer->country;
     
         $ad = new NormalAds([
             'title' => $validatedData['title'],
