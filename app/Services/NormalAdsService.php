@@ -27,7 +27,7 @@ public function storeNormalAd(Request $request)
             $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
         }
 
-        $customer = Auth::uard('customer')->user();
+        $customer = Auth::guard('customer')->user();
 
         
 
