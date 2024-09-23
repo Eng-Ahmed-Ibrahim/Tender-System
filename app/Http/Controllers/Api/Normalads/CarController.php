@@ -167,7 +167,7 @@ public function index(Request $request)
         }
     
         $car = new Cars([
-            'model' => $request->input('model'),
+            'color' => $request->input('color'),
             'year' => $request->input('year'),
             'kilo_meters' => $request->input('kilo_meters'),
             'fuel_type' => $request->input('fuel_type'),
