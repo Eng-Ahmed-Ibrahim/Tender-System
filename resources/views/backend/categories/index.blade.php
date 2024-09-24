@@ -59,13 +59,13 @@
                     <div class="card-body">
                         <!--begin::Table-->
                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
-                            <thead style="background-color: rgb(247, 247, 247);">
-                                <tr>
-                                    <th>{{ __('ID') }}</th>
-                                    <th>{{ __('Category') }}</th>
-                                    <th>{{ __('photo') }}</th>
-                                    <th>{{ __('Type') }}</th>
-                                    <th>{{ __('Actions') }}</th>
+                            <thead>
+                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                    <th  class="min-w-150px">{{ __('ID') }}</th>
+                                    <th  class="min-w-150px">{{ __('Category') }}</th>
+                                    <th  class="min-w-150px">{{ __('photo') }}</th>
+                                    <th  class="min-w-150px">{{ __('Type') }}</th>
+                                    <th  class="min-w-150px">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>

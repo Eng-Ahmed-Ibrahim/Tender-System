@@ -24,7 +24,7 @@
                     <!-- Filter menu -->
                     <div class="m-0">
                         <!-- Menu toggle -->
-                        <a href="#" class="btn btn-sm btn-flex btn-secondary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                        <a class="btn btn-sm btn-flex btn-secondary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                             <i class="ki-duotone ki-filter fs-6 text-muted me-1">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
@@ -122,14 +122,52 @@
                                 </form>                            </div>
                             <!--end::Search-->
                         </div>
-                        <!--end::Card title-->
-                        <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
-                            <!--begin::Add customer-->
-                            <a href="{{ route('normalads.create')}}" class="btn btn-primary">{{__('Add Normal Ads')}}</a>
-                            <!--end::Add customer-->
-                        </div>
-                        <!--end::Card toolbar-->
+
+                        
+                        @php
+                        $categories = \App\Models\Category::whereNull('parent_id')->get();
+                        @endphp
+
+<!-- Button to trigger the modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    {{__('Add Normal Ads')}}  
+</button>
+  
+  <!-- Modal Structure -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Your Form Title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @foreach($categories as $category)
+            <article class="category-item col-md-12 mb-4">
+                <a href="{{ route('normalads.create',['cat_id' => $category->id]) }}"class="category-btn w-100 btn d-flex align-items-center justify-content-start p-3" 
+                   style="background-color: rgb(166, 202, 235);">
+
+                    <img src="{{ asset('storage/' . $category->photo) }}" 
+                         alt="{{ $category['title'] }} image" 
+                         class="img-fluid me-3" 
+                         style="width: 80px; height: 80px; object-fit: cover;" 
+                        >
+                   
+                    <!-- Category Title -->
+                    <span>{{ $category['title'] }}</span>
+                </a>
+            </article>
+        @endforeach
+        
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
                     </div>
                     <!--end::Card header-->
                     <!--begin::Card body-->

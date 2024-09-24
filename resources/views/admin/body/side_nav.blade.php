@@ -174,15 +174,7 @@
                                 <div class="menu-sub menu-sub-accordion">
                           
                         
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('normaladsCategory')}}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">{{ __('Add Normal Ads')}} </span>
-                                        </a>
-                                    </div>
+                                  
                                     <!--end:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
@@ -218,16 +210,7 @@
                             
 
                         
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('commercialads.create')}}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">{{ __('Add Commercial')}} </span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
+                               
                                     <!--end:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
@@ -262,16 +245,6 @@
                             
 
                         
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('popup.create')}}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">{{ __('Add PopUp')}} </span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
                                     <!--end:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
@@ -307,17 +280,6 @@
                                   
                         
                           
-                                    <!--end:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('banners.create')}}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title"> {{ __('Banners create')}}</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
       <!--end:Menu item-->
       <div class="menu-item">
         <!--begin:Menu link-->
