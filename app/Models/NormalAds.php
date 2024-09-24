@@ -69,6 +69,7 @@ public function cars()
 
     return $this->hasOne(Cars::class,'normal_id');
 }
+
 public function bikes()
 
 {

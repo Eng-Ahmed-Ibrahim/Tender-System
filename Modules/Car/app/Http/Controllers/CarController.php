@@ -12,17 +12,12 @@ use Modules\Car\Models\Brand;
 use Modules\Car\Models\CarType;
 use Modules\Car\Models\CarModel;
 use App\Services\AdLimitServices;
-use Modules\Car\Models\CarImages;
-use Modules\Car\Models\CarOption;
 use Modules\Car\Models\CarFeature;
-use Modules\Car\Models\CarCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Modules\Car\Models\CarEquipment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-use Modules\Car\Models\CarSpecifaction;
-use Modules\Car\Models\CarSpecifcation;
+
 
 class CarController extends Controller
 {
@@ -31,8 +26,9 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Cars::with('features')->get();
-        return view('car::index',compact('cars'));
+        $ads = NormalAds::whereHas('cars')->get();
+        $categories = Category::where('parent_id',1)->get();
+        return view('car::index',compact('ads','categories'));
     }
     
  
