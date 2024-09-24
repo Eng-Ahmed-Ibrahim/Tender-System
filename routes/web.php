@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('customers', CustomerController::class);
 
+    Route::post('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('customers.toggleStatus');
+
     Route::resource('normalads', NormalAdsController::class);
 
     Route::get('normaladsCategory', [NormalAdsController::class,'selectCategory'])->name('normaladsCategory');

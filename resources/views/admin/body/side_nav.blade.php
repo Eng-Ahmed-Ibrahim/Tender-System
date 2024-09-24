@@ -39,61 +39,7 @@
                         
                  
                       
-                            <div class="menu-item pt-5">
-                                <!--begin:Menu content-->
-                                <div class="menu-content">
-                                    <span class="menu-heading fw-bold text-uppercase fs-7">{{ __('Customers')}}</span>
-                                </div>
-                                <!--end:Menu content-->
-                            </div>
-                        
-                 
-                    
-                                                 
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                <span class="menu-link">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-people-fill"></i> 
-
-                                    </span>
-                                    <span class="menu-title">{{ __('All')}}</span>
-                                    <span class="menu-arrow"></span>
-                                </span>
-                            
-                                <div class="menu-sub menu-sub-accordion">
-                                 
-
-                                    <div class="menu-item">
-                                   
-                                        <a class="menu-link" href="{{ route('viewMainCategory')}}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">{{ __('Main Category')}}</span>
-                                        </a>
-                                       
-                                    </div>
-                              
-                                    <div class="menu-item">
-                                   
-                                        <a class="menu-link" href="{{ route('index.filters')}}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">{{ __('Filter')}}</span>
-                                        </a>
-                                       
-                                    </div>
-                              
-
-                             
-                                    <!--end:Menu item-->
-                                    <!--begin:Menu item-->
-                           
-                                    <!--end:Menu item-->
-                                </div>
-                                <!--end:Menu sub-->
-                            </div>
+                      
                                                  
                       
                             <div class="menu-item pt-5">

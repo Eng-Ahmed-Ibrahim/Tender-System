@@ -57,7 +57,7 @@
                     <!--end::Card header-->
                     <!--begin::Card body-->
                     <div class="card-body pt-0">
-                        <!--begin::Table-->
+                        <div class="table-responsive">
                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                             <thead>
                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
@@ -66,8 +66,12 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_category_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-250px">{{__('Name')}}</th>
+                                    <th class="min-w-150px">{{__('Name')}}</th>
                                     <th class="min-w-150px">{{__('Email')}}</th>
+                                    <th class="min-w-150px">{{__('Phone')}}</th>
+                                    <th class="min-w-150px">{{__('Country')}}</th>
+                                    <th class="min-w-150px">{{__('is Active')}}</th>
+                                    <th class="min-w-150px">{{__('Create At')}}</th>
                                     <th class="text-end min-w-70px">{{__('Actions')}}</th>
                                 </tr>
                             </thead>
@@ -89,6 +93,24 @@
 
 
                                     <td>{{ $customer->email }}</td>
+                                    <td>{{ $customer->phone }}</td>
+                                    <td>
+                                        @if($customer->country)
+                                        {{ $customer->country->name }}
+                                    @else 
+
+                                   N/A
+
+                                    @endif
+                                    </td>
+                                    <td>
+                                @if($customer->is_active)
+                                    <span class="badge bg-success">{{__('Active')}}</span>
+                                @else
+                                    <span class="badge bg-danger">{{__('BAN')}}</span>
+                                @endif
+                            </td>
+                                    <td>{{ $customer->created_at }}</td>
 
                                   
                                     
@@ -109,6 +131,18 @@
                                                     <a class="dropdown-item" href="{{ route('customers.edit', $customer->id) }}">{{__('Edit')}}</a>
                                                 </li>
                                               
+                                        <li>
+                                            <form action="{{ route('customers.toggleStatus', $customer->id) }}" method="POST" class="d-inline-block">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">
+                                                    @if($customer->is_active)
+                                                    {{__('BAN')}}
+                                                    @else
+                                                    {{__('activate')}}
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        </li>
                                              
                                                 <li>
                                                     <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="d-inline-block">

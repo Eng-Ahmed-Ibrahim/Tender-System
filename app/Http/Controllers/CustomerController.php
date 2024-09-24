@@ -79,7 +79,14 @@ class CustomerController extends BaseController
         return $this->redirectToIndex('Customer updated successfully.');
     }
 
-
+    public function toggleStatus(Customers $customer)
+    {
+        $customer->is_active = !$customer->is_active; // Toggle the status
+        $customer->save();
+    
+        return redirect()->back()->with('status', 'customer status updated successfully!');
+    }
+    
   protected function translateAndSave(array $inputs, $operation)
 {
     $languages = ['en', 'fr', 'es', 'ar', 'de', 'tr', 'it', 'ja', 'zh', 'ur'];
