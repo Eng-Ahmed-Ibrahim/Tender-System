@@ -13,7 +13,9 @@
                     <!--begin::Title-->
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
-                  
+                    <div class="d-flex align-items-center gap-2 gap-lg-3">
+                        <a href="{{ route('popup.create') }}" class="btn btn-sm fw-bold btn-primary">Add PopUp</a>
+                    </div>
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->

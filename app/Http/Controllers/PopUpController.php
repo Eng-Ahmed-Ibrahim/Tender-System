@@ -11,7 +11,7 @@ use Modules\Bike\Models\BikeCategory;
 use Modules\House\Models\HouseCategory;
 use Modules\Electronics\Models\ElectronicCategory;
 
-class PopUpController extends controller
+class PopUpController extends Controller
 {
 
 
