@@ -21,7 +21,8 @@ use Modules\House\Http\Controllers\CommercailsHosueController;
 Route::group([], function () {
     Route::resource('house', HouseController::class)->names('house');
 
-    Route::resource('house-commercials', CommercailsHosueController::class);
+    Route::get('CommercialHouse', [HouseController::class,'commercial'])->name('House.commercial');
+
     
 Route::resource('house-categories', HouseCategoryController::class);
 Route::resource('house-popup', PopUpHouseController::class);

@@ -472,12 +472,21 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">{{__('show house')}}</span>
+                                            <span class="menu-title">{{__('Normal house')}}</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
-
-                                  
+                                    
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('House.commercial')}}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">{{__('Commercial house')}}</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
                                     <!--end:Menu item-->
                                     <!--begin:Menu item-->
                                  
@@ -508,13 +517,21 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">{{__('Mobiles')}}</span>
+                                            <span class="menu-title">{{__('Mobiles Normals')}}</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
-                                    <!--end:Menu item-->
-                                                            
-                                
+                                                                                               
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('Mobiles.commercial')}}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">{{__('Mobiles Commercials')}}</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
                             </div>
                                 <!--end:Menu sub-->
                             </div>

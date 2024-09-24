@@ -19,10 +19,14 @@ use Modules\Electronics\Http\Controllers\ElectronicCategoryController;
 
 Route::group([], function () {
     Route::resource('electronics', ElectronicsController::class)->names('electronics');
+    Route::get('CommercialCar', [CarController::class,'commercial'])->name('car.commercial');
 
     Route::resource('electronic-categories', ElectronicCategoryController::class);
 
     Route::resource('mobile-normalAds', MobileController::class);
+
+    Route::get('CommercialMobiles', [MobileController::class,'commercial'])->name('Mobiles.commercial');
+
     Route::post('mobiles/{ad}/toggle-status', [MobileController::class, 'toggleStatusMobile'])->name('mobile.toggleStatus');
 
 

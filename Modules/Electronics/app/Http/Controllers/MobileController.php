@@ -5,6 +5,7 @@ namespace Modules\Electronics\Http\Controllers;
 use App\Models\Category;
 use App\Models\NormalAds;
 use App\Jobs\TranslateText;
+use App\Models\CommercialAd;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\AdLimitServices;
@@ -13,23 +14,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Modules\Electronics\Models\Mobiles;
-use Modules\Electronics\Models\ElectronicCategory;
-use Modules\Electronics\Http\Controllers\ElectronicCategoryController;
 
 class MobileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+  
     public function index()
     {
-        $mobiles = Mobiles::paginate(10);
-        return view('electronics::mobiles.index',compact('mobiles'));
+        $ads = NormalAds::whereHas('mobiles')->paginate(10);
+        $categories = Category::where('parent_id',13)->get();
+        return view('electronics::mobiles.index',compact('ads','categories'));
     }
+    
+    public function commercial(){
 
-    /**
-     * Show the form for creating a new resource.
-     */
+        $commercialAds  = CommercialAd::Where('cat_id',13)->paginate(10);
+        $categories = Category::where('id',13)->first();
+
+        return view('electronics::mobiles.commercial',compact('commercialAds','categories'));
+
+
+    }
     public function create(Request $request)
     {
         $cat_id = $request->cat_id;

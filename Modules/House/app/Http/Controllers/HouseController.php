@@ -5,6 +5,7 @@ namespace Modules\House\Http\Controllers;
 use App\Models\Category;
 use App\Models\NormalAds;
 use App\Jobs\TranslateText;
+use App\Models\CommercialAd;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\House\Models\House;
@@ -26,16 +27,29 @@ class HouseController extends Controller
     /**
      * Display a listing of the resource.
      */
+  
+
     public function index()
     {
-        $houseCategories =Category::all();
-
-        $normalAdsHouses =House::all();
-
-        
-
-        return view('house::index',compact('normalAdsHouses','houseCategories'));
+        $ads = NormalAds::whereHas('cars')->get();
+        $categories = Category::where('parent_id',2)->get();
+        return view('house::index',compact('ads','categories'));
     }
+    
+    public function commercial(){
+
+        $commercialAds  = CommercialAd::Where('cat_id',2)->paginate(10);
+        $categories = Category::where('id',2)->first();
+
+        return view('House::commercial',compact('commercialAds','categories'));
+
+
+    }
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
