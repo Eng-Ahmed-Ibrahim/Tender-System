@@ -6,7 +6,7 @@
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Edit Banners for {{ $banners->first()->category->title ?? 'N/A' }}</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Edit Banners </h1>
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <li class="breadcrumb-item text-muted">
                             <a href="{{ route('banners.index') }}" class="text-muted text-hover-primary">Back to Banners</a>
@@ -23,7 +23,7 @@
             <div id="kt_app_content_container" class="app-container container-xxl">
                 <div class="card card-flush">
                     <div class="card-body pt-0">
-                        <form action="{{ route('banners.update', $banners->first()->category_id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('banners.update', $banner->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -44,12 +44,9 @@
                             <div class="mb-5">
                                 <label class="form-label">Photos</label>
                                 <div class="row">
-                                    @foreach ($banners as $banner)
                                         <div class="col-md-4">
                                             <img src="{{ asset('storage/' . $banner->photo_path) }}" alt="Banner Image" class="img-thumbnail mb-3">
-                                            <button type="button" class="btn btn-danger btn-sm remove-photo" data-id="{{ $banner->id }}">Remove</button>
                                         </div>
-                                    @endforeach
                                 </div>
                             </div>
 

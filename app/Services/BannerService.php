@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Storage;
 
 class BannerService
 {
-    public function getAllBannersGroupedByCategory()
+    public function getAllBanners()
     {
-        return Banner::with('category')->get()->groupBy('category_id');
+        return Banner::all();
     }
 
     public function createBanners(Request $request)
@@ -32,9 +32,9 @@ class BannerService
         }
     }
 
-    public function updateBanners(Request $request, $categoryId)
+    public function updateBanners(Request $request, $id)
     {
-        $banners = Banner::where('category_id', $categoryId)->get();
+        $banners = Banner::FindOrFail($id);
 
         foreach ($banners as $banner) {
             if ($request->hasFile('photos.' . $banner->id)) {
@@ -63,8 +63,4 @@ class BannerService
         $banner->delete();
     }
 
-    public function deleteBannersByCategory($categoryId)
-    {
-        Banner::where('category_id', $categoryId)->delete();
-    }
 }

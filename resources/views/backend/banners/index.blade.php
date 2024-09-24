@@ -48,20 +48,18 @@
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($banners as $categoryId => $categoryBanners)
+                                @foreach ($banners as $banner)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $categoryBanners->first()->category->title ?? 'N/A' }}</td>
+                                        <td>{{ $banner->category->title ??   'N/A' }}</td>
                                         <td>
-                                            @foreach ($categoryBanners as $banner)
                                                 <img src="{{ asset('storage/' . $banner->photo_path) }}" alt="Banner Image" width="100" class="me-2">
-                                            @endforeach
                                         </td>
-                                        <td>{{ $categoryBanners->first()->country->name ?? 'N/A' }}</td>
+                                        <td>{{$banner->country? $banner->country->name : not}}</td>
                                         <td class="text-end">
                                             <!-- Assuming you want to edit or delete based on the first banner in the group -->
-                                            <a href="{{ route('banners.edit', $categoryId ) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('banners.destroy', $categoryId) }}" method="POST" style="display:inline-block;">
+                                            <a href="{{ route('banners.edit', $banner->id ) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('banners.destroy', $banner->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
