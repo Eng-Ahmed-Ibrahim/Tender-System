@@ -21,6 +21,8 @@ Route::group([], function () {
     
     Route::resource('car', CarController::class)->names('car');
 
+    Route::get('CommercialCar', [CarController::class,'commercial'])->name('car.commercial');
+
     Route::resource('car-features', CarFeatureController::class)->except('destroy');
 
     Route::resource('car-brands', BrandController::class);

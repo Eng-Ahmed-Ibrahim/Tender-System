@@ -357,10 +357,19 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title"> {{__('cars')}}</span>
+                                            <span class="menu-title"> {{__('cars Normal')}}</span>
                                         </a>
                                     </div>    
-                                
+                                  
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('car.commercial')}}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title"> {{__('cars Commercial')}}</span>
+                                        </a>
+                                    </div>    
                                 </div>
                                 <!--end:Menu sub-->
                             </div>

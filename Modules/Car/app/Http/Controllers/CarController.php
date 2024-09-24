@@ -5,6 +5,7 @@ namespace Modules\Car\Http\Controllers;
 use App\Models\Category;
 use App\Models\NormalAds;
 use App\Jobs\TranslateText;
+use App\Models\CommercialAd;
 use Illuminate\Http\Request;
 use Modules\Car\Models\Cars;
 use Illuminate\Http\Response;
@@ -21,9 +22,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $ads = NormalAds::whereHas('cars')->get();
@@ -31,6 +30,15 @@ class CarController extends Controller
         return view('car::index',compact('ads','categories'));
     }
     
+    public function commercial(){
+
+        $commercialAds  = CommercialAd::Where('cat_id',1)->paginate(10);
+        $categories = Category::where('id',1)->first();
+
+        return view('car::commercial',compact('commercialAds','categories'));
+
+
+    }
  
     public function create(Request $request)
     
