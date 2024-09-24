@@ -20,17 +20,9 @@ class CareerController extends Controller
      */
     public function index()
     {
-        $careers = Careers::all();
-        return view('career::index',compact('careers'));
+        $ads = NormalAds::whereHas('careers')->get();
+        return view('career::index',compact('ads'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-  
-    /**
-     * Store a newly created resource in storage.
-     */
     public function create(Request $request)
     {
 
