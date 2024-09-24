@@ -31,7 +31,7 @@ class HouseController extends Controller
 
     public function index()
     {
-        $ads = NormalAds::whereHas('cars')->get();
+        $ads = NormalAds::whereHas('houses')->get();
         $categories = Category::where('parent_id',2)->get();
         return view('house::index',compact('ads','categories'));
     }
@@ -41,7 +41,7 @@ class HouseController extends Controller
         $commercialAds  = CommercialAd::Where('cat_id',2)->paginate(10);
         $categories = Category::where('id',2)->first();
 
-        return view('House::commercial',compact('commercialAds','categories'));
+        return view('house::commercial',compact('commercialAds','categories'));
 
 
     }
