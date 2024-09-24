@@ -5,29 +5,40 @@ namespace Modules\Bike\Http\Controllers;
 use App\Models\Category;
 use App\Models\NormalAds;
 use App\Jobs\TranslateText;
+use App\Models\CommercialAd;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Bike\Models\Bike;
 use App\Services\AdLimitServices;
-use Modules\Bike\Models\BikeImages;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Bike\Models\BikeFeature;
 use Illuminate\Http\RedirectResponse;
-use Modules\Bike\Models\BikeCategory;
-use Modules\Bike\Models\BikeSpecification;
 
 class BikeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+  
+   
     public function index()
     {
-        $bikes = Bike::with('features')->paginate(10); 
-        return view('bike::bikes.index', compact('bikes'));
+        $ads = NormalAds::whereHas('bikes')->get();
+        $categories = Category::where('parent_id',9)->get();
+
+        return view('bike::bikes.index',compact('ads','categories'));
     }
-   
+    
+    public function commercial(){
+
+        $commercialAds  = CommercialAd::Where('cat_id',9)->paginate(10);
+        $categories = Category::where('id',9)->first();
+
+        return view('bike::commercial',compact('commercialAds','categories'));
+
+
+    }
  
 
     public function create(Request $request)

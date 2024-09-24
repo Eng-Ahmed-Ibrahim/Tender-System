@@ -22,6 +22,9 @@ Route::group([], function () {
 
     Route::resource('bike-features', BikeFeatureController::class);
 
+    Route::get('CommercialBike', [BikeController::class,'commercial'])->name('bike.commercial');
+
+
     Route::post('bikes/{ad}/toggle-status', [BikeController::class, 'toggleStatusBikes'])->name('bike.toggleStatus');
 
 });

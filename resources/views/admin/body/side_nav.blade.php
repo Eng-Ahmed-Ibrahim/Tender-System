@@ -413,10 +413,23 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title"> {{__('bikes')}} </span>
+                                            <span class="menu-title"> {{__('bikes Normal')}} </span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
+
+                                  
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('bike.commercial')}}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title"> {{__('bikes Commercial')}} </span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+
                              
                                                       </div>
                                 <!--end:Menu sub-->
