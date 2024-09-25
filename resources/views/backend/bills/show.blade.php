@@ -9,10 +9,10 @@
         <div class="card-body">
             <p><strong>{{ __('Customer Name:') }}</strong> {{ $bill->customerSubscription->customer->name }}</p>
             <p><strong>{{ __('Amount:') }}</strong> {{ $bill->amount }}</p>
-            <p><strong>{{ __('Due Date:') }}</strong> {{ $bill->due_date->format('d-m-Y') }}</p>
+            <p><strong>{{ __('Due Date:') }}</strong> {{ $bill->due_date }}</p>
             <p><strong>{{ __('Subscription Plan:') }}</strong> {{ $bill->subscriptionPlan->name }}</p>
-            <p><strong>{{ __('Subscription Start Date:') }}</strong> {{ $bill->subscription_start_date->format('d-m-Y') }}</p>
-            <p><strong>{{ __('Subscription End Date:') }}</strong> {{ $bill->subscription_end_date->format('d-m-Y') }}</p>
+            <p><strong>{{ __('Subscription Start Date:') }}</strong> {{ $bill->subscription_start_date }}</p>
+            <p><strong>{{ __('Subscription End Date:') }}</strong> {{ $bill->subscription_end_date }}</p>
             <p><strong>{{ __('Remaining Ads (Normal):') }}</strong> {{ $bill->remaining_ads_normal }}</p>
             <p><strong>{{ __('Remaining Ads (Commercial):') }}</strong> {{ $bill->remaining_ads_commercial }}</p>
             <p><strong>{{ __('Remaining Ads (Popup):') }}</strong> {{ $bill->remaining_ads_popup }}</p>

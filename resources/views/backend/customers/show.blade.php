@@ -32,24 +32,21 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <!-- Tabs for Ads -->
-                        <div class="card card-flush">
-                            <div class="card-header align-items-center">
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link active" id="normal-ads-tab" data-bs-toggle="tab" href="#normal-ads" role="tab" aria-controls="normal-ads" aria-selected="true">{{ __('Normal Ads') }}</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link" id="commercial-ads-tab" data-bs-toggle="tab" href="#commercial-ads" role="tab" aria-controls="commercial-ads" aria-selected="false">{{ __('Commercial Ads') }}</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link" id="subscription_ads_tab" data-bs-toggle="tab" href="#subscription_tab" role="tab" aria-controls="subscription_tab" aria-selected="false">{{ __('Subscriptions') }}</a>
-                                    </li>
-                                    <li class="nav-item" role="bilss">
-                                        <a class="nav-link" id="bills_ads_tab" data-bs-toggle="tab" href="#bills_tab" role="tab" aria-controls="Bills_tab" aria-selected="false">{{ __('Bills') }}</a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="normal-ads-tab" data-bs-toggle="tab" href="#normal-ads" role="tab" aria-controls="normal-ads" aria-selected="true">{{ __('Normal Ads') }}</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="commercial-ads-tab" data-bs-toggle="tab" href="#commercial-ads" role="tab" aria-controls="commercial-ads" aria-selected="false">{{ __('Commercial Ads') }}</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="subscription_ads_tab" data-bs-toggle="tab" href="#subscription_tab" role="tab" aria-controls="subscription_tab" aria-selected="false">{{ __('Subscriptions') }}</a>
+                            </li>
+                            <li class="nav-item" role="bilss">
+                                <a class="nav-link" id="bills_ads_tab" data-bs-toggle="tab" href="#bills_tab" role="tab" aria-controls="Bills_tab" aria-selected="false">{{ __('Bills') }}</a>
+                            </li>
+                        </ul>                        <div class="card card-flush">
+                        
                             <div class="card-body">
                                 <div class="tab-content" id="myTabContent">
                                     <!-- Normal Ads Tab -->
