@@ -55,9 +55,7 @@ class SubscriptionController extends Controller
 
     }
 
-    /**
-     * Select or update a subscription plan for the customer.
-     */
+  
     public function selectPlan(Request $request)
     {
         $validatedData = $request->validate([

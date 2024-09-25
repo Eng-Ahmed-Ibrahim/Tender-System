@@ -176,11 +176,11 @@
                                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __('Subscription Plan') }}</th>
-                                                    <th>{{ __('Start Date') }}</th>
-                                                    <th>{{ __('End Date') }}</th>
-                                                    <th>{{ __('Remaining Normal Ads') }}</th>
-                                                    <th>{{ __('Remaining Commercial Ads') }}</th>
+                                                    <th>{{ __('Plan') }}</th>
+                                                    <th>{{ __('Start') }}</th>
+                                                    <th>{{ __('End') }}</th>
+                                                    <th>{{ __('Normal') }}</th>
+                                                    <th>{{ __('Commercial') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
