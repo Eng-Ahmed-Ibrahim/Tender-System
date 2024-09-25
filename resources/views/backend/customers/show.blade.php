@@ -219,7 +219,7 @@
                                                     <td>{{ $bill->amount }}</td>
                                                     <td>{{ $bill->due_date }}</td>
                                                     <td>
-                                                        <a href="{{ route('bills.show', $bill) }}" class="btn btn-info">{{ __('View') }}</a>
+                                                        <a href="" class="btn btn-info">{{ __('View') }}</a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
