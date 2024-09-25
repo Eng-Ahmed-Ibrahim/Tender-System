@@ -24,7 +24,7 @@ class CustomerController extends BaseController
          ];
     }
     public function show($id) {
-        $customer = Customers::with(['NormalAds', 'CommericalAds', 'subscriptions'])->findOrFail($id);    
+        $customer = Customers::with(['NormalAds', 'CommericalAds', 'subscriptions','bills'])->findOrFail($id);    
         if (!$customer) {
             return redirect()->back()->with('error', 'Customer not found.');
         }

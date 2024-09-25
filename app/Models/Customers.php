@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Bill;
 use App\Models\Banner;
 use App\Models\PopUpAds;
 use App\Models\NormalAds;
@@ -88,6 +89,10 @@ class Customers extends Model implements Authenticatable
         return $this->hasMany(Banner::class,'customer_id');
     }
     
+    public function bills(){
+
+        return $this->hasMany(Bill::class,'customer_id');
+    }
 
     public function subscriptions()
     {

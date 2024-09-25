@@ -45,6 +45,9 @@
                                     <li class="nav-item" role="presentation">
                                         <a class="nav-link" id="subscription_ads_tab" data-bs-toggle="tab" href="#subscription_tab" role="tab" aria-controls="subscription_tab" aria-selected="false">{{ __('Subscriptions') }}</a>
                                     </li>
+                                    <li class="nav-item" role="bilss">
+                                        <a class="nav-link" id="bills_ads_tab" data-bs-toggle="tab" href="#bills_tab" role="tab" aria-controls="Bills_tab" aria-selected="false">{{ __('Bills') }}</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="card-body">
@@ -197,6 +200,31 @@
 
                                         </table>
                                         </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="bills_tab" role="tabpanel" aria-labelledby="bills_ads_tab">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ __('Bill ID') }}</th>
+                                                    <th>{{ __('Amount') }}</th>
+                                                    <th>{{ __('Due Date') }}</th>
+                                                    <th>{{ __('Actions') }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($customer->bills as $bill)
+                                                <tr>
+                                                    <td>{{ $bill->id }}</td>
+                                                    <td>{{ $bill->amount }}</td>
+                                                    <td>{{ $bill->due_date->format('d-m-Y') }}</td>
+                                                    <td>
+                                                        <a href="{{ route('bills.show', $bill) }}" class="btn btn-info">{{ __('View') }}</a>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
