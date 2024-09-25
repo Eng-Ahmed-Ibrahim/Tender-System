@@ -15,9 +15,15 @@
                         <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4>
                         <!--end::Logo-->
                         <div class="text-sm-end">
-                            <!--begin::Logo-->
+                            @php
+                            $configuration = \App\Models\Configuration::first();
+                            
+                            @endphp                        
+                            
                             <a href="#" class="d-block mw-150px ms-sm-auto">
-                                <img alt="Logo" src="assets/media/svg/brand-logos/lloyds-of-london-logo.svg" class="w-100" />
+
+                                <img alt="Logo" src="{{ asset('storage/' .$configuration->logo) }}" class="w-100" />
+
                             </a>
                             <!--end::Logo-->
                             <!--begin::Text-->
@@ -25,6 +31,9 @@
                                 <div>{{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}</div>
                                 <div>{{ __('Billing Address:') }}</div>
                                 <div>{{ $bill->customerSubscription->customer->address }}</div>
+                                <div>{{ __('Billing Date:') }}</div>
+
+                                <div>{{ $bill->due_date }}</div>
                             </div>
                             <!--end::Text-->
                         </div>
@@ -69,19 +78,19 @@
                                                 <td class="text-end">{{ $bill->amount }}</td>
                                             </tr>
                                             <tr>
-                                                <td>{{ __('Remaining Ads (Normal):') }} {{ $bill->remaining_ads_normal }}</td>
+                                                <td>{{ __(' Ads (Normal):') }} {{ $bill->remaining_ads_normal }}</td>
                                                 <td class="text-end"></td>
                                             </tr>
                                             <tr>
-                                                <td>{{ __('Remaining Ads (Commercial):') }} {{ $bill->remaining_ads_commercial }}</td>
+                                                <td>{{ __(' Ads (Commercial):') }} {{ $bill->remaining_ads_commercial }}</td>
                                                 <td class="text-end"></td>
                                             </tr>
                                             <tr>
-                                                <td>{{ __('Remaining Ads (Popup):') }} {{ $bill->remaining_ads_popup }}</td>
+                                                <td>{{ __(' Ads (Popup):') }} {{ $bill->remaining_ads_popup }}</td>
                                                 <td class="text-end"></td>
                                             </tr>
                                             <tr>
-                                                <td>{{ __('Remaining Ads (Banners):') }} {{ $bill->remaining_ads_banners }}</td>
+                                                <td>{{ __(' Ads (Banners):') }} {{ $bill->remaining_ads_banners }}</td>
                                                 <td class="text-end"></td>
                                             </tr>
                                             <tr>
@@ -106,7 +115,6 @@
                         </div>
                         <!-- end::Actions-->
                         <!-- begin::Action-->
-                        <a href="#" class="btn btn-primary my-1">{{ __('Create Invoice') }}</a>
                         <!-- end::Action-->
                     </div>
                     <!-- end::Footer-->
