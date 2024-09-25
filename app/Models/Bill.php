@@ -12,19 +12,7 @@ class Bill extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'customer_id',
-        'customer_subscription_id',
-        'amount',
-        'due_date',
-        'subscription_plan_id',
-        'subscription_start_date',
-        'subscription_end_date',
-        'remaining_ads_normal',
-        'remaining_ads_commercial',
-        'remaining_ads_popup',
-        'remaining_ads_banners',
-    ];
+    protected $guarded=[];
 
     // Relationships
     public function customer()
