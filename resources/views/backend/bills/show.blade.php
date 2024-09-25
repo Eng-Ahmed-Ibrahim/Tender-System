@@ -45,11 +45,11 @@
                                 </div>
                                 <div class="flex-root d-flex flex-column">
                                     <span class="text-muted">{{ __('Date') }}</span>
-                                    <span class="fs-5">{{ $bill->created_at->format('d-m-Y') }}</span>
+                                    <span class="fs-5">{{ $bill->created_at}}</span>
                                 </div>
                                 <div class="flex-root d-flex flex-column">
                                     <span class="text-muted">{{ __('Due Date') }}</span>
-                                    <span class="fs-5">{{ $bill->due_date->format('d-m-Y') }}</span>
+                                    <span class="fs-5">{{ $bill->due_date }}</span>
                                 </div>
                             </div>
                             <!--end::Order details-->
