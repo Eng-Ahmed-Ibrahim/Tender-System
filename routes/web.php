@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdsController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OfferController;
@@ -123,6 +124,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('AdminUsers', UserController::class);
 
     Route::put('/user/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
+
+
+    Route::resource('commercialads', CommercialController::class);
+
+    Route::resource('bills', BillController::class);
+
+
+
+
 });
 
 

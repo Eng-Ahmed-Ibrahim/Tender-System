@@ -203,7 +203,7 @@
                                     </div>
 
                                     <div class="tab-pane fade" id="bills_tab" role="tabpanel" aria-labelledby="bills_ads_tab">
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
+                                        <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __('Bill ID') }}</th>
@@ -213,13 +213,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($customer->bills as $bill)
+                                                @foreach ($bills as $bill)
                                                 <tr>
                                                     <td>{{ $bill->id }}</td>
                                                     <td>{{ $bill->amount }}</td>
                                                     <td>{{ $bill->due_date }}</td>
                                                     <td>
-                                                        <a href="" class="btn btn-info">{{ __('View') }}</a>
+                                                        <a href="{{ route('bills.show', $bill->id) }}" class="btn btn-info">{{ __('View') }}</a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
