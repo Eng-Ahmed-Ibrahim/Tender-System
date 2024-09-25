@@ -71,8 +71,8 @@
                             <tbody>
                                 @foreach($categories as $category)
                                     <tr>
-                                        <td><h3>{{ ($category->id) }}</h3></td>
-                                        <td><h3>{{ __($category->title) }}</h3></td>
+                                        <td>{{ ($category->id) }}</td>
+                                        <td>{{ __($category->title) }}</td>
                                         <td><img src="{{asset('storage/'.$category->photo)}}" style="width:100px;"></td>
                                         <td>{{ $category->parent_id === null ? __('Main Categories') : __('Sub Categories') }}</td>
                                         <td>
