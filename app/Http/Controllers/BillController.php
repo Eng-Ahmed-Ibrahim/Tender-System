@@ -38,7 +38,7 @@ class BillController extends Controller
     {
         $bill = Bill::findOrFail($id);
 
-        return view('backend.bill.show',compact('bill'));
+        return view('backend.bills.show',compact('bill'));
         
     }
 

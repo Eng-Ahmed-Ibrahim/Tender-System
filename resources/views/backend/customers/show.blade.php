@@ -122,7 +122,7 @@
 
                                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                                             <thead>
-                                                <tr>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th>{{ __('Title') }}</th>
                                                     <th>{{ __('Description') }}</th>
                                                     <th>{{ __('Photo') }}</th>
@@ -130,10 +130,10 @@
                                                     <th>{{ __('Actions') }}</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="fw-semibold text-gray-600">
                                                 @foreach($customer->CommericalAds as $ad)
-                                                    <tr>
-                                                        <td>{{ $ad->title }}</td>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                    <td>{{ $ad->title }}</td>
                                                         <td>{{ $ad->description }}</td>
                                                         <td>
                                                             @if($ad->photo_path)
@@ -178,7 +178,7 @@
 
                                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                                             <thead>
-                                                <tr>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th>{{ __('Plan') }}</th>
                                                     <th>{{ __('Start') }}</th>
                                                     <th>{{ __('End') }}</th>
@@ -186,7 +186,7 @@
                                                     <th>{{ __('Commercial') }}</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="fw-semibold text-gray-600">
                                                 @foreach($customer->subscriptions as $subscription)
                                                     <tr>
                                                         <td>{{ $subscription->subscriptionPlan->name }}</td>
@@ -203,16 +203,16 @@
                                     </div>
 
                                     <div class="tab-pane fade" id="bills_tab" role="tabpanel" aria-labelledby="bills_ads_tab">
-                                        <table class="table table-bordered">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                                             <thead>
-                                                <tr>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th>{{ __('Bill ID') }}</th>
                                                     <th>{{ __('Amount') }}</th>
                                                     <th>{{ __('Due Date') }}</th>
                                                     <th>{{ __('Actions') }}</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="fw-semibold text-gray-600">
                                                 @foreach ($customer->bills as $bill)
                                                 <tr>
                                                     <td>{{ $bill->id }}</td>
