@@ -217,7 +217,7 @@
                                                 <tr>
                                                     <td>{{ $bill->id }}</td>
                                                     <td>{{ $bill->amount }}</td>
-                                                    <td>{{ $bill->due_date->format('d-m-Y') }}</td>
+                                                    <td>{{ $bill->due_date }}</td>
                                                     <td>
                                                         <a href="{{ route('bills.show', $bill) }}" class="btn btn-info">{{ __('View') }}</a>
                                                     </td>
