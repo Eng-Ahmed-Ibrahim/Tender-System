@@ -1,128 +1,123 @@
 @extends('admin.index')
 
 @section('content')
-<div class="container">
-
-   
-            <p><strong>{{ __('Remaining Ads (Normal):') }}</strong> {{ $bill->remaining_ads_normal }}</p>
-            <p><strong>{{ __('Remaining Ads (Commercial):') }}</strong> {{ $bill->remaining_ads_commercial }}</p>
-            <p><strong>{{ __('Remaining Ads (Popup):') }}</strong> {{ $bill->remaining_ads_popup }}</p>
-            <p><strong>{{ __('Remaining Ads (Banners):') }}</strong> {{ $bill->remaining_ads_banners }}</p>
-  
-
-
-    <div class="card-body">
-        <div class="container mb-5 mt-3">
-            <div class="row mb-7">
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="deposit" class="fw-bold fs-6 mb-2"></label>
+<div id="kt_app_content" class="app-content flex-column-fluid">
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container container-xxl">
+        <!-- begin::Invoice 3-->
+        <div class="card">
+            <!-- begin::Body-->
+            <div class="card-body py-20">
+                <!-- begin::Wrapper-->
+                <div class="mw-lg-950px mx-auto w-100">
+                    <!-- begin::Header-->
+                    <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
+                        <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4>
+                        <!--end::Logo-->
+                        <div class="text-sm-end">
+                            <!--begin::Logo-->
+                            <a href="#" class="d-block mw-150px ms-sm-auto">
+                                <img alt="Logo" src="assets/media/svg/brand-logos/lloyds-of-london-logo.svg" class="w-100" />
+                            </a>
+                            <!--end::Logo-->
+                            <!--begin::Text-->
+                            <div class="text-sm-end fw-semibold fs-4 text-muted mt-7">
+                                <div>{{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}</div>
+                                <div>{{ __('Billing Address:') }}</div>
+                                <div>{{ $bill->customerSubscription->customer->address }}</div>
+                            </div>
+                            <!--end::Text-->
+                        </div>
                     </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="pb-12">
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column gap-7 gap-md-10">
+                            <!--begin::Message-->
+                            <div class="fw-bold fs-2">{{ __('Dear') }} {{ $bill->customerSubscription->customer->name }},</div>
+                            <div class="separator"></div>
+                            <!--begin::Order details-->
+                            <div class="d-flex flex-column flex-sm-row gap-7 gap-md-10 fw-bold">
+                                <div class="flex-root d-flex flex-column">
+                                    <span class="text-muted">{{ __('Bill ID') }}</span>
+                                    <span class="fs-5">{{ $bill->id }}</span>
+                                </div>
+                                <div class="flex-root d-flex flex-column">
+                                    <span class="text-muted">{{ __('Date') }}</span>
+                                    <span class="fs-5">{{ $bill->created_at->format('d-m-Y') }}</span>
+                                </div>
+                                <div class="flex-root d-flex flex-column">
+                                    <span class="text-muted">{{ __('Due Date') }}</span>
+                                    <span class="fs-5">{{ $bill->due_date->format('d-m-Y') }}</span>
+                                </div>
+                            </div>
+                            <!--end::Order details-->
+                            <!--begin::Order summary-->
+                            <div class="d-flex justify-content-between flex-column">
+                                <div class="table-responsive border-bottom mb-9">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
+                                        <thead>
+                                            <tr class="border-bottom fs-6 fw-bold text-muted">
+                                                <th class="min-w-175px pb-2">{{ __('Description') }}</th>
+                                                <th class="min-w-100px text-end pb-2">{{ __('Amount') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="fw-semibold text-gray-600">
+                                            <tr>
+                                                <td>{{ __('Subscription Plan:') }} {{ $bill->subscriptionPlan->name }}</td>
+                                                <td class="text-end">{{ $bill->amount }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ __('Remaining Ads (Normal):') }} {{ $bill->remaining_ads_normal }}</td>
+                                                <td class="text-end"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ __('Remaining Ads (Commercial):') }} {{ $bill->remaining_ads_commercial }}</td>
+                                                <td class="text-end"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ __('Remaining Ads (Popup):') }} {{ $bill->remaining_ads_popup }}</td>
+                                                <td class="text-end"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ __('Remaining Ads (Banners):') }} {{ $bill->remaining_ads_banners }}</td>
+                                                <td class="text-end"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fs-3 text-dark fw-bold">{{ __('Grand Total') }}</td>
+                                                <td class="text-dark fs-3 fw-bolder text-end">{{ $bill->amount }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--end:Order summary-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Body-->
+                    <!-- begin::Footer-->
+                    <div class="d-flex flex-stack flex-wrap mt-lg-20 pt-13">
+                        <!-- begin::Actions-->
+                        <div class="my-1 me-5">
+                            <button type="button" class="btn btn-success my-1 me-12" onclick="window.print();">{{ __('Print Invoice') }}</button>
+                            <button type="button" class="btn btn-light-success my-1">{{ __('Download') }}</button>
+                        </div>
+                        <!-- end::Actions-->
+                        <!-- begin::Action-->
+                        <a href="#" class="btn btn-primary my-1">{{ __('Create Invoice') }}</a>
+                        <!-- end::Action-->
+                    </div>
+                    <!-- end::Footer-->
                 </div>
-               
+                <!-- end::Wrapper-->
             </div>
- @php
-$configuration = \App\Models\Configuration::first();
-
-@endphp
-
-
-    
-            <div class="row d-flex align-items-center">
-                <div class="col-xl-9">
-                    <p class="mb-0" style="font-size: 20px;"> {{__('Bill Number')}}&gt;&gt; <strong>#{{$bill->id}}</strong></p>
-                </div>
-    
-                <div class="col-xl-3 float-end text-end">
-                    <a href="" class="btn btn-primary text-capitalize text-hover-white rounded-pill text-primary bg-white" style="padding:9px 25px; border:1px solid;" data-mdb-ripple-color="dark">{{__('Print')}} <i class="fas fa-print text-primary"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="container content-to-download invoice" id="print_content" style="padding: 25px; border-radius: 16px; box-shadow: -4px 5px 14px 0px #0000000A;">
-                <div class="col-12">
-
-                    <div>
-                        <img alt="Logo" src="" style="width: 70px" class="img-fluid app-sidebar-logo-default">
-                        <h2 class="pt-4" style="font-size:28px;">{{$configuration->owner_name}}
-                        </h2>
-                        <p style="font-size:16px;"><strong>#{{$bill->id}}</strong></p>
-                        <p style="font-size:16px;"><strong>{{$bill->due_date}}</strong></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="a">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td class="w-50">{{ __('Subscription Start Date:') }}<strong class="text-nowrap" >{{ $bill->subscription_start_date }}</strong></td>
-                                    
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Subscription End Date:') }}</td>
-                                    <td class="w-50"><strong class="text-nowrap">{{ $bill->subscription_end_date }}</strong></td>
-                                 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br>
-                <hr>
-                <br>
-                <div class="row">
-                    <div class="">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th style=" color: var(--bs-secondary-color) !important">بيانات العميل</th>
-                                    <th style=" color: var(--bs-secondary-color) !important">بيانات الاشتراك</th>
-                                </tr>
-                                <tr>
-                                    <td>{{__('Customer Name')}} </td>
-                                    <td>{{ $bill->customerSubscription->customer->name }}</td>
-                                </tr>
-                                <tr>
-                                    <td>01122132355</td>
-                                    <td>السعر: 1000 جنيه</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="details">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th style=" color: var(--bs-secondary-color) !important">{{ __('Subscription Plan:') }} الاشتراك</th>
-                                    <th style=" color: var(--bs-secondary-color) !important">{{ $bill->subscriptionPlan->name }}</th>
-                                </tr>
-                                <tr>
-                                    <td>SUB-1001</td>
-                                    <td>ملاحظات إضافية حول الاشتراك.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-6 col-xl-4">
-                        <ul class="fw-bold list-unstyled total">
-                            <li><span style=" color: var(--bs-secondary-color) !important" class="text-black me-4">المجموع:</span><span style="font-size: 18px; var(--bs-secondary-color) !important">1000 جنيه مصري</span></li>
-                            <li id="total_after_depositeLi" class="d-none"><span style=" color: var(--bs-secondary-color) !important" class="fw-bold text-black me-4">الإجمالي بعد العربون:</span><span class="total_after_deposite" style="font-size: 18px; var(--bs-secondary-color) !important">800 جنيه مصري</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <h6 style="text-align: center;">35# - 9 سبتمبر 2024</h6>
-                    <h6 style="text-align: center; direction: ltr;">واتساب : 01017944214</h6>
-                </div>
-            </div>
+            <!-- end::Body-->
         </div>
+        <!-- end::Invoice 1-->
     </div>
-    
+    <!--end::Content container-->
+</div>
 @endsection
+
