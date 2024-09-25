@@ -23,7 +23,15 @@ class CustomerController extends BaseController
             'is_active' => 'nullable|in:1,0',
          ];
     }
-
+    public function show($id) {
+        $customer = Customers::with(['NormalAds', 'CommericalAds', 'subscriptions'])->findOrFail($id);    
+        if (!$customer) {
+            return redirect()->back()->with('error', 'Customer not found.');
+        }
+    
+        return view('backend.customers.show', compact('customer'));
+    }
+    
     public function store(Request $request)
     {
         $validated = $this->validateRequest($request);

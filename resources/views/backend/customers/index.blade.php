@@ -130,6 +130,11 @@
                                                 <li>
                                                     <a class="dropdown-item" href="{{ route('customers.edit', $customer->id) }}">{{__('Edit')}}</a>
                                                 </li>
+
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('customers.show', $customer->id) }}">{{__('Show')}}</a>
+                                                </li>
+                                              
                                               
                                         <li>
                                             <form action="{{ route('customers.toggleStatus', $customer->id) }}" method="POST" class="d-inline-block">

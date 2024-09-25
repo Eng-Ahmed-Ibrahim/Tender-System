@@ -69,29 +69,29 @@ class Customers extends Model implements Authenticatable
 
     public function NormalAds(){
 
-        return $this->hasMany(NormalAds::class);
+        return $this->hasMany(NormalAds::class,'customer_id');
     }
     
     
     public function CommericalAds(){
 
-        return $this->hasMany(CommercialAd::class);
+        return $this->hasMany(CommercialAd::class,'customer_id');
     }
 
     public function popUpAds(){
 
-        return $this->hasMany(PopUpAds::class);
+        return $this->hasMany(PopUpAds::class,'customer_id');
     }
     
     public function banners(){
 
-        return $this->hasMany(Banner::class);
+        return $this->hasMany(Banner::class,'customer_id');
     }
     
 
     public function subscriptions()
     {
-        return $this->hasMany(CustomerSubscription::class);
+        return $this->hasMany(CustomerSubscription::class,'customer_id');
     }
 
     public function currentSubscription()
