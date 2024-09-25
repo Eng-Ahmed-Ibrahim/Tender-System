@@ -12,14 +12,20 @@
                 <div class="mw-lg-950px mx-auto w-100">
                     <!-- begin::Header-->
                     <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
-                        <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4><br>
+                        <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4>
 
-                            <div>{{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}</div><br>
-                            <div>{{ __('Billing Address:') }}
-                            {{ $bill->customerSubscription->customer->address }}</div><br>
-                            <div>{{ __('Billing Date:') }}
-
-                        {{ $bill->due_date }}</div>
+                        <div style="margin-bottom: 1rem;">
+                            {{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            {{ __('Billing Address:') }} {{ $bill->customerSubscription->customer->address }}
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            {{ __('Billing Date:') }} {{ $bill->due_date }}
+                        </div>
+                        
 
 
                         <!--end::Logo-->
