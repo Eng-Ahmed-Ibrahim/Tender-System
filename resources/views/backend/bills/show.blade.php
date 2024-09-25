@@ -14,13 +14,7 @@
                     <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
                         <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4>
 
-                        <div style="margin-bottom: 1rem;">
-                            {{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            {{ __('Billing Address:') }} {{ $bill->customerSubscription->customer->address }}
-                        </div>
+                    
                         
                         <div style="margin-bottom: 1rem;">
                             {{ __('Billing Date:') }} {{ $bill->due_date }}
