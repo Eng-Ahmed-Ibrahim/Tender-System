@@ -13,14 +13,13 @@
                     <!-- begin::Header-->
                     <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
                         <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4>
-                        <div class="text-sm-end fw-semibold fs-4 text-muted mt-7">
+
                             <div>{{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}</div>
                             <div>{{ __('Billing Address:') }}
                             {{ $bill->customerSubscription->customer->address }}</div>
                             <div>{{ __('Billing Date:') }}
 
                         {{ $bill->due_date }}</div>
-                        </div>
 
 
                         <!--end::Logo-->
