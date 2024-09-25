@@ -55,12 +55,12 @@
                                     <span class="fs-5">{{ $bill->id }}</span>
                                 </div>
                                 <div class="flex-root d-flex flex-column">
-                                    <span class="text-muted">{{ __('Date') }}</span>
-                                    <span class="fs-5">{{ $bill->created_at}}</span>
+                                    <span class="text-muted">{{ __('Start Date') }}</span>
+                                    <span class="fs-5">{{ $bill->subscription_start_date}}</span>
                                 </div>
                                 <div class="flex-root d-flex flex-column">
-                                    <span class="text-muted">{{ __('Due Date') }}</span>
-                                    <span class="fs-5">{{ $bill->due_date }}</span>
+                                    <span class="text-muted">{{ __('End  Date') }}</span>
+                                    <span class="fs-5">{{ $bill->subscription_end_date }}</span>
                                 </div>
                             </div>
                             <!--end::Order details-->
