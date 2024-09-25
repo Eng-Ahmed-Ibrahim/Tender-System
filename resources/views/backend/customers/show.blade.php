@@ -213,7 +213,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($bills as $bill)
+                                                @foreach ($customer->bills as $bill)
                                                 <tr>
                                                     <td>{{ $bill->id }}</td>
                                                     <td>{{ $bill->amount }}</td>
