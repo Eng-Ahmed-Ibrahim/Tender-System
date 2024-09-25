@@ -29,11 +29,11 @@
                             <!--begin::Text-->
                             <div class="text-sm-end fw-semibold fs-4 text-muted mt-7">
                                 <div>{{ __('Customer Name:') }} {{ $bill->customerSubscription->customer->name }}</div>
-                                <div>{{ __('Billing Address:') }}</div>
-                                <div>{{ $bill->customerSubscription->customer->address }}</div>
-                                <div>{{ __('Billing Date:') }}</div>
+                                <div>{{ __('Billing Address:') }}
+                                {{ $bill->customerSubscription->customer->address }}</div>
+                                <div>{{ __('Billing Date:') }}
 
-                                <div>{{ $bill->due_date }}</div>
+                            {{ $bill->due_date }}</div>
                             </div>
                             <!--end::Text-->
                         </div>
