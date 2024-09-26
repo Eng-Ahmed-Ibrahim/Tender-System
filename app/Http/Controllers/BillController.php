@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bill;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
