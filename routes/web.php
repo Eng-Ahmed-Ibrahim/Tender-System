@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('bills', BillController::class);
 
-
+    Route::get('/invoice/print/{id}', [BillController::class, 'printInvoice'])->name('invoice.print');
 
 
 });

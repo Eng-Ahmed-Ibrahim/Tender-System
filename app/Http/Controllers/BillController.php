@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bill;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -41,7 +42,13 @@ class BillController extends Controller
         return view('backend.bills.show',compact('bill'));
         
     }
-
+    public function printInvoice($id)
+    {
+        $bill = Bill::findOrFail($id); // Get the bill data
+        $pdf = PDF::loadView('backend.bills.bill-pdf', compact('bill'));
+    
+        return $pdf->download('invoice-' . $bill->id . '.pdf'); // Download the PDF
+    }
     /**
      * Show the form for editing the specified resource.
      */

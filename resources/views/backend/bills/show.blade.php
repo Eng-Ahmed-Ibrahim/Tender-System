@@ -113,7 +113,7 @@
                         <!-- begin::Actions-->
                         <div class="my-1 me-5">
                             <button type="button" class="btn btn-success my-1 me-12" onclick="window.print();">{{ __('Print Invoice') }}</button>
-                            <button type="button" class="btn btn-light-success my-1">{{ __('Download') }}</button>
+                            <a href="{{ route('invoice.print', $bill->id) }}" class="btn btn-light-success my-1">{{ __('Download') }}</a>
                         </div>
                         <!-- end::Actions-->
                         <!-- begin::Action-->
