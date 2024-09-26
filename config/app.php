@@ -129,6 +129,8 @@ return [
 'aliases' => [
     // ... other aliases
     'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
+    'PDF' => Barryvdh\DomPDF\Facade::class,
+
 ],
 
 
