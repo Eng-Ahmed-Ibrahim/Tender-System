@@ -6,11 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "barryvdh/laravel-dompdf": "^3.0",
         "laravel/breeze": "^2.1",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "niklasravnsborg/laravel-pdf": "^4.1",
         "nwidart/laravel-modules": "^11.0",
         "spatie/laravel-permission": "^6.9",
         "stevebauman/location": "^7.3",
