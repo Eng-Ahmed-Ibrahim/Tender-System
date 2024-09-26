@@ -50,7 +50,7 @@ class CarController extends Controller
 
         $brands = Brand::all();
         
-        $cat_id =Category::where('parent_id',$cat_id)->get();
+        $cat_id =Category::where('parent_id',1)->get();
     
         return view('car::cars.create', compact('features', 'brands', 'cat_id'));
     }

@@ -44,7 +44,7 @@
                 </div>
                 <div class="card-footer d-flex justify-content-end py-6 px-9">
                     <button type="reset" class="btn btn-light btn-active-light-primary me-2">{{ __('Discard') }}</button>
-                    <button type="submit" class="btn btn-primary" id="kt_project_settings_submit">{{ __('Save Changes') }}</button>
+                    <button type="submit" class="btn btn-secondary" id="kt_project_settings_submit">{{ __('Save Changes') }}</button>
                 </div>
             </form>
             <!--end:Form-->

@@ -18,7 +18,7 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    <a href="{{ route('banners.create') }}" class="btn btn-sm fw-bold btn-primary">Add Banner</a>
+                    <a href="{{ route('banners.create') }}" class="btn btn-sm fw-bold btn-secondary">Add Banner</a>
                 </div>
             </div>
         </div>
@@ -58,11 +58,11 @@
                                         <td>{{$banner->country? $banner->country->name : not}}</td>
                                         <td class="text-end">
                                             <!-- Assuming you want to edit or delete based on the first banner in the group -->
-                                            <a href="{{ route('banners.edit', $banner->id ) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="{{ route('banners.edit', $banner->id ) }}" class="btn btn-sm btn-secondary">Edit</a>
                                             <form action="{{ route('banners.destroy', $banner->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-secondary" onclick="return confirm('Are you sure?')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>

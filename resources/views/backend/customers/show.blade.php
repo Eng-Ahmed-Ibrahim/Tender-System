@@ -151,11 +151,11 @@
                                                             <form action="{{ route('commercialads.destroy', $ad->id) }}" method="POST" class="d-inline-block">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-danger">{{ __('Delete') }}</button>
+                                                                <button type="submit" class="btn btn-sm btn-secondary">{{ __('Delete') }}</button>
                                                             </form>
                                                             <form action="{{ route('commercial.toggleStatus', $ad->id) }}" method="POST" class="d-inline-block">
                                                                 @csrf
-                                                                <button type="submit" class="btn btn-info btn-sm">
+                                                                <button type="submit" class="btn btn-secondary btn-sm">
                                                                     @if($ad->is_active)
                                                                         {{ __('Mark as Not Active') }}
                                                                     @else
@@ -216,7 +216,7 @@
                                                     <td>{{ $bill->amount }}</td>
                                                     <td>{{ $bill->due_date }}</td>
                                                     <td>
-                                                        <a href="{{ route('bills.show', $bill->id) }}" class="btn btn-info">{{ __('View') }}</a>
+                                                        <a href="{{ route('bills.show', $bill->id) }}" class="btn btn-secondary">{{ __('View') }}</a>
                                                     </td>
                                                 </tr>
                                                 @endforeach

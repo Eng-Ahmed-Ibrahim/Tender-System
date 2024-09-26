@@ -69,7 +69,7 @@
        <input type="checkbox" name="featured_ads" id="featured_ads" value="1" {{ old('featured_ads') ? 'checked' : '' }}>
    </div>
 
-   <button type="submit" class="btn btn-primary">{{ __('Create Plan') }}</button>
+   <button type="submit" class="btn btn-secondary">{{ __('Create Plan') }}</button>
 </form>
 
 @endsection

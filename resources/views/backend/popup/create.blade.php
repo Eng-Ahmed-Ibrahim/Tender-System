@@ -53,7 +53,7 @@
                                 </select>
                             </div>
                         
-                            <button type="submit" class="btn btn-primary">{{__('Save')}}</button>
+                            <button type="submit" class="btn btn-secondary">{{__('Save')}}</button>
                         </form>
                  
                         

@@ -9,8 +9,8 @@
     <div id="kt_app_content_container" class="app-container container-xxl">
         <!--begin::Navbar-->
       
-        <!--begin::Card-->
-        <div class="card">
+      
+                  <div class="card">
             <div class="card-header">
                 <div class="card-title fs-3 fw-bold">{{ __('Add new Career offer')}}</div>
             </div>

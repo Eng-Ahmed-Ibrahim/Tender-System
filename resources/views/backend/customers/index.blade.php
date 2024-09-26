@@ -49,7 +49,7 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Add customer-->
-                            <a href="{{ route('customers.create')}}" class="btn btn-primary">{{__('Add Customer')}}</a>
+                            <a href="{{ route('customers.create')}}" class="btn btn-secondary">{{__('Add Customer')}}</a>
                             <!--end::Add customer-->
                         </div>
                         <!--end::Card toolbar-->

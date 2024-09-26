@@ -266,7 +266,7 @@
                                 <!--end::Card body-->
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">{{ __('save_changes') }}</button>
+                                <button type="submit" class="btn btn-secondary">{{ __('save_changes') }}</button>
                             </div>                      
                         
                         <!--end::Main column-->

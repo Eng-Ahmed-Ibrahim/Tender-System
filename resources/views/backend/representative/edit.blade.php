@@ -43,7 +43,7 @@
                         <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="{{ old('whatsapp', $representative->whatsapp) }}" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-secondary">Update</button>
                 </form>
             </div>
         </div>

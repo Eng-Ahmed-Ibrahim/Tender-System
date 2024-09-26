@@ -45,7 +45,7 @@
                         <input type="text" name="group_name" id="group-name" class="form-control" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">{{ __('Create Permission') }}</button>
+                <button type="submit" class="btn btn-secondary">{{ __('Create Permission') }}</button>
             </form>
 
             <!-- Table displaying existing permissions -->

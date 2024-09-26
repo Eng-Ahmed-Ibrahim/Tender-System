@@ -48,7 +48,7 @@
                         <!--end::Card title-->
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
+                            <button class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
                                 {{ __('Add Category') }}
                             </button>
                         </div>
@@ -76,13 +76,13 @@
                                         <td><img src="{{asset('storage/'.$category->photo)}}" style="width:100px;"></td>
                                         <td>{{ $category->parent_id === null ? __('Main Categories') : __('Sub Categories') }}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">
+                                            <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">
                                                 <i class="bi bi-box-arrow-up-right"></i> {{ __('Edit') }}
                                             </button>
                                             <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                <button type="submit" class="btn btn-sm btn-secondary">
                                                     <i class="bi bi-trash"></i> {{ __('Delete') }}
                                                 </button>
                                             </form>
@@ -119,7 +119,7 @@
                                                             <input type="file" name="photo" class="form-control">
                                                         </div>
 
-                                                        <button type="submit" class="btn btn-success">{{ __('Update') }}</button>
+                                                        <button type="submit" class="btn btn-secondary">{{ __('Update') }}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -175,7 +175,7 @@
                         <label for="photo">{{ __('Category Photo') }}</label>
                         <input type="file" name="photo" class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-success">{{ __('Create') }}</button>
+                    <button type="submit" class="btn btn-secondary">{{ __('Create') }}</button>
                 </form>
             </div>
         </div>

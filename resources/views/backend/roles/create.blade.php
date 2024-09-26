@@ -50,7 +50,7 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Add customer-->
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
                                 {{ __('Create') }}
                             </button>                            <!--end::Add customer-->
                         </div>
@@ -165,7 +165,7 @@
                     </div>
                     <div class="text-center pt-15">
                         <button type="reset" class="btn btn-light me-3" data-kt-roles-modal-action="cancel">{{__('Discard')}}</button>
-                        <button type="submit" class="btn btn-primary" data-kt-roles-modal-action="submit">
+                        <button type="submit" class="btn btn-secondary" data-kt-roles-modal-action="submit">
                             {{__('Submit')}}
                         </button>
                     </div>
@@ -221,7 +221,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                    <button type="submit" class="btn btn-secondary">{{ __('Save Changes') }}</button>
                 </div>
             </form>
         </div>

@@ -99,7 +99,7 @@
                         @enderror
                     </div>
                 
-                    <button type="submit" class="btn btn-primary">{{__('Create')}}</button>
+                    <button type="submit" class="btn btn-secondary">{{__('Create')}}</button>
                 </form>
                 
             <!--end:Form-->

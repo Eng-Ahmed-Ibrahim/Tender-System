@@ -40,25 +40,7 @@
                             <div class="separator border-gray-200"></div>
                             <!-- Form -->
                             <div class="px-7 py-5">
-                                <form action="{{ route('normalads.index') }}" method="GET">
-                                    <!-- Status Filter -->
-                                    <div class="mb-10">
-                                        <label class="form-label fw-semibold">{{__('Status')}}</label>
-                                        <div>
-                                            <select class="form-select form-select-solid" name="is_active"  data-placeholder="{{ __('Select status')}}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
-                                                <option value="">Select status</option>
-                                                <option value="1" {{ request()->input('is_active') == '1' ? 'selected' : '' }}>{{__('Active')}}</option>
-                                                <option value="0" {{ request()->input('is_active') == '0' ? 'selected' : '' }}>{{__('Inactive')}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                    
-                                    <!-- Actions -->
-                                    <div class="d-flex justify-content-end">
-                                        <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">{{__('Reset')}}</button>
-                                        <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">{{__('Apply')}}</button>
-                                    </div>
-                                </form>
+                           
                             </div>
                             <!-- End Form -->
                         </div>
@@ -105,42 +87,9 @@
                         $categories = \App\Models\Category::whereNull('parent_id')->get();
                         @endphp
 
-<!-- Button to trigger the modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    {{__('Add Car Ads')}}  
-</button>
-  
-  <!-- Modal Structure -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose Category</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            @foreach($categories as $category)
-            <article class="category-item col-md-12 mb-4">
-                <a href="{{ route('normalads.create',['cat_id' => $category->id]) }}"class="category-btn w-100 btn d-flex align-items-center justify-content-start p-3" 
-                   style="background-color: rgb(166, 202, 235);">
-
-                    <img src="{{ asset('storage/' . $category->photo) }}" 
-                         alt="{{ $category['title'] }} image" 
-                         class="img-fluid me-3" 
-                         style="width: 80px; height: 80px; object-fit: cover;" 
-                        >
-                   
-                    <!-- Category Title -->
-                    <span>{{ $category['title'] }}</span>
-                </a>
-            </article>
-        @endforeach
-        
-        </div>
-      </div>
-    </div>
-  </div>
-  
+<a class="btn btn-secondary" href="{{ route('career.create')}}">
+    {{__('Add Carrer Ads')}}  
+</a>
 
 
 

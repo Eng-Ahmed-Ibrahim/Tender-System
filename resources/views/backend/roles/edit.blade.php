@@ -27,7 +27,7 @@
                 </div>
 
     
-                <button type="submit" class="btn btn-primary">{{ __('Update')}}</button>
+                <button type="submit" class="btn btn-secondary">{{ __('Update')}}</button>
             </form>
         </div>
     </div>

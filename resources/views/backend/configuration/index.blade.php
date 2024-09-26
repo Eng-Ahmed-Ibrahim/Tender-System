@@ -184,7 +184,7 @@
                             <!-- Form Actions -->
                             <div class="d-flex justify-content-end">
                                 <button type="reset" class="btn btn-light me-3">{{ __('Discard') }}</button>
-                                <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                                <button type="submit" class="btn btn-secondary">{{ __('Save Changes') }}</button>
                             </div>
                         </div>
                     </form>

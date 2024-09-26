@@ -90,7 +90,7 @@
                     <form action="{{ route('subscriptions.destroy', $plan->id) }}" method="POST" style="display: inline-block;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ __('Are you sure you want to delete this plan?') }}')">{{ __('Delete') }}</button>
+                        <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('{{ __('Are you sure you want to delete this plan?') }}')">{{ __('Delete') }}</button>
                     </form>
                 </td>
             </tr>

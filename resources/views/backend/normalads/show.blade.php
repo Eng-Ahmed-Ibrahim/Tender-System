@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="card-footer text-end">
-                        <a href="{{ route('normalads.index') }}" class="btn btn-primary">Back to List</a>
+                        <a href="{{ route('normalads.index') }}" class="btn btn-secondary">Back to List</a>
                     </div>
                 </div>
             </div>

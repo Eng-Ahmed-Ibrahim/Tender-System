@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Career\Http\Controllers\CareerController;
-use Modules\Career\Http\Controllers\CareerCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +16,5 @@ use Modules\Career\Http\Controllers\CareerCategoryController;
 
 Route::group([], function () {
     Route::resource('career', CareerController::class)->names('career');
-    Route::resource('careerCategories', CareerCategoryController::class);
 
 });

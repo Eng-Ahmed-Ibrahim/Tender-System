@@ -118,43 +118,10 @@
                         $categories = \App\Models\Category::whereNull('parent_id')->get();
                         @endphp
 
-<!-- Button to trigger the modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    {{__('Add Car Ads')}}  
-</button>
+<a class="btn btn-secondary" href="{{ route('mobile-normalAds.create')}}">
+    {{__('Add Mobile Ads')}}  
+</a>
   
-  <!-- Modal Structure -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose Category</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            @foreach($categories as $category)
-            <article class="category-item col-md-12 mb-4">
-                <a href="{{ route('normalads.create',['cat_id' => $category->id]) }}"class="category-btn w-100 btn d-flex align-items-center justify-content-start p-3" 
-                   style="background-color: rgb(166, 202, 235);">
-
-                    <img src="{{ asset('storage/' . $category->photo) }}" 
-                         alt="{{ $category['title'] }} image" 
-                         class="img-fluid me-3" 
-                         style="width: 80px; height: 80px; object-fit: cover;" 
-                        >
-                   
-                    <!-- Category Title -->
-                    <span>{{ $category['title'] }}</span>
-                </a>
-            </article>
-        @endforeach
-        
-        </div>
-      </div>
-    </div>
-  </div>
-  
-
 
 
 

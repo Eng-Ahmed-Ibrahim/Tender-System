@@ -33,7 +33,7 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    <a href="{{ route('commercialads.index') }}" class="btn btn-sm fw-bold btn-primary">Back to list</a>
+                    <a href="{{ route('commercialads.index') }}" class="btn btn-sm fw-bold btn-secondary">Back to list</a>
                 </div>
             </div>
         </div>
@@ -142,7 +142,7 @@
                         
                             <div class="d-flex justify-content-end">
                                 <a href="{{ route('commercialads.index') }}" id="kt_ecommerce_edit_product_cancel" class="btn btn-light me-5">Cancel</a>
-                                <button type="submit" id="kt_ecommerce_edit_product_submit" class="btn btn-primary">
+                                <button type="submit" id="kt_ecommerce_edit_product_submit" class="btn btn-secondary">
                                     <span class="indicator-label">Save Changes</span>
                                     <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>

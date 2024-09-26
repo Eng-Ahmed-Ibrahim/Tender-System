@@ -41,7 +41,7 @@
                         <input type="number" id="whatsapp" name="whatsapp" class="form-control" required>
                     </div>
 
-                    <button id="save_representative" class="btn btn-primary">{{ __('Save') }}</button>
+                    <button id="save_representative" class="btn btn-secondary">{{ __('Save') }}</button>
                 </form>
             </div>
         </div>

@@ -128,7 +128,7 @@
                                 <!--begin::Actions-->
                                 <div class="d-flex justify-content-end">
                                     <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button>
-                                    <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+                                    <button type="submit" class="btn btn-sm btn-secondary" data-kt-menu-dismiss="true">Apply</button>
                                 </div>
                                 <!--end::Actions-->
                             </div>
@@ -140,7 +140,7 @@
                     <!--begin::Secondary button-->
                     <!--end::Secondary button-->
                     <!--begin::Primary button-->
-                    <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="model" data-bs-target="#kt_model_create_app">Create</a>
+                    <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="model" data-bs-target="#kt_model_create_app">Create</a>
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -348,7 +348,7 @@
                                
                         </div>
                     </div>
-                    <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+                    <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-secondary">
                         <span class="indicator-label">Save Changes</span>
                         <span class="indicator-progress">Please wait...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>

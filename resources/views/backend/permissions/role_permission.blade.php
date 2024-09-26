@@ -42,7 +42,7 @@
                         </table>
                     </div>
                     <div class="text-center pt-15">
-                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                        <button type="submit" class="btn btn-secondary">{{ __('Save Changes') }}</button>
                     </div>
                 </form>
             </div>

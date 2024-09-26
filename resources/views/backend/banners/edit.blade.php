@@ -55,7 +55,7 @@
                                 <input type="file" name="new_photos[]" class="form-control" multiple>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Update Banners</button>
+                            <button type="submit" class="btn btn-secondary">Update Banners</button>
                         </form>
                     </div>
                 </div>

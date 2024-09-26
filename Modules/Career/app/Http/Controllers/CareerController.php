@@ -21,6 +21,7 @@ class CareerController extends Controller
     public function index()
     {
         $ads = NormalAds::whereHas('careers')->get();
+
         return view('career::index',compact('ads'));
     }
     public function create(Request $request)
@@ -29,8 +30,8 @@ class CareerController extends Controller
         $cat_id = $request->cat_id;
 
     
-    
-        $categories =Category::where('parent_id',$cat_id)->get();
+
+        $categories =Category::where('parent_id',11)->get();
     
 
         return view('career::create', compact('categories'));
