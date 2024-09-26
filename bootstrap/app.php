@@ -19,9 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
 
         ]);
-
-        $app->register(\Barryvdh\DomPDF\ServiceProvider::class);
-        $app->configure('dompdf');
         $middleware->alias([
             
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
