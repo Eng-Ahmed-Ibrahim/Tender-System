@@ -15,7 +15,7 @@
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">{{__('Normal Ads')}}</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
-                   
+
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->
@@ -45,18 +45,19 @@
                                     <div class="mb-10">
                                         <label class="form-label fw-semibold">{{__('Status')}}</label>
                                         <div>
-                                            <select class="form-select form-select-solid" name="is_active"  data-placeholder="{{ __('Select status')}}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
-                                                <option value="">Select status</option>
+                                            <select class="form-select form-select-solid" name="is_active" data-placeholder="{{ __('Select status') }}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
+                                                <option value="">{{__('Select status')}}</option>
                                                 <option value="1" {{ request()->input('is_active') == '1' ? 'selected' : '' }}>{{__('Active')}}</option>
                                                 <option value="0" {{ request()->input('is_active') == '0' ? 'selected' : '' }}>{{__('Inactive')}}</option>
                                             </select>
                                         </div>
                                     </div>
+
                                     <!-- Category Filter -->
                                     <div class="mb-10">
                                         <label class="form-label fw-semibold">{{__('Category')}}:</label>
                                         <div>
-                                            <select class="form-select form-select-solid" name="category_id"  data-placeholder="Select category" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
+                                            <select class="form-select form-select-solid" name="category_id" data-placeholder="{{ __('Select category') }}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
                                                 <option value="">{{__('Select category')}}</option>
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category->id }}" {{ request()->input('category_id') == $category->id ? 'selected' : '' }}>{{ $category->title }}</option>
@@ -64,11 +65,12 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <!-- Customer Filter -->
                                     <div class="mb-10">
                                         <label class="form-label fw-semibold">{{__('Customer')}}</label>
                                         <div>
-                                            <select class="form-select form-select-solid" name="customer_id" data-placeholder="Select customer" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
+                                            <select class="form-select form-select-solid" name="customer_id" data-placeholder="{{ __('Select customer') }}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
                                                 <option value="">{{__('Select customer')}}</option>
                                                 @foreach($customers as $customer)
                                                     <option value="{{ $customer->id }}" {{ request()->input('customer_id') == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
@@ -76,12 +78,29 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <!-- Min and Max Price Filters -->
+                                    <div class="mb-10">
+                                        <label class="form-label fw-semibold">{{__('Min Price')}}:</label>
+                                        <div>
+                                            <input type="number" class="form-control form-control-solid" name="min_price" placeholder="{{ __('Min price') }}" value="{{ request()->input('min_price') }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-10">
+                                        <label class="form-label fw-semibold">{{__('Max Price')}}:</label>
+                                        <div>
+                                            <input type="number" class="form-control form-control-solid" name="max_price" placeholder="{{ __('Max price') }}" value="{{ request()->input('max_price') }}">
+                                        </div>
+                                    </div>
+
                                     <!-- Actions -->
                                     <div class="d-flex justify-content-end">
-                                        <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">{{__('Reset')}}</button>
-                                        <button type="submit" class="btn btn-sm btn-secondary" data-kt-menu-dismiss="true">{{__('Apply')}}</button>
+                                        <button type="submit" name="export" value="true" class="btn btn-success">{{ __('Export Filtered Data') }}</button>
+                                        <button type="submit" class="btn btn-sm btn-secondary" data-kt-menu-dismiss="true">{{ __('Apply') }}</button>
                                     </div>
                                 </form>
+
                             </div>
                             <!-- End Form -->
                         </div>
@@ -89,7 +108,7 @@
                     </div>
                     <!-- End Filter menu -->
                 </div>
-                
+
                     <!--end::Filter menu-->
                     <!--begin::Secondary button-->
                     <!--end::Secondary button-->
@@ -123,16 +142,16 @@
                             <!--end::Search-->
                         </div>
 
-                        
+
                         @php
                         $categories = \App\Models\Category::whereNull('parent_id')->get();
                         @endphp
 
 <!-- Button to trigger the modal -->
 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    {{__('Add Normal Ads')}}  
+    {{__('Add Normal Ads')}}
 </button>
-  
+
   <!-- Modal Structure -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -144,26 +163,26 @@
         <div class="modal-body">
             @foreach($categories as $category)
             <article class="category-item col-md-12 mb-4">
-                <a href="{{ route('normalads.create',['cat_id' => $category->id]) }}"class="category-btn w-100 btn d-flex align-items-center justify-content-start p-3" 
+                <a href="{{ route('normalads.create',['cat_id' => $category->id]) }}"class="category-btn w-100 btn d-flex align-items-center justify-content-start p-3"
                    style="background-color: rgb(166, 202, 235);">
 
-                    <img src="{{ asset('storage/' . $category->photo) }}" 
-                         alt="{{ $category['title'] }} image" 
-                         class="img-fluid me-3" 
-                         style="width: 80px; height: 80px; object-fit: cover;" 
+                    <img src="{{ asset('storage/' . $category->photo) }}"
+                         alt="{{ $category['title'] }} image"
+                         class="img-fluid me-3"
+                         style="width: 80px; height: 80px; object-fit: cover;"
                         >
-                   
+
                     <!-- Category Title -->
                     <span>{{ $category['title'] }}</span>
                 </a>
             </article>
         @endforeach
-        
+
         </div>
       </div>
     </div>
   </div>
-  
+
 
 
 
@@ -221,7 +240,7 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                      
+
                                         <li>
                                             <a class="dropdown-item" href="{{ route('normalads.show', $ad->id) }}">{{__('show')}}</a>
                                         </li>

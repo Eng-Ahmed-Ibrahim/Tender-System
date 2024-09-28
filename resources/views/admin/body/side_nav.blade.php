@@ -756,6 +756,31 @@
                                 </a>
                                 <!--end:Menu link-->
                             </div>
+
+
+
+                            <div class="menu-item pt-5">
+                                <!--begin:Menu content-->
+                                <div class="menu-content">
+                                    <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Reports')}}</span>
+                                </div>
+                                <!--end:Menu content-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->dsdsd
+                                <a class="menu-link" href="" target="_blank">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-rocket fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">{{__('reports')}}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
                             <div class="menu-item pt-5">
                                 <!--begin:Menu content-->
                                 <div class="menu-content">

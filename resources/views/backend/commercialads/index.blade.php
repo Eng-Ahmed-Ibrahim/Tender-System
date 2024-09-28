@@ -14,7 +14,7 @@
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">{{__('Commercial Ads')}}</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
-                  
+
                     <!--end::Breadcrumb-->
                 </div>
                 @if ($errors->any())
@@ -26,19 +26,19 @@
                     </ul>
                 </div>
             @endif
-            
+
             @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
             @endif
-            
+
             @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
                 </div>
             @endif
-            
+
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!-- Filter menu -->
                     <div class="m-0">
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
                                     <!-- Customer Filter -->
-                               
+
                                     <!-- Actions -->
                                     <div class="d-flex justify-content-end">
                                         <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">{{__('Reset')}}</button>
@@ -98,7 +98,9 @@
                     </div>
                     <!-- End Filter menu -->
                 </div>
-                
+                <a href="{{ route('export.commercial') }}" class="btn btn-success mb-3">
+                    Export ads
+                </a>
                     <!--end::Filter menu-->
                     <!--begin::Secondary button-->
                     <!--end::Secondary button-->
@@ -208,7 +210,7 @@
             <form action="{{ route('commercialads.update', $ad->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editTitle" class="form-label">{{__('Title')}}</label>

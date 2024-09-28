@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 require __DIR__.'/customers.php';
-  
+
 
 
 Route::middleware('auth')->group(function () {
@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
     Route::put('configurations/update', [ConfigurationController::class, 'update'])->name('configurations.update');
 
-    Route::resource('/countries',CountryController::class); 
+    Route::resource('/countries',CountryController::class);
 
     Route::post('/currency',[CurrencyController::class,'store'])->name('currency.store');
 
@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('normalads', NormalAdsController::class);
 
+    Route::get('export/ads/', [NormalAdsController::class,'export'])->name('export.ads');
+
     Route::get('normaladsCategory', [NormalAdsController::class,'selectCategory'])->name('normaladsCategory');
 
     // web.php
@@ -70,24 +72,27 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('banners', BannerController::class);
-    
+
      Route::delete('/banners/photo/{id}', [BannerController::class, 'deletePhoto'])->name('banners.deletePhoto');
 
     Route::resource('commercialads', CommercialController::class);
 
-    Route::resource('representative', RepresentativeController::class);
-    
-    Route::post('/image/remove', [CommercialController::class, 'removeImage'])->name('image.remove');    
+    Route::get('export/commercial/', [CommercialController::class,'export'])->name('export.commercial');
 
-    
-    Route::resource('popup', PopUpController::class); 
+
+    Route::resource('representative', RepresentativeController::class);
+
+    Route::post('/image/remove', [CommercialController::class, 'removeImage'])->name('image.remove');
+
+
+    Route::resource('popup', PopUpController::class);
     Route::post('popup/{ad}/toggle-status', [PopUpController::class, 'toggleStatus'])->name('popup.toggleStatus');
 
 
     Route::get('/viewMainCategory', [AdsController::class, 'MainCategory'])->name('viewMainCategory');
-    
+
     Route::get('/getRelatedAds/{cat_id}', [AdsController::class, 'getRelatedAds'])->name('getRelatedAds');
-    
+
     Route::get('/viewSubCategory/{catId}', [OfferController::class, 'viewSubCategory'])->name('viewSubCategory');
 
 
@@ -99,9 +104,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/filters', [FiltrationController::class, 'MainCategory'])->name('index.filters');
 
     Route::get('/apply-filters/{cat_id}', [FiltrationController::class, 'applyFilters'])->name('apply.filters');
-    
 
-    
+
+
     Route::post('/update-country-session', [CountryController::class, 'updateCountrySession'])
     ->middleware('can:update.countries')
     ->name('updateCountrySession');
@@ -113,7 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('role', RoleController::class);
 
     Route::resource('permissions', PermissionController::class);
-    
+
     Route::post('/roles/{role}/permissions', [RoleController::class,'storePermissions'])->name('roles.permissions.store');
     Route::get('/roles/{roleId}/permissions/assign', [RoleController::class,'role_permission'])->name('roles.permissions.view');
 

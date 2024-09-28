@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AdsExport;
 use App\Models\Category;
 use App\Models\Customers;
 use App\Models\NormalAds;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NormalAdsController extends Controller
 {
@@ -23,39 +25,66 @@ class NormalAdsController extends Controller
     {
         $this->normalAdsService = $normalAdsService;
     }
-
+    public function export()
+    {
+        return Excel::download(new AdsExport, 'normal.xlsx');
+    }
     public function index(Request $request)
     {
+        // Build the query
         $query = NormalAds::query();
-        
+
+        // Search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where('title', 'like', '%' . $search . '%');
         }
 
+        // Active status filter
         if ($request->filled('is_active')) {
             $isActive = $request->input('is_active');
             $query->where('is_active', $isActive);
         }
-        
-        if ($request->filled('category_id')) { 
+
+        // Category filter
+        if ($request->filled('category_id')) {
             $categoryId = $request->input('category_id');
             $query->where('cat_id', $categoryId);
         }
-        
+
+        // Customer filter
         if ($request->filled('customer_id')) {
             $customerId = $request->input('customer_id');
             $query->where('customer_id', $customerId);
         }
-    
+
+        // Price filter (min_price and max_price)
+        if ($request->filled('min_price')) {
+            $minPrice = $request->input('min_price');
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if ($request->filled('max_price')) {
+            $maxPrice = $request->input('max_price');
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        // If export button is clicked, return export response
+        if ($request->has('export')) {
+            return Excel::download(new AdsExport($query->with('category', 'customer')->get()), 'ads.xlsx');
+        }
+
+        // Get the filtered results
         $ads = $query->with('category', 'customer', 'images')->get();
-        
+
+        // Get all categories and customers for the filters
         $categories = Category::all();
         $customers = Customers::all();
-    
+
         return view('backend.normalads.index', compact('ads', 'categories', 'customers'));
     }
-    
+
+
     public function selectCategory()
     {
         $categories = Category::whereNull('parent_id')->get();
@@ -81,7 +110,7 @@ class NormalAdsController extends Controller
         } elseif ($category->id === 2) {
 
             return redirect()->route('house.create', ['cat_id' => $cat_id]);
-        } 
+        }
          elseif ($category->id === 9) {
 
             return redirect()->route('bike.create', ['cat_id' => $cat_id]);
@@ -96,7 +125,7 @@ class NormalAdsController extends Controller
             return redirect()->route('mobile-normalAds.create', ['cat_id' => $cat_id]);
 
         }
-        
+
         else{
 
             return view('backend.normalads.create',['cat_id' => $cat_id]);
@@ -108,27 +137,27 @@ class NormalAdsController extends Controller
 
 
     }
-    
+
     public function store(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->back()->with('error', 'You must be logged in to post an ad.');
         }
-    
+
         $user = Auth::user();
-    
+
         if ($user->role_id === 2) {
 
             $this->processAd($request);
-    
+
             return redirect()->route('normalads.index')->with('success', 'Record created successfully.');
         } else {
-    
-    
+
+
             $this->processAd($request);
-    
-        
-    
+
+
+
             return redirect()->route('normalads.index')->with('success', 'Record created successfully.');
         }
     }
@@ -137,7 +166,7 @@ class NormalAdsController extends Controller
 
     protected function processAd(Request $request)
     {
-       
+
         $normalAd = $this->normalAdsService->storeNormalAd($request);
 
     }
@@ -145,7 +174,7 @@ class NormalAdsController extends Controller
     public function update(Request $request, $id)
     {
         $model = NormalAds::findOrFail($id);
-    
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'cat_id' => 'required|integer',
@@ -154,7 +183,7 @@ class NormalAdsController extends Controller
             'is_active' => 'required|boolean',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         // Handle file uploads for the main photo field
         if ($request->hasFile('photo')) {
             // Delete the old photo if it exists
@@ -164,39 +193,39 @@ class NormalAdsController extends Controller
             // Store the new photo
             $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
         }
-    
+
         // Update the model instance with the validated data
         $model->update($validatedData);
-    
+
         // Handle image uploads for additional images
         if ($request->hasFile('images')) {
             $images = $request->file('images');
             foreach ($images as $image) {
                 $imagePath = $image->store('normal_ads_images', 'public');
-    
+
                 // Save each image record to the database
                 ImageNormalAds::create([
                     'normal_ads_id' => $model->id,
-                    'image_path' => $imagePath, 
+                    'image_path' => $imagePath,
                 ]);
             }
         }
-    
+
         // Handle any additional operations like translations
         $this->translateAndSave($request->all(), 'update');
-    
+
         return redirect()->route('normalads.index')->with('success', 'Record updated successfully.');
     }
     public function show($id)
     {
         // Retrieve the NormalAds record by its ID
         $normalAd = NormalAds::with('images')->findOrFail($id);
-    
+
         // Pass the record and its related images to the view
         return view('backend.normalads.show', compact('normalAd'));
     }
-    
-    
+
+
 
 public function toggleStatus(NormalAds $ad)
 {
@@ -206,5 +235,5 @@ public function toggleStatus(NormalAds $ad)
     return redirect()->back()->with('status', 'Ad status updated successfully!');
 }
 
-    
+
 }
