@@ -129,8 +129,12 @@ return [
 'aliases' => [
     // ... other aliases
     'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
-    'PDF' => Barryvdh\DomPDF\Facade::class,
+    'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
+],
 
+'providers' => [
+    // Other providers...
+    niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
 ],
 
 
