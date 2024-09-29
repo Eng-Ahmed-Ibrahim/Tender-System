@@ -822,7 +822,7 @@
                         <!--end::Menu-->
                     </div>
                     <!--end::Scroll wrapper-->
-                </div>
+                </div>  
                 <!--end::Menu wrapper-->
             </div>
             <!--end::sidebar menu-->

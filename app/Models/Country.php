@@ -21,22 +21,22 @@ class Country extends Model
 
     public function NormalAds(){
 
-        return $this->hasMany(NormalAds::class);
+        return $this->hasMany(NormalAds::class,'country_id');
     }
  
-    public function CommericalAds(){
-
-        return $this->hasMany(CommercialAd::class);
+    public function CommercialAds() // Correct spelling here
+    {
+        return $this->hasMany(CommercialAd::class, 'country_id');
     }
     
     public function popUpAds(){
 
-        return $this->hasMany(PopUpAds::class);
+        return $this->hasMany(PopUpAds::class,'country_id');
     }
     
     public function banners(){
 
-        return $this->hasMany(Banner::class);
+        return $this->hasMany(Banner::class,'country_id');
     }
 
 }
