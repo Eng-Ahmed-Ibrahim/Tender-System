@@ -13,12 +13,12 @@ class BillController extends Controller
      */
     public function index()
     {
-        //
+        $bills = Bill::all();
+
+        return view('backend.bills.index',compact('bills'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         //
