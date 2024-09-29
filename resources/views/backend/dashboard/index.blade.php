@@ -1,5 +1,4 @@
 @php
-    // Counting ads and categories
     $normalCount = \App\Models\NormalAds::count();
     $commercialCount = \App\Models\CommercialAd::count();
     $categories = \App\Models\Category::count();
@@ -14,8 +13,10 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <div id="kt_app_content_container" class="app-container container-xxl">
                 <!-- Displaying stats with graph -->
-                <div class="row gx-5 gx-xl-10">
-                    <div class="col-lg-4">
+                <div class="row">
+                    @Include('backend.dashboard.partial.payment_partial')
+
+                    <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
                                 <h3 class="card-title"><i class="fas fa-ad me-2"></i> Normal Ads</h3>
@@ -23,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
                                 <h3 class="card-title"><i class="fas fa-business-time me-2"></i> Commercial Ads</h3>
@@ -31,8 +32,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-4">
+                    
+                    <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
                                 <h3 class="card-title"><i class="fas fa-list me-2"></i> Categories</h3>
@@ -40,6 +41,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Displaying charts for better analytics -->
