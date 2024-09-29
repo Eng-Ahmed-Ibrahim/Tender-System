@@ -30,7 +30,7 @@ class NormalAds extends Model
     
     public function country() {
 
-        return  $this->belongsTo(Country::class);
+        return  $this->belongsTo(Country::class,'country_id');
     }
     public function category(){
 

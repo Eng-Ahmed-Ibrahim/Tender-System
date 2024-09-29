@@ -2,8 +2,23 @@
 
 @php
 // Fetch countries along with counts of NormalAds and CommercialAds
-$countries = \App\Models\Country::withCount(['NormalAds', 'CommercialAds'])->get();
-
+$countries = \App\Models\Country::withCount([
+    'NormalAds' => function ($query) {
+        $query->withoutGlobalScopes();
+    },
+    'CommercialAds' => function ($query) {
+        $query->withoutGlobalScopes();
+    }
+])
+->where(function($query) {
+    $query->whereHas('NormalAds', function ($q) {
+        $q->withoutGlobalScopes();
+    })
+    ->orWhereHas('CommercialAds', function ($q) {
+        $q->withoutGlobalScopes();
+    });
+})
+->get();
 // Prepare the total ads data
 $totalAdsData = [];
 

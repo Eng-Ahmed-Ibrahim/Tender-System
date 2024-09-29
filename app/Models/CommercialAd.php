@@ -28,11 +28,11 @@ class CommercialAd extends Model
     }
 
     
+ 
     public function country() {
 
-        return $this->belongsTo(Country::class);
+        return  $this->belongsTo(Country::class,'country_id');
     }
-
     
      
 protected static function boot()
