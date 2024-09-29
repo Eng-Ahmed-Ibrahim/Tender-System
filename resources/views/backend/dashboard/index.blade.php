@@ -46,38 +46,8 @@
              @Include('backend.dashboard.partial.widget-chart')
 
                 <!-- Display countries with flags -->
-                <div class="row gx-5 gx-xl-10 mt-5">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-globe me-2"></i> Countries we Are In</h3>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Flag</th>
-                                            <th>Country</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($countries as $country)
-                                        <tr>
-                                            <td>
-                                                <div class="symbol symbol-50px">
-                                                    <img src="{{ asset('assets/media/flags/' . strtolower(str_replace(' ', '-', $country->name)) . '.svg') }}" 
-                                                         alt="{{ $country->name }} flag" 
-                                                         class="img-fluid" />
-                                                </div>
-                                            </td>
-                                            <td>{{ $country->name }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+
+
             </div>
         </div>
     </div>

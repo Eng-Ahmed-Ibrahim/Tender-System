@@ -19,11 +19,9 @@ $countries = \App\Models\Country::withCount([
     });
 })
 ->get();
-// Prepare the total ads data
 $totalAdsData = [];
 
 foreach ($countries as $country) {
-    // Only include countries with ads
     if ($country->normal_ads_count > 0 || $country->commercial_ads_count > 0) {
         $totalAdsData[] = [
             'country' => $country->name,
@@ -34,7 +32,6 @@ foreach ($countries as $country) {
     }
 }
 
-// Calculate the growth percentage if applicable
 $previousTotalAds = array_sum(array_column($totalAdsData, 'total_ads')) - 20; // Example previous total
 $currentTotalAds = array_sum(array_column($totalAdsData, 'total_ads'));
 $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds) * 100;
@@ -43,32 +40,20 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
 
 <div class="container mt-5">
     @if (count($totalAdsData) > 0)
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card shadow-sm">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="m-0">Total Ads Overview</h5>
-                        <span class="badge bg-success">
-                            <i class="ki-duotone ki-arrow-up fs-5 text-white ms-n1"></i>
-                            +{{ number_format($growthPercentage, 2) }}%
-                        </span>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-title">Total Ads: <strong>{{ array_sum(array_column($totalAdsData, 'total_ads')) }}</strong></h6>
-                        <canvas id="adsOverviewChart" class="min-h-auto"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-lg-12">
-                <div class="card shadow-sm">
-                    <div class="card-header">
+        
+        
+    <div id="kt_app_content" class="app-content flex-column-fluid">
+        <!--begin::Content container-->
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            <!--begin::Category-->
+            <div class="card card-flush">
+                <!--begin::Card header-->
+                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                         <h5 class="m-0">Detailed Ads by Country</h5>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
+                    <div class="card-body pt-0">
+                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
+                                <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Country</th>
@@ -95,18 +80,26 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
             </div>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-lg-12">
-                <div class="card shadow-sm">
-                    <div class="card-header">
+
+        <div id="kt_app_content" class="app-content flex-column-fluid">
+            <!--begin::Content container-->
+            <div id="kt_app_content_container" class="app-container container-xxl">
+                <!--begin::Category-->
+                <div class="card card-flush">
+                    <!--begin::Card header-->
+                    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                         <h5 class="m-0">Ads Overview by Type</h5>
                     </div>
                     <div class="card-body">
+
                         <canvas id="adsTypeChart" class="min-h-auto"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+        <canvas id="adsOverviewChart"></canvas>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
@@ -132,48 +125,10 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                 }]
             };
 
-            // Create the ads overview chart
-            var adsOverviewChart = new Chart(adsOverviewCtx, {
-                type: 'bar',
-                data: adsOverviewChartData,
-                options: {
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Ads'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Countries'
-                            }
-                        }
-                    },
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+   
 
-            // Get the canvas context for the ads type chart
             var adsTypeCtx = document.getElementById('adsTypeChart').getContext('2d');
 
-            // Prepare data for ads type chart
             var adsTypeChartData = {
                 labels: [
                     @foreach($totalAdsData as $data)
@@ -204,7 +159,6 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                 }]
             };
 
-            // Create the ads type chart
             var adsTypeChart = new Chart(adsTypeCtx, {
                 type: 'bar',
                 data: adsTypeChartData,
