@@ -129,7 +129,7 @@ return [
 'aliases' => [
     // ... other aliases
     'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
-    'PDF' => Niklasravnsborg\LaravelPdf\Facades\Pdf::class,
+    'View' => Illuminate\Support\Facades\View::class,
 ],
 
 
