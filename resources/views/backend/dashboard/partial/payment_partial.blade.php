@@ -1,7 +1,7 @@
 @php
     $amountofBills = \App\Models\Bill::all();
     $profit = 0; 
-    foreach ($amountofBills as $anount ) {
+    foreach ($amountofBills as $amount ) {
         $profit += $amount->amount;
     }
 
