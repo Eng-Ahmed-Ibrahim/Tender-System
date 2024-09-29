@@ -13,7 +13,9 @@
     <div class="card">
         <div class="card-body">
             <h3 class="card-title"><i class="fas fa-ad me-2"></i> Profits</h3>
-            <p>{{ $profit }}</p>
+            <p>
+            {{ \App\Helpers\ConvertCurrency::convertPrice( $profit, session('currency_code','USD')) }}
+        </p>
         </div>
     </div>
 </div>
