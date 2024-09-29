@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bill;
 use PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class BillController extends Controller
 {
