@@ -132,10 +132,5 @@ return [
     'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
 ],
 
-'providers' => [
-    // Other providers...
-    niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
-],
-
 
 ];
