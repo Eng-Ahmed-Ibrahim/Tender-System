@@ -87,8 +87,8 @@ class BillController extends Controller
     }
     public function printInvoice($id)
     {
-        $bill = Bill::findOrFail($id); // Get the bill data
-
+        $bill = Bill::with(['customer', 'items', 'customerSubscription.subscriptionPlan'])->findOrFail($id);
+        
         $pdf = PDF::loadView('backend.bills.bill-pdf', compact('bill'));
     
         return $pdf->download('invoice-' . $bill->id . '.pdf'); // Download the PDF
