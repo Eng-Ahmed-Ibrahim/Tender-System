@@ -9,43 +9,118 @@
                 <div class="row">
                     <div class="col-md-4">
                         <!-- Customer Details Card -->
-                        <div class="card card-flush">
-                            <div class="card-header">
-                                <h3 class="card-title">{{ __('Customer Details') }}</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    @if($customer->photo) <!-- Assuming 'photo' is the attribute for the customer's photo -->
+                        <div class="card mb-5 mb-xl-8">
+                            <!--begin::Body-->
+                            <div class="card-body pt-15 px-0">
+                                <!--begin::Member-->
+                                <div class="d-flex flex-column text-center mb-9 px-9">
+                                    <!--begin::Photo-->
+                                    <div class="symbol symbol-80px symbol-lg-150px mb-4">
+                                        @if($customer->photo) <!-- Assuming 'photo' is the attribute for the customer's photo -->
                                         <img src="{{ asset('storage/' . $customer->photo) }}" alt="{{ $customer->name }}" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
                                     @else
-                                        <img src="{{ asset('assets/images.jpeg') }}" alt="{{ $customer->name }}" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
-                                    @endif
+                                        <img src="{{ asset('assets/avatar.png') }}" alt="{{ $customer->name }}" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+                                    @endif                                  
+                                  </div>
+                                    <!--end::Photo-->
+                                    <!--begin::Info-->
+                                    <div class="text-center">
+                                        <!--begin::Name-->
+                                        <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary fs-4">{{$customer->name}}</a>
+                                        <!--end::Name-->
+                                        <!--begin::Position-->
+                                        <span class="text-muted d-block fw-semibold"></span>
+                                        <!--end::Position-->
+                                    </div>
+                                    <!--end::Info-->
                                 </div>
-                                
-                                <p><strong>{{ __('Name:') }}</strong> {{ $customer->name }}</p>
-                                <p><strong>{{ __('Email:') }}</strong> {{ $customer->email }}</p>
-                                <p><strong>{{ __('Phone:') }}</strong> {{ $customer->phone }}</p>
-                                <p><strong>{{ __('Address:') }}</strong> {{ $customer->address }}</p>
-                                <p><strong>{{ __('Joined On:') }}</strong> {{ $customer->created_at->format('d-m-Y') }}</p>
+                                <!--begin::Row-->
+                                <div class="row px-9 mb-4">
+                                    <!--begin::Col-->
+                                    <div class="col-md-4 text-center">
+                                        <div class="text-gray-800 fw-bold fs-3">
+                                            <span class="m-0" data-kt-countup="true" data-kt-countup-value="{{ $normalCount }}">0</span>
+                                        </div>
+                                        <span class="text-gray-500 fs-8 d-block fw-bold">Normal</span>
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Col-->
+                                    <div class="col-md-4 text-center">
+                                        <div class="text-gray-800 fw-bold fs-3">
+                                        <span class="m-0" data-kt-countup="true" data-kt-countup-value="{{ $commercialCount }}">0</span></div>
+                                        <span class="text-gray-500 fs-8 d-block fw-bold">Commercial</span>
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Col-->
+                                    <div class="col-md-4 text-center">
+                                        <div class="text-gray-800 fw-bold fs-3">
+                                        <span class="m-0" data-kt-countup="true" data-kt-countup-value="{{$billsCount}}">0</span></div>
+                                        <span class="text-gray-500 fs-8 d-block fw-bold">bills</span>
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                                <!--begin::Navbar-->
+                                <div class="m-0">
+                                    <!--begin::Navs-->
+                                    <ul class="nav nav-pills nav-pills-custom flex-column border-transparent fs-5 fw-bold" id="myTab" role="tablist">
+                                        <!-- Normal Ads Tab -->
+                                        <li class="nav-item mt-5" role="presentation">
+                                            <a class="nav-link text-muted text-active-primary ms-0 py-0 me-10 ps-9 border-0 active" id="normal-ads-tab" data-bs-toggle="tab" href="#normal-ads" role="tab" aria-controls="normal-ads" aria-selected="true">
+                                                <i class="ki-duotone ki-row-horizontal fs-3 text-muted me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>{{ __('Normal Ads') }}
+                                                <span class="bullet-custom position-absolute start-0 top-0 w-3px h-100 bg-primary rounded-end"></span>
+                                            </a>
+                                        </li>
+                                    
+                                        <!-- Commercial Ads Tab -->
+                                        <li class="nav-item mt-5" role="presentation">
+                                            <a class="nav-link text-muted text-active-primary ms-0 py-0 me-10 ps-9 border-0" id="commercial-ads-tab" data-bs-toggle="tab" href="#commercial-ads" role="tab" aria-controls="commercial-ads" aria-selected="false">
+                                                <i class="ki-duotone ki-chart-simple-2 fs-3 text-muted me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                    <span class="path4"></span>
+                                                </i>{{ __('Commercial Ads') }}
+                                                <span class="bullet-custom position-absolute start-0 top-0 w-3px h-100 bg-primary rounded-end"></span>
+                                            </a>
+                                        </li>
+                                    
+                                        <!-- Subscriptions Tab -->
+                                        <li class="nav-item mt-5" role="presentation">
+                                            <a class="nav-link text-muted text-active-primary ms-0 py-0 me-10 ps-9 border-0" id="subscription_ads_tab" data-bs-toggle="tab" href="#subscription_tab" role="tab" aria-controls="subscription_tab" aria-selected="false">
+                                                <i class="ki-duotone ki-profile-circle fs-3 text-muted me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>{{ __('Subscriptions') }}
+                                                <span class="bullet-custom position-absolute start-0 top-0 w-3px h-100 bg-primary rounded-end"></span>
+                                            </a>
+                                        </li>
+                                    
+                                        <!-- Bills Tab -->
+                                        <li class="nav-item mt-5" role="presentation">
+                                            <a class="nav-link text-muted text-active-primary ms-0 py-0 me-10 ps-9 border-0" id="bills_ads_tab" data-bs-toggle="tab" href="#bills_tab" role="tab" aria-controls="bills_tab" aria-selected="false">
+                                                <i class="ki-duotone ki-setting-2 fs-3 text-muted me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>{{ __('Bills') }}
+                                                <span class="bullet-custom position-absolute start-0 top-0 w-3px h-100 bg-primary rounded-end"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                    <!--begin::Navs-->
+                                </div>
+                                <!--end::Navbar-->
                             </div>
-                            
+                            <!--end::Body-->
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="normal-ads-tab" data-bs-toggle="tab" href="#normal-ads" role="tab" aria-controls="normal-ads" aria-selected="true">{{ __('Normal Ads') }}</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="commercial-ads-tab" data-bs-toggle="tab" href="#commercial-ads" role="tab" aria-controls="commercial-ads" aria-selected="false">{{ __('Commercial Ads') }}</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="subscription_ads_tab" data-bs-toggle="tab" href="#subscription_tab" role="tab" aria-controls="subscription_tab" aria-selected="false">{{ __('Subscriptions') }}</a>
-                            </li>
-                            <li class="nav-item" role="bilss">
-                                <a class="nav-link" id="bills_ads_tab" data-bs-toggle="tab" href="#bills_tab" role="tab" aria-controls="Bills_tab" aria-selected="false">{{ __('Bills') }}</a>
-                            </li>
-                        </ul>                        <div class="card card-flush">
+                                <div class="card card-flush">
                         
                             <div class="card-body">
                                 <div class="tab-content" id="myTabContent">

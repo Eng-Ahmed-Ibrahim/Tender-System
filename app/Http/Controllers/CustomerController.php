@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bill;
 use App\Models\Customers;
+use App\Models\NormalAds;
 use App\Jobs\TranslateText;
+use App\Models\CommercialAd;
 use Illuminate\Http\Request;
 
 class CustomerController extends BaseController
@@ -28,8 +31,14 @@ class CustomerController extends BaseController
         if (!$customer) {
             return redirect()->back()->with('error', 'Customer not found.');
         }
+
+        $customerId = $customer->id;
+
+        $normalCount = NormalAds::where('customer_id',$customerId)->count();
+        $commercialCount = CommercialAd::where('customer_id',$customerId)->count();
+        $billsCount = Bill::where('customer_id',$customerId)->count();
     
-        return view('backend.customers.show', compact('customer'));
+        return view('backend.customers.show', compact('customer','normalCount','commercialCount','billsCount'));
     }
     
     public function store(Request $request)

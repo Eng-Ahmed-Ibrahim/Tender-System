@@ -164,7 +164,7 @@
             @foreach($categories as $category)
             <article class="category-item col-md-12 mb-4">
                 <a href="{{ route('normalads.create',['cat_id' => $category->id]) }}"class="category-btn w-100 btn d-flex align-items-center justify-content-start p-3"
-                   style="background-color: rgb(166, 202, 235);">
+                   style="background-color: #E0EBF5;">
 
                     <img src="{{ asset('storage/' . $category->photo) }}"
                          alt="{{ $category['title'] }} image"
