@@ -16,7 +16,7 @@ $configuration = \App\Models\Configuration::first();
                         <div class="mt-n1">
                             <div class="d-flex flex-stack pb-10">
                                 <a href="#">
-                                    <img alt="Logo" src="{{ asset('storage/' . $configuration->logo) }}" />
+                                    <img alt="Logo" src="{{ asset('storage/' . $configuration->logo) }}" style="width:70px;"/>
                                 </a>
                                 <a href="{{ route('invoice.print', $bill->id) }}" class="btn btn-success my-1">{{ __('Download') }}</a>
 
