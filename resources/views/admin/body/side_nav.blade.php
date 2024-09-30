@@ -399,7 +399,7 @@
                                   
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('car.commercial')}}">
+                                        <a class="menu-link" href="{{ route('commercialCAR')}}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>

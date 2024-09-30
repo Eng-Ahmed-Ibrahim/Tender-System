@@ -108,7 +108,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/update-country-session', [CountryController::class, 'updateCountrySession'])
-    ->middleware('can:update.countries')
     ->name('updateCountrySession');
 
     Route::resource('subscriptions', SubscriptionController::class);
@@ -120,6 +119,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
 
     Route::post('/roles/{role}/permissions', [RoleController::class,'storePermissions'])->name('roles.permissions.store');
+
     Route::get('/roles/{roleId}/permissions/assign', [RoleController::class,'role_permission'])->name('roles.permissions.view');
 
 

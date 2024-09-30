@@ -62,12 +62,12 @@
                                 <form action="{{ route('commercialads.index') }}" method="GET">
                                     <!-- Status Filter -->
                                     <div class="mb-10">
-                                        <label class="form-label fw-semibold">Status:</label>
+                                        <label class="form-label fw-semibold">{{__('Status')}}:</label>
                                         <div>
                                             <select class="form-select form-select-solid" name="is_active"  data-placeholder="Select status" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
                                                 <option value="">{{__('Select status')}}</option>
-                                                <option value="1" {{ request()->input('is_active') == '1' ? 'selected' : '' }}>Active</option>
-                                                <option value="0" {{ request()->input('is_active') == '0' ? 'selected' : '' }}>Inactive</option>
+                                                <option value="1" {{ request()->input('is_active') == '1' ? 'selected' : '' }}>{{__('Active')}}</option>
+                                                <option value="0" {{ request()->input('is_active') == '0' ? 'selected' : '' }}>{{__('Inactive')}}</option>
                                             </select>
                                         </div>
                                     </div>

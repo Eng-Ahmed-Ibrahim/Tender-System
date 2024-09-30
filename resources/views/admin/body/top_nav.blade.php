@@ -47,14 +47,7 @@
                         <select class="form-select" name="lang" onchange="this.form.submit()">
                             <option value="en" {{ 'en' == session('locale') ? 'selected' : '' }}>{{ __('English') }}</option>
                             <option value="ar" {{ 'ar' == session('locale') ? 'selected' : '' }}>{{ __('Arabic') }}</option>
-                            <option value="es" {{ 'es' == session('locale') ? 'selected' : '' }}>{{ __('Spanish') }}</option>
-                            <option value="fr" {{ 'fr' == session('locale') ? 'selected' : '' }}>{{ __('French') }}</option>
-                            <option value="de" {{ 'de' == session('locale') ? 'selected' : '' }}>{{ __('German') }}</option>
-                            <option value="tr" {{ 'tr' == session('locale') ? 'selected' : '' }}>{{ __('Turkish') }}</option>
-                            <option value="it" {{ 'it' == session('locale') ? 'selected' : '' }}>{{ __('Italian') }}</option>
-                            <option value="ja" {{ 'ja' == session('locale') ? 'selected' : '' }}>{{ __('Japanese') }}</option>
-                            <option value="zh" {{ 'zh' == session('locale') ? 'selected' : '' }}>{{ __('Chinese') }}</option>
-                            <option value="ur" {{ 'ur' == session('locale') ? 'selected' : '' }}>{{ __('Urdu') }}</option>
+           
                         </select>
                     </form>
                     

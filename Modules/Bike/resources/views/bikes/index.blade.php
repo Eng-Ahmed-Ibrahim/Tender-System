@@ -43,9 +43,9 @@
                                 <form action="{{ route('normalads.index') }}" method="GET">
                                     <!-- Status Filter -->
                                     <div class="mb-10">
-                                        <label class="form-label fw-semibold">{{__('Status')}}</label>
+                                        <label class="form-label fw-semibold">{{__('status')}}</label>
                                         <div>
-                                            <select class="form-select form-select-solid" name="is_active"  data-placeholder="{{ __('Select status')}}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
+                                            <select class="form-select form-select-solid" name="is_active"  data-placeholder="{{ __('status')}}" data-dropdown-parent="#kt_menu_64b776126c90a" data-allow-clear="true">
                                                 <option value="">Select status</option>
                                                 <option value="1" {{ request()->input('is_active') == '1' ? 'selected' : '' }}>{{__('Active')}}</option>
                                                 <option value="0" {{ request()->input('is_active') == '0' ? 'selected' : '' }}>{{__('Inactive')}}</option>
