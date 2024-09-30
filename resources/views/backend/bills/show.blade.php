@@ -1,133 +1,150 @@
 @extends('admin.index')
 
 @section('content')
+@php
+$configuration = \App\Models\Configuration::first();
+
+@endphp        
+
+
 <div id="kt_app_content" class="app-content flex-column-fluid">
-    <!--begin::Content container-->
     <div id="kt_app_content_container" class="app-container container-xxl">
-        <!-- begin::Invoice 3-->
         <div class="card">
-            <!-- begin::Body-->
-            <div class="card-body py-20">
-                <!-- begin::Wrapper-->
-                <div class="mw-lg-950px mx-auto w-100">
-                    <!-- begin::Header-->
-                    <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
-                        <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">{{ __('Invoice') }}</h4>
+            <div class="card-body p-lg-20">
+                <div class="d-flex flex-column flex-xl-row">
+                    <div class="flex-lg-row-fluid me-xl-18 mb-10 mb-xl-0">
+                        <div class="mt-n1">
+                            <div class="d-flex flex-stack pb-10">
+                                <a href="#">
+                                    <img alt="Logo" src="{{ asset('storage/' . $configuration->logo) }}" />
+                                </a>
+                                <a href="{{ route('invoice.print', $bill->id) }}" class="btn btn-success my-1">{{ __('Download') }}</a>
 
-                    
-                        
-                        <div style="margin-bottom: 1rem;">
-                            {{ __('Billing Date:') }} {{ $bill->due_date }}
-                        </div>
-                        
+                            </div>
 
-
-                        <!--end::Logo-->
-                        <div class="text-sm-end">
-                            @php
-                            $configuration = \App\Models\Configuration::first();
-                            
-                            @endphp                        
-                            
-                            <a href="#" class="d-block mw-150px ms-sm-auto">
-
-                                <img alt="Logo" src="{{ asset('storage/' .$configuration->logo) }}" class="w-100" />
-
-                            </a>
-                            <!--end::Logo-->
-                            <!--begin::Text-->
-                         
-                            <!--end::Text-->
-                        </div>
-                    </div>
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="pb-12">
-                        <!--begin::Wrapper-->
-                        <div class="d-flex flex-column gap-7 gap-md-10">
-                            <!--begin::Message-->
-                            <div class="fw-bold fs-2">{{ __('Dear') }} {{ $bill->customerSubscription->customer->name }},</div>
-                            <div class="separator"></div>
-                            <!--begin::Order details-->
-                            <div class="d-flex flex-column flex-sm-row gap-7 gap-md-10 fw-bold">
-                                <div class="flex-root d-flex flex-column">
-                                    <span class="text-muted">{{ __('Bill ID') }}</span>
-                                    <span class="fs-5">{{ $bill->id }}</span>
+                            <div class="m-0">
+                                <div class="fw-bold fs-3 text-gray-800 mb-8">Invoice #{{ $bill->id }}</div>
+                                <div class="row g-5 mb-11">
+                                    <div class="col-sm-6">
+                                        <div class="fw-semibold fs-7 text-gray-600 mb-1">Start Date:</div>
+                                        <div class="fw-bold fs-6 text-gray-800">{{ $bill->subscription_start_date }}</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="fw-semibold fs-7 text-gray-600 mb-1">End Date:</div>
+                                        <div class="fw-bold fs-6 text-gray-800 d-flex align-items-center flex-wrap">
+                                            <span class="pe-2">{{ $bill->subscription_end_date }}</span>
+                                            <span class="fs-7 text-danger d-flex align-items-center">
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex-root d-flex flex-column">
-                                    <span class="text-muted">{{ __('Start Date') }}</span>
-                                    <span class="fs-5">{{ $bill->subscription_start_date}}</span>
+
+                                <div class="row g-5 mb-12">
+                                    <div class="col-sm-6">
+                                        <div class="fw-semibold fs-7 text-gray-600 mb-1">Issue For:</div>
+                                        <div class="fw-bold fs-6 text-gray-800">{{ $bill->customer->name }}</div>
+                                        <div class="fw-semibold fs-7 text-gray-600">{{ $bill->customer->address }}</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="fw-semibold fs-7 text-gray-600 mb-1">Issued By:</div>
+                                        <div class="fw-bold fs-6 text-gray-800">CodeLab Inc.</div>
+                                        <div class="fw-semibold fs-7 text-gray-600">9858 South 53rd Ave. <br />Matthews, NC 28104</div>
+                                    </div>
                                 </div>
-                                <div class="flex-root d-flex flex-column">
-                                    <span class="text-muted">{{ __('End  Date') }}</span>
-                                    <span class="fs-5">{{ $bill->subscription_end_date }}</span>
+
+                                <div class="flex-grow-1">
+                                    <div class="table-responsive border-bottom mb-9">
+                                        <table class="table mb-3">
+                                            <thead>
+                                                <tr class="border-bottom fs-6 fw-bold text-muted">
+                                                    <th class="min-w-175px pb-2">normal</th>
+                                                    <th class="min-w-70px text-end pb-2">banner</th>
+                                                    <th class="min-w-80px text-end pb-2">commercial</th>
+                                                    <th class="min-w-100px text-end pb-2">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr class="fw-bold text-gray-700 fs-5 text-end">
+                                                        <td class="d-flex align-items-center pt-6">
+                                                            <i class="fa fa-genderless  fs-2 me-2"></i>{{$bill->remaining_ads_normal}}
+                                                        </td>
+                                                        <td class="pt-6">{{ $bill->remaining_ads_banner }}</td>
+                                                        <td class="pt-6">{{$bill->remaining_ads_commercial}}</td>
+                                                        <td class="pt-6 text-dark fw-bolder">${{ number_format($bill->amount, 2) }}</td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end">
+                                        <div class="mw-300px">
+                                            <div class="d-flex flex-stack mb-3">
+                                                <div class="fw-semibold pe-10 text-gray-600 fs-7">Subtotal:</div>
+                                                <div class="text-end fw-bold fs-6 text-gray-800">${{ number_format($bill->amount, 2) }}</div>
+                                            </div>
+                                            <div class="d-flex flex-stack mb-3">
+                                                <div class="fw-semibold pe-10 text-gray-600 fs-7">VAT 0%</div>
+                                                <div class="text-end fw-bold fs-6 text-gray-800">0.00</div>
+                                            </div>
+                                            <div class="d-flex flex-stack mb-3">
+                                                <div class="fw-semibold pe-10 text-gray-600 fs-7">Subtotal + VAT</div>
+                                                <div class="text-end fw-bold fs-6 text-gray-800">${{ number_format($bill->amount, 2) }}</div>
+                                            </div>
+                                            <div class="d-flex flex-stack">
+                                                <div class="fw-semibold pe-10 text-gray-600 fs-7">Total</div>
+                                                <div class="text-end fw-bold fs-6 text-gray-800">${{ number_format($bill->amount, 2) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <!--end::Order details-->
-                            <!--begin::Order summary-->
-                            <div class="d-flex justify-content-between flex-column">
-                                <div class="table-responsive border-bottom mb-9">
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
-                                        <thead>
-                                            <tr class="border-bottom fs-6 fw-bold text-muted">
-                                                <th class="min-w-175px pb-2">{{ __('Description') }}</th>
-                                                <th class="min-w-100px text-end pb-2">{{ __('Amount') }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="fw-semibold text-gray-600">
-                                            <tr>
-                                                <td>{{ __('Subscription Plan:') }} {{ $bill->subscriptionPlan->name }}</td>
-                                                <td class="text-end">{{ $bill->amount }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ __(' Ads (Normal):') }} {{ $bill->remaining_ads_normal }}</td>
-                                                <td class="text-end"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ __(' Ads (Commercial):') }} {{ $bill->remaining_ads_commercial }}</td>
-                                                <td class="text-end"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ __(' Ads (Popup):') }} {{ $bill->remaining_ads_popup }}</td>
-                                                <td class="text-end"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ __(' Ads (Banners):') }} {{ $bill->remaining_ads_banners }}</td>
-                                                <td class="text-end"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fs-3 text-dark fw-bold">{{ __('Grand Total') }}</td>
-                                                <td class="text-dark fs-3 fw-bolder text-end">{{ $bill->amount }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                        </div>
+                    </div>
+
+                    <div class="m-0">
+                        <div class="d-print-none border border-dashed border-gray-300 card-rounded h-lg-100 min-w-md-350px p-9 bg-lighten">
+                            <div class="mb-8">
+                                <span class="badge badge-light-success me-2">Approved</span>
+                            </div>
+
+                            <h6 class="mb-8 fw-bolder text-gray-600 text-hover-primary"> DETAILS</h6>
+                            <div class="mb-6">
+                                <div class="fw-semibold text-gray-600 fs-7">email:</div>
+                                <div class="fw-bold text-gray-800 fs-6">{{$bill->customer->email}}</div>
+                            </div>
+                        
+                            <div class="mb-15">
+                                <div class="fw-semibold text-gray-600 fs-7">bills Date:</div>
+                                <div class="fw-bold fs-6 text-gray-800 d-flex align-items-center">
+                                    <span class="fs-7 text-danger d-flex align-items-center">
+                                        <span class="bullet bullet-dot bg-danger mx-2"></span> {{ $bill->due_date }} 
+                                    </span>
                                 </div>
                             </div>
-                            <!--end:Order summary-->
+
+                            <h6 class="mb-8 fw-bolder text-gray-600 text-hover-primary">PROJECT OVERVIEW</h6>
+                            <div class="mb-6">
+                                <div class="fw-semibold text-gray-600 fs-7">Plan Name</div>
+                                <div class="fw-bold fs-6 text-gray-800">{{ $bill->customerSubscription->subscriptionPlan->name }}
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="fw-semibold text-gray-600 fs-7">Completed By:</div>
+                                <div class="fw-bold text-gray-800 fs-6">HyperSale</div>
+                            </div>
+                            <div class="m-0">
+                                <div class="fw-semibold text-gray-600 fs-7">Signtures:</div>
+                                <div class="fw-bold fs-6 text-gray-800 d-flex align-items-center">HyperSale
+                                    <span class="fs-7 text-success d-flex align-items-center">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <!--end::Wrapper-->
                     </div>
-                    <!--end::Body-->
-                    <!-- begin::Footer-->
-                    <div class="d-flex flex-stack flex-wrap mt-lg-20 pt-13">
-                        <!-- begin::Actions-->
-                        <div class="my-1 me-5">
-                            <button type="button" class="btn btn-success my-1 me-12" onclick="window.print();">{{ __('Print Invoice') }}</button>
-                            <a href="{{ route('invoice.print', $bill->id) }}" class="btn btn-light-success my-1">{{ __('Download') }}</a>
-                        </div>
-                        <!-- end::Actions-->
-                        <!-- begin::Action-->
-                        <!-- end::Action-->
-                    </div>
-                    <!-- end::Footer-->
                 </div>
-                <!-- end::Wrapper-->
             </div>
-            <!-- end::Body-->
         </div>
-        <!-- end::Invoice 1-->
     </div>
-    <!--end::Content container-->
 </div>
-@endsection
 
+@endsection
