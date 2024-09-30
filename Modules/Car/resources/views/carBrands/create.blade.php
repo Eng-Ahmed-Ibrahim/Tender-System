@@ -17,7 +17,7 @@
                                 <label for="title">{{__('Title')}}</label>
                                 <input type="text" name="title" id="title" class="form-control" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">{{__('Save')}}</button>
+                            <button type="submit" class="btn btn-secondary">{{__('Save')}}</button>
                         </form>
 
                         <div id="form-response" class="mt-3"></div> <!-- To display success or error messages -->
@@ -33,7 +33,7 @@
             <div id="kt_app_content_container" class="app-container container-xxl">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">{{__('Car Features')}}</h3>
+                        <h3 class="card-title">{{__('Car brands')}}</h3>
                     </div>
                     <div class="card-body">  
                         <table class="table table-bordered">
@@ -53,7 +53,7 @@
                                             <form action="{{ route('car-brands.destroy', $brand->id) }}" method="POST" class="d-inline delete-feature-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">{{__('Delete')}}</button>
+                                                <button type="submit" class="btn btn-sm btn-secondary">{{__('Delete')}}</button>
                                             </form>
                                         </td>
                                     </tr>

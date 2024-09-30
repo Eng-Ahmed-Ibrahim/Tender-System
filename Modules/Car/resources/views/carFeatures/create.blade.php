@@ -17,7 +17,7 @@
                                 <label for="title">{{__('Title')}}</label>
                                 <input type="text" name="title" id="title" class="form-control" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">{{__('Save')}}</button>
+                            <button type="submit" class="btn btn-secondary">{{__('Save')}}</button>
                         </form>
 
                         <div id="form-response" class="mt-3"></div> <!-- To display success or error messages -->
@@ -53,7 +53,7 @@
                                             <form action="{{ route('car-features.destroy', $feature->id) }}" method="POST" class="d-inline delete-feature-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">{{__('Delete')}}</button>
+                                                <button type="submit" class="btn btn-sm btn-secondary">{{__('Delete')}}</button>
                                             </form>
                                         </td>
                                     </tr>
