@@ -171,12 +171,12 @@
                                                 <form action="{{ route('commercialads.destroy', $ad->id)}}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">{{__('Delete')}}</button>
+                                                    <button type="submit" class="btn btn-sm btn-secondary">{{__('Delete')}}</button>
                                                 </form>
 
                                                 <form action="{{ route('commercial.toggleStatus', $ad->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                    <button type="submit" class="btn btn-secondary btn-sm">
                                                         @if($ad->is_active)
                                                         {{__('Mark as Not Active')}}
                                                         @else
@@ -188,7 +188,7 @@
                                     </tr>
 
                                     <!-- Edit Modal -->
-                                    <div class="modal fade" id="editAdModal-{{ $ad->id }}" tabindex="-1" aria-labelledby="editAdModalLabel" aria-hidden="true">
+  <div class="modal fade" id="editAdModal-{{ $ad->id }}" tabindex="-1" aria-labelledby="editAdModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -234,7 +234,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('Close')}}</button>
-                    <button type="submit" class="btn btn-primary">{{__('Save changes')}}</button>
+                    <button type="submit" class="btn btn-secondary">{{__('Save changes')}}</button>
                 </div>
             </form>
         </div>

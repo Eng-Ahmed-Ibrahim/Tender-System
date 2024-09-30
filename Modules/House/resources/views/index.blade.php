@@ -69,7 +69,7 @@
                                     <!-- Actions -->
                                     <div class="d-flex justify-content-end">
                                         <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">{{__('Reset')}}</button>
-                                        <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">{{__('Apply')}}</button>
+                                        <button type="submit" class="btn btn-sm btn-secondary" data-kt-menu-dismiss="true">{{__('Apply')}}</button>
                                     </div>
                                 </form>
                             </div>

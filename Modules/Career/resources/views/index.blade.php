@@ -134,9 +134,9 @@
                             <td>{{ \App\Helpers\ConvertCurrency::convertPrice($ad->price, session('currency_code','USD')) }}</td>
                             <td>
                                 @if($ad->is_active)
-                                    <span class="badge bg-success">{{__('Active')}}</span>
+                                    <span class="badge bg-secondary">{{__('Active')}}</span>
                                 @else
-                                    <span class="badge bg-danger">{{__('Not Active')}}</span>
+                                    <span class="badge bg-secondary">{{__('Not Active')}}</span>
                                 @endif
                             </td>
                             <td class="text-end">

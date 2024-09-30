@@ -78,7 +78,7 @@
                                     <!-- Actions -->
                                     <div class="d-flex justify-content-end">
                                         <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">{{__('Reset')}}</button>
-                                        <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">{{__('Apply')}}</button>
+                                        <button type="submit" class="btn btn-sm btn-secondary" data-kt-menu-dismiss="true">{{__('Apply')}}</button>
                                     </div>
                                 </form>
                             </div>
@@ -125,7 +125,7 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Add customer-->
-                            <a href="{{ route('commercialads.create')}}" class="btn btn-primary">{{__('Add Commercial Ads')}}</a>
+                            <a href="{{ route('commercialads.create')}}" class="btn btn-secondary">{{__('Add Commercial Ads')}}</a>
                             <!--end::Add customer-->
                         </div>
                         <!--end::Card toolbar-->
@@ -171,12 +171,12 @@
                                                 <form action="{{ route('commercialads.destroy', $ad->id)}}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">{{__('Delete')}}</button>
+                                                    <button type="submit" class="btn btn-sm btn-secondary">{{__('Delete')}}</button>
                                                 </form>
 
                                                 <form action="{{ route('commercial.toggleStatus', $ad->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                    <button type="submit" class="btn btn-secondary btn-sm">
                                                         @if($ad->is_active)
                                                         {{__('Mark as Not Active')}}
                                                         @else
@@ -234,7 +234,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('Close')}}</button>
-                    <button type="submit" class="btn btn-primary">{{__('Save changes')}}</button>
+                    <button type="submit" class="btn btn-secondary">{{__('Save changes')}}</button>
                 </div>
             </form>
         </div>
