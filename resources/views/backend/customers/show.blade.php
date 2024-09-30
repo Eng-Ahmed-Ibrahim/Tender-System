@@ -26,10 +26,11 @@
                                     <!--begin::Info-->
                                     <div class="text-center">
                                         <!--begin::Name-->
-                                        <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary fs-4">{{$customer->name}}</a>
+                                        <a  class="text-gray-800 fw-bold text-hover-primary fs-4">{{$customer->name}}</a>
                                         <!--end::Name-->
                                         <!--begin::Position-->
-                                        <span class="text-muted d-block fw-semibold"></span>
+                                        <span class="text-muted d-block fw-semibold">{{$customer->email}}</span>
+                                        <span class="text-muted d-block fw-semibold">{{$customer->phone}}</span>
                                         <!--end::Position-->
                                     </div>
                                     <!--end::Info-->
@@ -62,7 +63,7 @@
                                 <!--end::Row-->
                                 <!--begin::Navbar-->
                                 <div class="m-0">
-                                    <!--begin::Navs-->
+                                    
                                     <ul class="nav nav-pills nav-pills-custom flex-column border-transparent fs-5 fw-bold" id="myTab" role="tablist">
                                         <!-- Normal Ads Tab -->
                                         <li class="nav-item mt-5" role="presentation">
