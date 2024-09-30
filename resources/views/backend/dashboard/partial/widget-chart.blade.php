@@ -49,24 +49,24 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
             <div class="card card-flush">
                 <!--begin::Card header-->
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                        <h5 class="m-0">Detailed Ads by Country</h5>
+                        <h5 class="m-0">{{__('Detailed Ads by Country')}}</h5>
                     </div>
                     <div class="card-body pt-0">
                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                                 <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Country</th>
-                                    <th>Normal Ads</th>
-                                    <th>Commercial Ads</th>
-                                    <th>Total Ads</th>
-                                    <th>Percentage</th>
+                                    <th>{{__('Country')}}</th>
+                                    <th>{{__('Normal Ads')}}</th>
+                                    <th>{{__('Commercial Ads')}}</th>
+                                    <th>{{__('Total Ads')}}</th>
+                                    <th>{{__('Percentage')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($totalAdsData as $data)
                                     <tr>
-                                        <td>{{ $data['country'] }}</td>
+                                        <td>{{ __($data['country'])}}</td>
                                         <td>{{ $data['normal_ads'] }}</td>
                                         <td>{{ $data['commercial_ads'] }}</td>
                                         <td>{{ $data['total_ads'] }}</td>
@@ -88,7 +88,7 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                 <div class="card card-flush">
                     <!--begin::Card header-->
                     <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                        <h5 class="m-0">Ads Overview by Type</h5>
+                        <h5 class="m-0">{{__('Ads Overview by Type')}}</h5>
                     </div>
                     <div class="card-body">
 
@@ -114,7 +114,7 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                     @endforeach
                 ],
                 datasets: [{
-                    label: 'Total Ads',
+                    label: '{{ __('total_ads') }}',  // Use translation
                     data: [
                         @foreach($totalAdsData as $data)
                             {{ $data['total_ads'] }},
@@ -124,11 +124,9 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                     borderWidth: 1
                 }]
             };
-
-   
-
+        
             var adsTypeCtx = document.getElementById('adsTypeChart').getContext('2d');
-
+        
             var adsTypeChartData = {
                 labels: [
                     @foreach($totalAdsData as $data)
@@ -136,7 +134,7 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                     @endforeach
                 ],
                 datasets: [{
-                    label: 'Normal Ads',
+                    label: '{{ __('normal_ads') }}',  // Use translation
                     data: [
                         @foreach($totalAdsData as $data)
                             {{ $data['normal_ads'] }},
@@ -147,7 +145,7 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                     borderWidth: 1
                 },
                 {
-                    label: 'Commercial Ads',
+                    label: '{{ __('commercial_ads') }}',  // Use translation
                     data: [
                         @foreach($totalAdsData as $data)
                             {{ $data['commercial_ads'] }},
@@ -158,7 +156,7 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                     borderWidth: 1
                 }]
             };
-
+        
             var adsTypeChart = new Chart(adsTypeCtx, {
                 type: 'bar',
                 data: adsTypeChartData,
@@ -168,13 +166,13 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Ads'
+                                text: '{{ __('number_of_ads') }}'  // Use translation
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'Countries'
+                                text: '{{ __('countries') }}'  // Use translation
                             }
                         }
                     },
@@ -194,7 +192,13 @@ $growthPercentage = (($currentTotalAds - $previousTotalAds) / $previousTotalAds)
                     }
                 }
             });
+        
+            // Check for the ads data availability and display message
+            if ({{ count($totalAdsData) }} === 0) {
+                alert('{{ __('translations.no_ads_message') }}');  // Use translation
+            }
         </script>
+        
     @else
         <div class="alert alert-warning">
             <strong>No ads available for the selected countries.</strong>

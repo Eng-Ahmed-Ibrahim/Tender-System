@@ -19,7 +19,7 @@
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-ad me-2"></i> Normal Ads</h3>
+                                <h3 class="card-title"><i class="fas fa-ad me-2"></i> {{ __('Normal Ads')}}</h3>
                                 <p>{{ $normalCount }}</p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-business-time me-2"></i> Commercial Ads</h3>
+                                <h3 class="card-title"><i class="fas fa-business-time me-2"></i> {{ __('Commercial Ads')}}</h3>
                                 <p>{{ $commercialCount }}</p>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-list me-2"></i> Categories</h3>
+                                <h3 class="card-title"><i class="fas fa-list me-2"></i> {{ __('Categories')}}</h3>
                                 <p>{{ $categories }}</p>
                             </div>
                         </div>

@@ -143,7 +143,7 @@
                                                     @if($customer->is_active)
                                                     {{__('BAN')}}
                                                     @else
-                                                    {{__('activate')}}
+                                                    {{__('active')}}
                                                     @endif
                                                 </button>
                                             </form>

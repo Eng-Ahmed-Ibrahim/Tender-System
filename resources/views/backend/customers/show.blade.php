@@ -42,21 +42,21 @@
                                         <div class="text-gray-800 fw-bold fs-3">
                                             <span class="m-0" data-kt-countup="true" data-kt-countup-value="{{ $normalCount }}">0</span>
                                         </div>
-                                        <span class="text-gray-500 fs-8 d-block fw-bold">Normal</span>
+                                        <span class="text-gray-500 fs-8 d-block fw-bold">{{__('Normal Ads')}}</span>
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col-md-4 text-center">
                                         <div class="text-gray-800 fw-bold fs-3">
                                         <span class="m-0" data-kt-countup="true" data-kt-countup-value="{{ $commercialCount }}">0</span></div>
-                                        <span class="text-gray-500 fs-8 d-block fw-bold">Commercial</span>
+                                        <span class="text-gray-500 fs-8 d-block fw-bold">{{__('Commercial Ads')}}</span>
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col-md-4 text-center">
                                         <div class="text-gray-800 fw-bold fs-3">
                                         <span class="m-0" data-kt-countup="true" data-kt-countup-value="{{$billsCount}}">0</span></div>
-                                        <span class="text-gray-500 fs-8 d-block fw-bold">bills</span>
+                                        <span class="text-gray-500 fs-8 d-block fw-bold">{{__('bills')}}</span>
                                     </div>
                                     <!--end::Col-->
                                 </div>

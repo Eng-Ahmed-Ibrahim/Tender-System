@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Bill;
 use App\Models\Banner;
+use App\Models\Country;
 use App\Models\PopUpAds;
 use App\Models\NormalAds;
 use App\Models\CommercialAd;
@@ -71,6 +72,10 @@ class Customers extends Model implements Authenticatable
     public function NormalAds(){
 
         return $this->hasMany(NormalAds::class,'customer_id');
+    }
+    public function country(){
+
+        return $this->belongsTo(Country::class,'country_id');
     }
     
     
