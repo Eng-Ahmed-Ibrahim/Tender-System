@@ -223,23 +223,46 @@
                                                             @endif
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editAdModal-{{ $ad->id }}">{{ __('Edit') }}</a>
-                                                            <form action="{{ route('commercialads.destroy', $ad->id) }}" method="POST" class="d-inline-block">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-secondary">{{ __('Delete') }}</button>
-                                                            </form>
-                                                            <form action="{{ route('commercial.toggleStatus', $ad->id) }}" method="POST" class="d-inline-block">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-secondary btn-sm">
-                                                                    @if($ad->is_active)
-                                                                        {{ __('Mark as Not Active') }}
-                                                                    @else
-                                                                        {{ __('Mark as Active') }}
-                                                                    @endif
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="actionDropdown-{{ $ad->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    {{ __('Actions') }}
                                                                 </button>
-                                                            </form>
+                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown-{{ $ad->id }}">
+                                                                    <!-- Edit Action -->
+                                                                    <li>
+                                                                        <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editAdModal-{{ $ad->id }}">
+                                                                            {{ __('Edit') }}
+                                                                        </a>
+                                                                    </li>
+                                                        
+                                                                    <!-- Delete Action -->
+                                                                    <li>
+                                                                        <form action="{{ route('commercialads.destroy', $ad->id) }}" method="POST" class="d-inline-block">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="dropdown-item text-danger">
+                                                                                {{ __('Delete') }}
+                                                                            </button>
+                                                                        </form>
+                                                                    </li>
+                                                        
+                                                                    <!-- Toggle Status Action -->
+                                                                    <li>
+                                                                        <form action="{{ route('commercial.toggleStatus', $ad->id) }}" method="POST" class="d-inline-block">
+                                                                            @csrf
+                                                                            <button type="submit" class="dropdown-item">
+                                                                                @if($ad->is_active)
+                                                                                    {{ __('Mark as Not Active') }}
+                                                                                @else
+                                                                                    {{ __('Mark as Active') }}
+                                                                                @endif
+                                                                            </button>
+                                                                        </form>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </td>
+                                                        
                                                     </tr>
                                                 @endforeach
                                             </tbody>
