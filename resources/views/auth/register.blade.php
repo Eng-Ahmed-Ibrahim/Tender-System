@@ -2,28 +2,8 @@
 
 <html lang="en">
 	<!--begin::Head-->
-	<head><base href="../../../"/>
-		<title>Metronic - The World's #1 Selling Bootstrap Admin Template by Keenthemes</title>
-		<meta charset="utf-8" />
-		<meta name="description" content="The most advanced Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
-		<meta name="keywords" content="metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Metronic - Bootstrap Admin Template, HTML, VueJS, React, Angular. Laravel, Asp.Net Core, Ruby on Rails, Spring Boot, Blazor, Django, Express.js, Node.js, Flask Admin Dashboard Theme & Template" />
-		<meta property="og:url" content="https://keenthemes.com/metronic" />
-		<meta property="og:site_name" content="Keenthemes | Metronic" />
-		<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-		<!--begin::Fonts(mandatory for all pages)-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
-	</head>
+	@include('admin.body.header')
+
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="app-blank bgi-size-cover bgi-attachment-fixed bgi-position-center">
@@ -42,18 +22,10 @@
 					<!--begin::Content-->
 					<div class="d-flex flex-column flex-center pb-0 pb-lg-10 p-10 w-100">
 						<!--begin::Image-->
-						<img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="assets/media/auth/agency.png" alt="" />
-						<img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="assets/media/auth/agency-dark.png" alt="" />
-						<!--end::Image-->
-						<!--begin::Title-->
-						<h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">Fast, Efficient and Productive</h1>
-						<!--end::Title-->
-						<!--begin::Text-->
-						<div class="text-gray-600 fs-base text-center fw-semibold">In this kind of post,
-						<a href="#" class="opacity-75-hover text-primary me-1">the blogger</a>introduces a person they’ve interviewed
-						<br />and provides some background information about
-						<a href="#" class="opacity-75-hover text-primary me-1">the interviewee</a>and their
-						<br />work following this is a transcript of the interview.</div>
+						@php
+        $configuration = \App\Models\Configuration::first();
+        @endphp						<img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('storage/' . $configuration->logo) }}" alt="" />
+						<img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('storage/' . $configuration->logo) }}" alt="" />						
 						<!--end::Text-->
 					</div>
 					<!--end::Content-->
@@ -83,27 +55,7 @@
     <!--begin::Heading-->
 
     <!--begin::Login options-->
-    <div class="row g-3 mb-9">
-        <!--begin::Col-->
-        <div class="col-md-6">
-            <!--begin::Google link=-->
-            <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                <img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3" />Sign up with Google
-            </a>
-            <!--end::Google link=-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-md-6">
-            <!--begin::Google link=-->
-            <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                <img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show h-15px me-3" />
-                <img alt="Logo" src="assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show h-15px me-3" />Sign up with Apple
-            </a>
-            <!--end::Google link=-->
-        </div>
-        <!--end::Col-->
-    </div>
+    
     <!--end::Login options-->
 
     <!--begin::Separator-->
@@ -175,80 +127,20 @@
 							</div>
 							<!--end::Wrapper-->
 							<!--begin::Footer-->
-							<div class="d-flex flex-stack">
-								<!--begin::Languages-->
-								<div class="me-10">
-									<!--begin::Toggle-->
-									<button class="btn btn-flex btn-link btn-color-gray-700 btn-active-color-primary rotate fs-base" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" data-kt-menu-offset="0px, 0px">
-										<img data-kt-element="current-lang-flag" class="w-20px h-20px rounded me-3" src="assets/media/flags/united-states.svg" alt="" />
-										<span data-kt-element="current-lang-name" class="me-1">English</span>
-										<i class="ki-duotone ki-down fs-5 text-muted rotate-180 m-0"></i>
-									</button>
-									<!--end::Toggle-->
-									<!--begin::Menu-->
-									<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-4 fs-7" data-kt-menu="true" id="kt_auth_lang_menu">
-										<!--begin::Menu item-->
-										<div class="menu-item px-3">
-											<a href="#" class="menu-link d-flex px-5" data-kt-lang="English">
-												<span class="symbol symbol-20px me-4">
-													<img data-kt-element="lang-flag" class="rounded-1" src="assets/media/flags/united-states.svg" alt="" />
-												</span>
-												<span data-kt-element="lang-name">English</span>
-											</a>
-										</div>
-										<!--end::Menu item-->
-										<!--begin::Menu item-->
-										<div class="menu-item px-3">
-											<a href="#" class="menu-link d-flex px-5" data-kt-lang="Spanish">
-												<span class="symbol symbol-20px me-4">
-													<img data-kt-element="lang-flag" class="rounded-1" src="assets/media/flags/spain.svg" alt="" />
-												</span>
-												<span data-kt-element="lang-name">Spanish</span>
-											</a>
-										</div>
-										<!--end::Menu item-->
-										<!--begin::Menu item-->
-										<div class="menu-item px-3">
-											<a href="#" class="menu-link d-flex px-5" data-kt-lang="German">
-												<span class="symbol symbol-20px me-4">
-													<img data-kt-element="lang-flag" class="rounded-1" src="assets/media/flags/germany.svg" alt="" />
-												</span>
-												<span data-kt-element="lang-name">German</span>
-											</a>
-										</div>
-										<!--end::Menu item-->
-										<!--begin::Menu item-->
-										<div class="menu-item px-3">
-											<a href="#" class="menu-link d-flex px-5" data-kt-lang="Japanese">
-												<span class="symbol symbol-20px me-4">
-													<img data-kt-element="lang-flag" class="rounded-1" src="assets/media/flags/japan.svg" alt="" />
-												</span>
-												<span data-kt-element="lang-name">Japanese</span>
-											</a>
-										</div>
-										<!--end::Menu item-->
-										<!--begin::Menu item-->
-										<div class="menu-item px-3">
-											<a href="#" class="menu-link d-flex px-5" data-kt-lang="French">
-												<span class="symbol symbol-20px me-4">
-													<img data-kt-element="lang-flag" class="rounded-1" src="assets/media/flags/france.svg" alt="" />
-												</span>
-												<span data-kt-element="lang-name">French</span>
-											</a>
-										</div>
-										<!--end::Menu item-->
-									</div>
-									<!--end::Menu-->
-								</div>
-								<!--end::Languages-->
-								<!--begin::Links-->
-								<div class="d-flex fw-semibold text-primary fs-base gap-5">
-									<a href="../../demo1/dist/pages/team.html" target="_blank">Terms</a>
-									<a href="../../demo1/dist/pages/pricing/column.html" target="_blank">Plans</a>
-									<a href="../../demo1/dist/pages/contact.html" target="_blank">Contact Us</a>
-								</div>
-								<!--end::Links-->
-							</div>
+							<footer class="footer text-center py-4">
+    <div class="container">
+        <div class="d-flex flex-column align-items-center">
+            <div class="d-flex align-items-center mb-2">
+                <h3 style="color:rgb(184, 197, 197)"class="me-2">Development By
+                <img src="{{asset('assets/footer_logo.png')}}" alt="Logo" class="footer-logo" style="height: 20px;" />
+
+				All Right Reserved
+				</h3>
+
+            </div>
+        </div>
+    </div>
+</footer>
 							<!--end::Footer-->
 						</div>
 						<!--end::Content-->
