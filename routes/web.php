@@ -19,6 +19,7 @@ use App\Http\Controllers\NormalAdsController;
 use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\FiltrationController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\RepresentativeController;
@@ -136,6 +137,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('bills', BillController::class);
 
     Route::get('/invoice/print/{id}', [BillController::class, 'printInvoice'])->name('invoice.print');
+
+
+    
+    Route::resource('UserProfile', AdminProfileController::class);
+    Route::post('/update-email', [AdminProfileController::class, 'updateEmail'])->name('update.email');
 
 
 });

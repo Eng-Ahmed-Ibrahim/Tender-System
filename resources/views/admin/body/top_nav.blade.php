@@ -162,7 +162,7 @@
                 <!--end::Menu separator-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-5">
-                    <a href="../../demo1/dist/account/overview.html" class="menu-link px-5">{{__('My Profile')}}</a>
+                    <a href="{{ route('UserProfile.index') }}" class="menu-link px-5">{{__('My Profile')}}</a>
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->
@@ -310,9 +310,7 @@
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->
-                <div class="menu-item px-5 my-1">
-                    <a href="../../demo1/dist/account/settings.html" class="menu-link px-5">{{__('Account Settings')}}</a>
-                </div>
+               
                 <!--end::Menu item-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-5">

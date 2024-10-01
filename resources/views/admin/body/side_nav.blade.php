@@ -781,7 +781,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="{{route('configurations.index')}}" target="_blank">
+                                <a class="menu-link" href="{{route('configurations.index')}}" >
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-rocket fs-2">
                                             <span class="path1"></span>
@@ -806,7 +806,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->dsdsd
-                                <a class="menu-link" href="{{ route('bills.index')}}" target="_blank">
+                                <a class="menu-link" href="{{ route('bills.index')}}">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-rocket fs-2">
                                             <span class="path1"></span>
@@ -828,7 +828,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="{{route('subscriptions.index')}}" target="_blank">
+                                <a class="menu-link" href="{{route('subscriptions.index')}}">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-rocket fs-2">
                                             <span class="path1"></span>
@@ -841,7 +841,7 @@
                             </div>
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="{{route('subscriptions.create')}}" target="_blank">
+                                <a class="menu-link" href="{{route('subscriptions.create')}}">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-rocket fs-2">
                                             <span class="path1"></span>
