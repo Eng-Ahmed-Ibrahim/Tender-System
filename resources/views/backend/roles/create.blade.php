@@ -76,11 +76,10 @@
                                         <td>{{ $role->name }}</td>
                                         <td>
                                             @foreach($role->permissions as $permission)
-                                                <span class="badge bg-secondary"><b>{{ $permission->name }}</b></span>
+                                                <span class="badge bg-secondary"><b>{{ __($permission->name) }}</b></span>
                                             @endforeach
                                         </td>
                                         <td>
-                                            <div class="btn-group" role="group">
                                
                                                 <a href="{{route('roles.permissions.view', $role->id)}}" class="btn btn-secondary btn-sm" data-role-id="{{ $role->id }}" data-role-name="{{ $role->name }}">
                                                     {{ __('Edit') }}
@@ -90,10 +89,9 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('{{ __('Confirm Delete?') }}');">
-                                                        <i class="fas fa-trash"></i> {{ __('Delete') }}
+                                                         {{ __('Delete') }}
                                                     </button>
                                                 </form>
-                                            </div>
                                         </td>
                                         
                                     </tr>
@@ -109,7 +107,7 @@
 
 <!-- Create Role Modal -->
 <div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-750px">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="fw-bold">{{__('Add a Role')}}</h2>
@@ -123,7 +121,7 @@
                             <label class="fs-5 fw-bold form-label mb-2">
                                 <span class="required">{{__('Role Name')}}</span>
                             </label>
-                            <input class="form-control form-control-solid" placeholder="Enter a role name" name="name" required>
+                            <input class="form-control form-control-solid" placeholder="{{__('Enter a role name')}}" name="name" required>
                         </div>
                         <div class="fv-row">
                             <label class="fs-5 fw-bold form-label mb-2">{{__('Permissions')}}</label>
@@ -131,7 +129,7 @@
                                 <table class="table align-middle table-row-dashed fs-6 gy-5">
                                     <tbody class="text-gray-600 fw-semibold">
                                         <tr>
-                                            <td class="text-gray-800">Administrator Access
+                                            <td class="text-gray-800">{{__('Administrator Access')}}
                                                 <span class="ms-2" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="Allows full access to the system">
                                                     <i class="ki-duotone ki-information fs-7"></i>
                                                 </span>
@@ -151,7 +149,7 @@
                                                         <div class="d-flex">
                                                             <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
                                                                 <input class="form-check-input" type="checkbox" value="{{ $permission->id }}" name="permissions[]" />
-                                                                <span class="form-check-label">{{ $permission->name }}</span>
+                                                                <span class="form-check-label">{{ __($permission->name)}}</span>
                                                             </label>
                                                         </div>
                                                     </td>

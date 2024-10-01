@@ -31,7 +31,7 @@
                                                 <div class="d-flex">
                                                     <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
                                                         <input class="form-check-input" type="checkbox" name="permissions[]" id="permission_{{ $permission->id }}" value="{{ $permission->id }}" {{ $role->hasPermissionTo($permission) ? 'checked' : '' }}>
-                                                        <span class="form-check-label">{{ $permission->name }}</span>
+                                                        <span class="form-check-label">{{ __($permission->name) }}</span>
                                                     </label>
                                                 </div>
                                             </td>
