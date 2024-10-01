@@ -94,7 +94,7 @@
                         <th>{{ __('Phone')}}</th>
                         <th>{{ __('Address')}}</th>
                         <th>{{ __('Actions')}}</th>
-                        <th>{{ __('delete')}}</th>
+                        <th>{{__('Delete')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,7 +119,7 @@
                                         @method('PUT')
                                         <select name="role_id" class="btn btn-secondary" onchange="confirmUpdateRole(this)">
                                             @if (is_null($user->role_id))
-                                                <option value="" disabled selected>no role assigned</option>
+                                                <option value="" disabled selected>no role</option>
                                             @endif
                                             @foreach($roles as $role)
                                                 <option value="{{ $role->id }}" {{ $user->role_id === $role->id ? 'selected' : '' }}>
@@ -134,13 +134,18 @@
                                 <form id="deleteUserForm" method="POST" action="{{ route('AdminUsers.destroy', $user->id) }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-secondary" onclick="confirmDeleteUser(this)">delete</button>
+                                    <button type="button" class="btn btn-secondary" onclick="confirmDeleteUser(this)">{{__('Delete')}}</button>
                                 </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -68,7 +68,7 @@
                 </select>
             </div>
         
-            <button type="submit" class="btn btn-secondary">{{ __('user create')}}</button>
+            <button type="submit" class="btn btn-secondary">{{ __('Create')}}</button>
         </form>
         
         

@@ -124,23 +124,10 @@
                         <!--begin::Card title-->
                         <div class="card-title">
                             <!--begin::Search-->
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                                <form action="{{ route('normalads.index') }}" method="GET">
-                                    <input type="text" name="search" value="{{ request()->input('search') }}" class="form-control form-control-solid w-250px ps-12" placeholder="{{__('Search Ads')}}" />
-                                </form>                            </div>
-                            <!--end::Search-->
-                        </div>
+                        
 
                 
 
-<a class="btn btn-secondary" href="{{ route('house.create')}}">
-    {{__('Add House Ads')}}  
-</a>
-  
 
 
 

@@ -102,4 +102,8 @@
         <button type="submit" class="btn btn-secondary">{{__('Update')}}</button>
     </form>
 </div>
+        </div>
+    </div>
+</div>
+
 @endsection
