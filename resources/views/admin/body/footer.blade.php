@@ -1,7 +1,7 @@
-
-<!--begin::Footer-->
+</div>
+</div>
+</div>
 <footer class="footer text-center py-4">
-    <div class="container">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center">
@@ -12,7 +12,6 @@
                         </h3>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </footer>
