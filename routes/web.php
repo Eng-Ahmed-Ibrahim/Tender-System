@@ -45,16 +45,16 @@ require __DIR__.'/customers.php';
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configurations.index');
+    Route::get('/configurations', [ConfigurationController::class, 'index'])->middleware('can:configuration.view')->name('configurations.index');
 
-    Route::put('configurations/update', [ConfigurationController::class, 'update'])->name('configurations.update');
+    Route::put('configurations/update', [ConfigurationController::class, 'update'])->middleware('can:configuration.update')->name('configurations.update');
 
     Route::resource('/countries',CountryController::class);
 
-    Route::post('/currency',[CurrencyController::class,'store'])->name('currency.store');
+    Route::post('/currency',[CurrencyController::class,'store'])->middleware('can:currency.create')->name('currency.store');
 
     Route::resource('categories', CategoryController::class);
-
+    
     Route::resource('customers', CustomerController::class);
 
     Route::post('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('customers.toggleStatus');
