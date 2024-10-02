@@ -554,7 +554,7 @@
                                    
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('device.index')}}">
+                                        <a class="menu-link" href="{{ route('Normaldevice.index')}}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
