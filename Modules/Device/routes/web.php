@@ -15,7 +15,7 @@ use Modules\Device\Http\Controllers\DeviceController;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::resource('Normaldevice', DeviceController::class)->names('Normaldevice');
+    Route::resource('/Normal/deviceNormal', DeviceController::class)->names('Normaldevice');
     Route::get('CommercialDevice', [DeviceController::class,'commercial'])->name('device.commercial');
 
 });
