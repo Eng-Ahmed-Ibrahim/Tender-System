@@ -8,5 +8,6 @@
     "Services": true,
     "NormalModule": true,
     "Bike": true,
-    "Career": true
+    "Career": true,
+    "Device": true
 }

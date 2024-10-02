@@ -16,7 +16,8 @@ use Modules\Bike\Http\Controllers\BikeCategoryController;
 |
 */
 
-Route::group([], function () {
+Route::middleware('auth')->group(function () {
+    
     Route::resource('bike', BikeController::class)->names('bike');
     Route::resource('bike-categories', BikeCategoryController::class);
 

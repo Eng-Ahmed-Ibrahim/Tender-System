@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bike_images', function (Blueprint $table) {
+        Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->string('photo');
-            $table->unsignedBigInteger('bike_id');
-            $table->foreign('bike_id')->references('id')->on('bikes')->onDelete('cascade');
+            $table->unsignedBigInteger('normal_id');
+            $table->foreign('normal_id')->references('id')->on('normal_ads')->onDelete('cascade');
+            $table->string('status')->nullable();
+            $table->string('type')->nullable();
+            $table->string('model')->nullable();
+            
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bike_images');
+        Schema::dropIfExists('devices');
     }
 };

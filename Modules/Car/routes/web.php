@@ -17,7 +17,7 @@ use Modules\Car\Http\Controllers\CarCategoryController;
 |
 */
 
-Route::group([], function () {
+Route::middleware('auth')->group(function () {
     
     Route::resource('car', CarController::class)->names('car');
 

@@ -530,7 +530,56 @@
                                 </div>
                                 <!--end:Menu sub-->
                             </div>
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <!--begin:Menu link-->
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-house"></i> <!-- This adds a solid house icon -->
 
+                                    </span>
+                                    <span class="menu-title">{{__('Devices')}}</span>
+                                    <span class="menu-arrow"></span>
+                                </span>
+                                <!--end:Menu link-->
+                                <!--begin:Menu sub-->
+                                <div class="menu-sub menu-sub-accordion">
+                                    <!--begin:Menu item-->
+                            
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+
+
+
+                                 
+                                   
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('device.index')}}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">{{__('Device normal')}}</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('device.commercial')}}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">{{__('Device commercial')}}</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                 
+                                    <!--end:Menu item-->
+                                </div>
+                                <!--end:Menu sub-->
+                            </div>
                             
                             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                 <!--begin:Menu link-->

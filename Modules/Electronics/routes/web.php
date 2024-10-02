@@ -17,7 +17,7 @@ use Modules\Electronics\Http\Controllers\ElectronicCategoryController;
 |
 */
 
-Route::group([], function () {
+Route::middleware('auth')->group(function () {
     Route::resource('electronics', ElectronicsController::class)->names('electronics');
     Route::get('CommercialCar', [CarController::class,'commercial'])->name('car.commercial');
 

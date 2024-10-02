@@ -41,7 +41,6 @@ class MobileController extends Controller
     {
         $cat_id = $request->cat_id;
 
-  
         $categories =Category::where('parent_id',$cat_id)->get();
 
         return view('electronics::mobiles.create',compact('categories'));
@@ -64,13 +63,7 @@ class MobileController extends Controller
     
             return redirect()->route($redirectTo)->with('success', 'Mobile created successfully.');
         } else {
-            $adLimitService = new AdLimitServices();
-    
-         //   if (!$adLimitService->canPostAd('normal')) {
-             //   return redirect()->back()->with('error', 'You have reached your ad posting limit.');
-            //}
-    
-            $this->processAd($request);
+           
     
             $redirectTo = $request->input('redirect_to', 'mobile-normalAds.index'); 
     

@@ -47509,9 +47509,8 @@ body[data-kt-sticky-landing-header=on] {
 }
 
 [data-bs-theme=dark] {
-  --bs-app-bg-color: transparent;
-  --bs-app-blank-bg-color: transparent;
-  --bs-app-header-base-bg-color: #131313;
+  --bs-app-bg-color: black;
+  --bs-app-blank-bg-color: black;
   --bs-app-header-base-box-shadow: none;
   --bs-app-header-minimize-bg-color: #131313;
   --bs-app-header-minimize-box-shadow: 0 0.1rem 1rem 0.25rem rgba(0, 0, 0, 0.05);

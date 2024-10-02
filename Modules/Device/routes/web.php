@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Career\Http\Controllers\CareerController;
+use Modules\Device\Http\Controllers\DeviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,7 @@ use Modules\Career\Http\Controllers\CareerController;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::resource('career', CareerController::class)->names('career');
+    Route::resource('device', DeviceController::class)->names('device');
+    Route::get('CommercialDevice', [DeviceController::class,'commercial'])->name('device.commercial');
 
 });

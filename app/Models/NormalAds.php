@@ -8,6 +8,7 @@ use App\Models\Customers;
 use Modules\Car\Models\Cars;
 use Modules\Bike\Models\Bike;
 use Modules\House\Models\House;
+use Modules\Device\Models\Device;
 use Modules\Career\Models\Careers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -94,6 +95,12 @@ public function mobiles()
 {
 
     return $this->hasOne(Mobiles::class,'normal_id');
+}
+public function devices()
+
+{
+
+    return $this->hasOne(Device::class,'normal_id');
 }
 
 

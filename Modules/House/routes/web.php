@@ -18,7 +18,7 @@ use Modules\House\Http\Controllers\CommercailsHosueController;
 |
 */
 
-Route::group([], function () {
+Route::middleware('auth')->group(function () {
     Route::resource('house', HouseController::class)->names('house');
 
     Route::get('CommercialHouse', [HouseController::class,'commercial'])->name('House.commercial');
