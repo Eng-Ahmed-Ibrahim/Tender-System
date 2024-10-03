@@ -12,7 +12,6 @@ class NotificationController extends Controller
 
     {
         
-    
         return view('backend.notifcations.index');
     }
     

@@ -42,9 +42,9 @@ $unreadCount = auth()->user()->unreadNotifications->count();
                                 </span>
                             </div>
                             <div class="mb-0 me-2">
-                                <a href="{{ route('notifications.read', $notification->id) }}" 
-                                   class="fs-6 text-gray-800 text-hover-primary fw-bold" 
-                                   onclick="markAsRead({{ $notification->id }}); event.preventDefault();">{{ $notification->data['message'] }}</a>
+                                <a href="javascript:void(0);" 
+                                   class="text-gray-800 text-hover-primary fw-bold" 
+                                   onclick="markAsRead({{ $notification->id }});">{{ $notification->data['message'] }}</a>
                                 <div class="text-gray-400 fs-7">
                                     {{ $notification->created_at->diffForHumans() }}
                                   
@@ -63,29 +63,26 @@ $unreadCount = auth()->user()->unreadNotifications->count();
 </div>
 
 <script>
-function markAsRead(notificationId) {
-    fetch(`/notifications/read/${notificationId}`, {
-        method: 'POST', 
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Add the 'read' class to change styles, if any
-            document.getElementById(`notification-${notificationId}`).classList.add('read');
-
-            // Update the notification UI to show it's read
-            const notificationElement = document.getElementById(`notification-${notificationId}`);
-            const readLabel = document.createElement('span');
-            readLabel.className = 'badge badge-light fs-8 ms-2';
-            readLabel.innerText = 'Read';
-            notificationElement.querySelector('.text-gray-400').appendChild(readLabel);
-        } else {
-            console.error('Failed to mark notification as read');
-        }
-    })
-    .catch(error => console.error('Error marking notification as read:', error));
-}
-</script>
+    function markAsRead(notificationId) {
+        fetch(`/notifications/${notificationId}/read`, {
+            method: 'POST', 
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Add the 'read' class to change styles, if any
+                document.getElementById(`notification-${notificationId}`).classList.add('read');
+    
+                // Update the notification UI to show it's read
+                const notificationElement = document.getElementById(`notification-${notificationId}`);
+                notificationElement.querySelector('td:nth-child(3)').innerHTML = '<span class="badge badge-light fs-8">Read</span>';
+            } else {
+                console.error('Failed to mark notification as read');
+            }
+        })
+        .catch(error => console.error('Error marking notification as read:', error));
+    }
+    </script>
