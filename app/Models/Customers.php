@@ -15,12 +15,13 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\CustomerSubscription;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Electronics\Models\Mobiles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customers extends Model implements Authenticatable
 {
-    use HasFactory,HasApiTokens;
+    use HasFactory,HasApiTokens,Notifiable;
 
     protected $guarded=[];
 

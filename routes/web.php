@@ -20,6 +20,7 @@ use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\FiltrationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\RepresentativeController;
@@ -158,3 +159,6 @@ Route::get('lang/home', [LanguageController::class, 'index']);
 Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLang');
 
 Route::post('lang/translate', [LanguageController::class, 'translate'])->name('translateText');
+
+
+Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
