@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Notifications\DatabaseNotification; 
 class NotificationController extends Controller
 {
+        
+    public function index()
+
+    {
+        
+    
+        return view('backend.notifcations.index');
+    }
     
    
     public function markAsRead($id)

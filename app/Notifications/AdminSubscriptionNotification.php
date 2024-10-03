@@ -39,8 +39,9 @@ class AdminSubscriptionNotification extends Notification
     {
         return [
             'message' => ($this->action == 'created') 
-                ? 'A new subscription has been created by a customer.' 
-                : 'A customer has updated their subscription.',
+                ? $this->subscription->customer->name. ' has new subscription.' 
+                : $this->subscription->customer->name. ' has upgraded his plan.',
+
             'subscription_id' => $this->subscription->id,
             'customer_name' => $this->subscription->customer->name,
             'start_date' => $this->subscription->start_date,

@@ -1,3 +1,6 @@
+@extends('admin.index')
+@section('content')
+
 @php
 $notifications = auth()->user()->notifications; 
 $unreadCount = auth()->user()->unreadNotifications->count(); 
@@ -28,35 +31,44 @@ $unreadCount = auth()->user()->unreadNotifications->count();
         </div>
         
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="kt_topbar_notifications_1" role="tabpanel">
-                <div class="scroll-y mh-325px my-5 px-8">
-                    @foreach ($notifications as $notification)
-                    <div class="d-flex flex-stack py-4" id="notification-{{ $notification->id }}">
-                        <div class="d-flex align-items-center">
-                            <div class="symbol symbol-35px me-4">
-                                <span class="symbol-label bg-light-primary">
-                                    <i class="ki-duotone ki-abstract-28 fs-2 text-primary">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </span>
-                            </div>
-                            <div class="mb-0 me-2">
+            <div class="scroll-y mh-325px my-5 px-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Message</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($notifications as $notification)
+                        <tr id="notification-{{ $notification->id }}">
+                            <td>
                                 <a href="{{ route('notifications.read', $notification->id) }}" 
-                                   class="fs-6 text-gray-800 text-hover-primary fw-bold" 
+                                   class="text-gray-800 text-hover-primary fw-bold" 
                                    onclick="markAsRead({{ $notification->id }}); event.preventDefault();">{{ $notification->data['message'] }}</a>
-                                <div class="text-gray-400 fs-7">
-                                    {{ $notification->created_at->diffForHumans() }}
-                                  
-                                </div>
-                            </div>
-                        </div>
-                        @if($notification->read_at)
-                        <span class="badge badge-light fs-8 ms-2">Read</span>
-                    @endif                    </div>
-                    @endforeach
+                            </td>
+                            <td>
+                                {{ $notification->created_at->diffForHumans() }}
+                            </td>
+                            <td>
+                                @if($notification->read_at)
+                                    <span class="badge badge-light fs-8">Read</span>
+                                @else
+                                    <span class="badge badge-danger fs-8">Unread</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="py-3 text-center border-top">
+                    <a href="{{ route('notifications.index') }}" class="btn btn-color-gray-600 btn-active-color-primary">View All
+                    <i class="ki-duotone ki-arrow-right fs-5">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i></a>
                 </div>
-          
             </div>
         </div>
     </div>
@@ -78,10 +90,8 @@ function markAsRead(notificationId) {
 
             // Update the notification UI to show it's read
             const notificationElement = document.getElementById(`notification-${notificationId}`);
-            const readLabel = document.createElement('span');
-            readLabel.className = 'badge badge-light fs-8 ms-2';
-            readLabel.innerText = 'Read';
-            notificationElement.querySelector('.text-gray-400').appendChild(readLabel);
+            const statusCell = notificationElement.querySelector('td:last-child');
+            statusCell.innerHTML = '<span class="badge badge-light fs-8">Read</span>';
         } else {
             console.error('Failed to mark notification as read');
         }
@@ -89,3 +99,4 @@ function markAsRead(notificationId) {
     .catch(error => console.error('Error marking notification as read:', error));
 }
 </script>
+@endsection

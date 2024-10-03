@@ -160,5 +160,6 @@ Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLa
 
 Route::post('lang/translate', [LanguageController::class, 'translate'])->name('translateText');
 
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
 Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
