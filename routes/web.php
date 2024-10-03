@@ -162,4 +162,4 @@ Route::post('lang/translate', [LanguageController::class, 'translate'])->name('t
 
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
-Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
