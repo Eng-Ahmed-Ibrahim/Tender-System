@@ -4,7 +4,8 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Helpers\ConvertCurrency;
+use App\Helpers\ConvertApiCurrency;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class NormalAdResource extends JsonResource
@@ -17,7 +18,8 @@ class NormalAdResource extends JsonResource
      */
     public function toArray($request)
     {
-        $currencyCode = $this->additional['currency_code'] ?? 'USD';
+        $AuthCustomer = Auth::guard('customer')->user();
+        $currencyCode = $AuthCustomer->currency->code ?? 'EGP';
         
         return [
             'id' => $this->id,
@@ -25,7 +27,7 @@ class NormalAdResource extends JsonResource
             'subcategory' => $this->category->title,
             'main_category' => optional($this->category->parent)->title,
             //'customer' =>$this->customer->name,
-            'price' => ConvertCurrency::convertPrice($this->price, $currencyCode),
+            'price' => ConvertApiCurrency::convertPrice($this->price, $currencyCode),
             'Featured photo' => asset('storage/'.$this->photo),
 
             'currency_code' => $currencyCode,

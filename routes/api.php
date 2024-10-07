@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\ApiCountryDetection;
+use App\Http\Controllers\Api\CurrencyController;
 use App\Http\Controllers\Api\ads\Normalcontroller;
 use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\Api\Popup\PopupController;
@@ -123,12 +124,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
+Route::post('/Apicurrency',[CurrencyController::class,'store']);
+Route::get('/ApiAllcurrency',[CurrencyController::class,'index']);
+
 
 Route::apiResource('ApiConfiguration',ConfigurationController::class);
 
 Route::get('IsEmptyfilters/{cat_id}', [FiltrationController::class, 'isFilter']);
-
-
 
 
 

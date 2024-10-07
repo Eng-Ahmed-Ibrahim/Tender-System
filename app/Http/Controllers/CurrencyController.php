@@ -67,7 +67,6 @@ class CurrencyController extends Controller
             $data = $response->json();
             $rate = $data['conversion_rate'] ?? 0;
     
-            // Store the rate in session
             Session::put('currency_rate', $rate);
         } catch (\Exception $e) {
             // Handle API error

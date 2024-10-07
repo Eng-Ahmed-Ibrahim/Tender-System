@@ -23,7 +23,7 @@
                 <form action="{{ route('currency.store') }}" method="post">
                     @csrf
                     <select class="form-select" name="currency_code" onchange="this.form.submit()">
-                        <option value="USD" {{ 'USD' == session('currency_code') ? 'selected' : '' }}>{{ __('USD') }}</option>
+<option value="USD" {{ 'USD' == session('currency_code') ? 'selected' : '' }}>{{ __('USD') }}</option>
 <option value="EUR" {{ 'EUR' == session('currency_code') ? 'selected' : '' }}>{{ __('EUR') }}</option>
 <option value="SAR" {{ 'SAR' == session('currency_code') ? 'selected' : '' }}>{{ __('SAR') }}</option>
 <option value="QAR" {{ 'QAR' == session('currency_code') ? 'selected' : '' }}>{{ __('QAR') }}</option>
