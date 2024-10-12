@@ -40,6 +40,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $user= Auth::User();
+        $userId = $user->id;
+        
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -53,10 +57,10 @@ class UserController extends Controller
         DB::beginTransaction();
     
         try {
-            // Create and save the user
             $user = new User();
             $user->fill($validatedData);
             $user->password = Hash::make($validatedData['password']);
+            $user->company_id = $userId;
             $user->save();
     
             // Assign the role to the user

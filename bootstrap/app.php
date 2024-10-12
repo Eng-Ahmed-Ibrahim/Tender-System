@@ -12,13 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append:[
 
-            App\Http\Middleware\SetLocale::class,
-            \App\Http\Middleware\DetectCountry::class,
-
-
-        ]);
         $middleware->alias([
             
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,

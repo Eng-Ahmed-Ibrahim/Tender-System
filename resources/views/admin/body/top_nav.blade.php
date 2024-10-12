@@ -18,84 +18,7 @@
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 
-            <div class="select">
-
-                <form action="{{ route('currency.store') }}" method="post">
-                    @csrf
-                    <select class="form-select" name="currency_code" onchange="this.form.submit()">
-<option value="USD" {{ 'USD' == session('currency_code') ? 'selected' : '' }}>{{ __('USD') }}</option>
-<option value="EUR" {{ 'EUR' == session('currency_code') ? 'selected' : '' }}>{{ __('EUR') }}</option>
-<option value="SAR" {{ 'SAR' == session('currency_code') ? 'selected' : '' }}>{{ __('SAR') }}</option>
-<option value="QAR" {{ 'QAR' == session('currency_code') ? 'selected' : '' }}>{{ __('QAR') }}</option>
-<option value="EGP" {{ 'EGP' == session('currency_code') ? 'selected' : '' }}>{{ __('EGP') }}</option>
-
-                    </select>
-                </form>
-                
-
-
-            </div>
-            
-            </div>
-
-
-            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-
-                <div class="select">
-    
-                    <form action="{{ route('changeLang') }}" method="get">
-                        <select class="form-select" name="lang" onchange="this.form.submit()">
-                            <option value="en" {{ 'en' == session('locale') ? 'selected' : '' }}>{{ __('English') }}</option>
-                            <option value="ar" {{ 'ar' == session('locale') ? 'selected' : '' }}>{{ __('Arabic') }}</option>
-           
-                        </select>
-                    </form>
-                    
-                    
-    
-    
-                </div>
-                
-                </div>
-                @php
-                    
-                $countries = \App\Models\Country::whereIn('name', ['Egypt', 'Saudi Arabia', 'Qatar', 'United States', 'France'])->get();
-                @endphp
-
-
-                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-
-                    <div class="select">
-
-
-                        <!--begin::Menu item-->
-                      
-                               
-                        </div>
-
-
-
-                        <form action="{{ route('updateCountrySession') }}" method="post">
-                            @csrf
-                            <select class="form-select" name="country_id" onchange="this.form.submit()">
-                                @foreach($countries as $country)
-                                <option value="{{ $country->id }}" {{ session('country_id') == $country->id ? 'selected' : '' }}>
-                                    <img class="rounded-1" src="{{ asset('assets/media/flags/' . strtolower($country->name) . '.svg') }}" alt="{{ $country->name }}" style="width: 20px; height: auto; vertical-align: middle;" />
-                                    {{ __($country->name) }}
-                                </option>
-                            @endforeach
-                            
-                            </select>
-                        </form>
-                        
-                        
-                        
-        
-        
-                    </div>
-                    
-                    </div>
-
+     
 
 
 
@@ -122,12 +45,13 @@
             <!--end::Search-->
         </div>
         <!--end::Search-->
-  @include('admin.body.partials.notifcation')
         <!--end::My apps links-->
-        
+    </div>
+    </div>
+
         <!--begin::User menu-->
  @include('admin.body.partials.user_nav')
-
+</div>
         <!--end::User menu-->
         <!--begin::Header menu toggle-->
         <div class="app-navbar-item d-lg-none ms-2 me-n2" title="Show header menu">

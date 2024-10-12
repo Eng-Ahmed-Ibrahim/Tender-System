@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
@@ -21,8 +22,10 @@ class RoleController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $roles = Role::all();
+    {  $user= Auth::User();
+        $userId = $user->id;
+
+        $roles = Role::where('user_id',$userId)->get();
         $permissions = Permission::all();
         return view('backend.roles.create', compact('roles', 'permissions'));
     }
@@ -59,16 +62,22 @@ $user->save();
 
 public function store(Request $request)
     {
-        // Validate the request
+
+        $user= Auth::User();
+        $userId = $user->id;
+        
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name',
+            'title' => 'required|string|max:255',
             'permissions' => 'array',
+            
             'permissions.*' => 'exists:permissions,id',
         ]);
 
         // Create the role
         $role = Role::create([
-            'name' => $request->input('name'),
+            'title' => $request->input('title'),
+            'name' => strlen($request->input('title')).'_'. $userId,
+            'user_id' => $userId
         ]);
 
         // Filter out non-existent permissions
@@ -85,15 +94,25 @@ public function store(Request $request)
 
 public function role_permission($roleId)
 {
-    $role = Role::findOrFail($roleId);
+    
+    $user= Auth::User();
+
+    $userId = $user->id;
+
+    $role = Role::where('user_id',$userId)->findOrFail($roleId);
+
     $permissions = Permission::all();
     return view('backend.permissions.role_permission', compact('role', 'permissions'));
 }
 
 public function storePermissions(Request $request, $roleId)
 {
-    $role = Role::findOrFail($roleId);
-    
+ $user= Auth::User();
+
+    $userId = $user->id;
+
+    $role = Role::where('user_id',$userId)->findOrFail($roleId);
+
     $permissionIds = $request->input('permissions', []);
     
     $permissions = Permission::whereIn('id', $permissionIds)->get();
@@ -121,8 +140,13 @@ public function storePermissions(Request $request, $roleId)
      */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
-        return view('backend.roles.edit', compact('role'));
+ $user= Auth::User();
+
+    $userId = $user->id;
+
+    $role = Role::where('user_id',$userId)->findOrFail($roleId);
+    
+    return view('backend.roles.edit', compact('role'));
     }
 
     /**
@@ -145,7 +169,11 @@ public function storePermissions(Request $request, $roleId)
      */
     public function destroy($id)
     {
-        $role = Role::findOrFail($id);
+        $user= Auth::User();
+
+        $userId = $user->id;
+    
+        $role = Role::where('user_id',$userId)->findOrFail($id);
         $role->permissions()->detach();
         $role->delete();
 

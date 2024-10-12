@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h2>{{ __('Role') }}: {{ $role->name}}</h2>
+                <h2>{{ __('Role') }}: {{ $role->title}}</h2>
                 <form method="POST" action="{{ route('roles.permissions.store', $role->id) }}">
                     @csrf
                     <div class="table-responsive">

@@ -19,7 +19,7 @@ class ConfigurationSeeder extends Seeder
                 'phone_number' => 9876543210,
                 'title' => 'My Website',
                 'email' => 'owner@example.com',
-                'owner_name' => 'John Doe',
+                'owner_name' => 'Mag',
                 'logo' => 'path/to/logo.png',
                 'terms_condition_en' => 'English Terms and Conditions...',
                 'terms_condition_ar' => 'Arabic Terms and Conditions...',

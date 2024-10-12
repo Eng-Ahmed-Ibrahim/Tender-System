@@ -41,15 +41,12 @@ return [
             'provider' => 'users',
         ],
 
-        'customer' => [
+        'company' => [
             'driver' => 'session',
-            'provider' => 'customers',
+            'provider' => 'companies',
         ],
 
-        'customer' => [
-            'driver' => 'sanctum',
-            'provider' => 'customers',
-        ],
+       
     ],
 
     /*
@@ -74,9 +71,9 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'customers' => [
+        'companies' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Customers::class),
+            'model' => env('AUTH_MODEL', App\Models\Company::class),
         ],
         
 
@@ -113,7 +110,7 @@ return [
             'throttle' => 60,
         ],
 
-        'customers' => [
+        'companies' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,

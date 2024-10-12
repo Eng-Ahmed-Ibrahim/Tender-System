@@ -1,9 +1,3 @@
-@php
-    $normalCount = \App\Models\NormalAds::count();
-    $commercialCount = \App\Models\CommercialAd::count();
-    $categories = \App\Models\Category::count();
-    $countries = \App\Models\Country::whereIn('name', ['Egypt', 'Saudi Arabia', 'Emirates', 'Qatar', 'China', 'Spain', 'France','Iraq','Bahrain','Kuwait'])->get();
-@endphp
 
 @extends('admin.index')
 @section('content')
@@ -19,16 +13,16 @@
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-ad me-2"></i> {{ __('Normal Ads')}}</h3>
-                                <p>{{ $normalCount }}</p>
+                                <h3 class="card-title"><i class="fas fa-ad me-2"></i> {{ __('users')}}</h3>
+                                <p></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-business-time me-2"></i> {{ __('Commercial Ads')}}</h3>
-                                <p>{{ $commercialCount }}</p>
+                                <h3 class="card-title"><i class="fas fa-business-time me-2"></i> {{ __('companies')}}</h3>
+                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -36,18 +30,14 @@
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title"><i class="fas fa-list me-2"></i> {{ __('Categories')}}</h3>
-                                <p>{{ $categories }}</p>
+                                <h3 class="card-title"><i class="fas fa-list me-2"></i> {{ __('tenders')}}</h3>
+                                <p></p>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Displaying charts for better analytics -->
-             @Include('backend.dashboard.partial.widget-chart')
-
-                <!-- Display countries with flags -->
 
 
             </div>

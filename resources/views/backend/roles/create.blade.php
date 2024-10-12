@@ -63,7 +63,6 @@
                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Permissions') }}</th>
                                     <th>{{ __('Actions') }}</th>
@@ -72,8 +71,7 @@
                             <tbody id="roles-table">
                                 @foreach($roles as $role)
                                     <tr id="role-{{ $role->id }}">
-                                        <td>{{ $role->id }}</td>
-                                        <td>{{ $role->name }}</td>
+                                        <td>{{ $role->title }}</td>
                                         <td>
                                             @foreach($role->permissions as $permission)
                                                 <span class="badge bg-secondary"><b>{{ __($permission->name) }}</b></span>
@@ -121,7 +119,7 @@
                             <label class="fs-5 fw-bold form-label mb-2">
                                 <span class="required">{{__('Role Name')}}</span>
                             </label>
-                            <input class="form-control form-control-solid" placeholder="{{__('Enter a role name')}}" name="name" required>
+                            <input class="form-control form-control-solid" placeholder="{{__('Enter a role name')}}" name="title" required>
                         </div>
                         <div class="fv-row">
                             <label class="fs-5 fw-bold form-label mb-2">{{__('Permissions')}}</label>

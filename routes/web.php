@@ -46,74 +46,14 @@ require __DIR__.'/customers.php';
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/configurations', [ConfigurationController::class, 'index'])->middleware('can:configuration.view')->name('configurations.index');
-
-    Route::put('configurations/update', [ConfigurationController::class, 'update'])->middleware('can:configuration.update')->name('configurations.update');
-
-    Route::resource('/countries',CountryController::class);
-
-    Route::post('/currency',[CurrencyController::class,'store'])->middleware('can:currency.create')->name('currency.store');
-
-    Route::resource('categories', CategoryController::class);
-    
-    Route::resource('customers', CustomerController::class);
-
-    Route::post('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('customers.toggleStatus');
-
-    Route::resource('normalads', NormalAdsController::class);
-
-    Route::get('export/ads/', [NormalAdsController::class,'export'])->name('export.ads');
-
-    Route::get('normaladsCategory', [NormalAdsController::class,'selectCategory'])->name('normaladsCategory');
-
-    // web.php
-    Route::post('ads/{ad}/toggle-status', [NormalAdsController::class, 'toggleStatus'])->name('normalads.toggleStatus');
-
-      Route::post('commercial/{ad}/toggle-status', [CommercialController::class, 'toggleStatus'])->name('commercial.toggleStatus');
-
-
-
-    Route::resource('banners', BannerController::class);
-
-     Route::delete('/banners/photo/{id}', [BannerController::class, 'deletePhoto'])->name('banners.deletePhoto');
-
-    Route::resource('commercialads', CommercialController::class);
-
-    Route::get('export/commercial/', [CommercialController::class,'export'])->name('export.commercial');
-
-
-    Route::resource('representative', RepresentativeController::class);
-
-    Route::post('/image/remove', [CommercialController::class, 'removeImage'])->name('image.remove');
-
-
-    Route::resource('popup', PopUpController::class);
-    Route::post('popup/{ad}/toggle-status', [PopUpController::class, 'toggleStatus'])->name('popup.toggleStatus');
-
-
-    Route::get('/viewMainCategory', [AdsController::class, 'MainCategory'])->name('viewMainCategory');
-
-    Route::get('/getRelatedAds/{cat_id}', [AdsController::class, 'getRelatedAds'])->name('getRelatedAds');
-
-    Route::get('/viewSubCategory/{catId}', [OfferController::class, 'viewSubCategory'])->name('viewSubCategory');
-
-
-
-    Route::get('/subcategory/{catId}/redirect', [OfferController::class, 'redirectToView'])->name('subcategory.redirect');
-
-    Route::get('/filters/{cat_id}', [FiltrationController::class, 'showFilters'])->name('show.filters');
-
-    Route::get('/filters', [FiltrationController::class, 'MainCategory'])->name('index.filters');
-
-    Route::get('/apply-filters/{cat_id}', [FiltrationController::class, 'applyFilters'])->name('apply.filters');
-
 
 
     Route::post('/update-country-session', [CountryController::class, 'updateCountrySession'])
     ->name('updateCountrySession');
 
-    Route::resource('subscriptions', SubscriptionController::class);
+    Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configurations.index');
 
+    Route::put('configurations/update', [ConfigurationController::class, 'update'])->name('configurations.update');
 
 
     Route::resource('role', RoleController::class);
@@ -133,12 +73,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/user/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
 
 
-    Route::resource('commercialads', CommercialController::class);
-
-    Route::resource('bills', BillController::class);
-
-    Route::get('/invoice/print/{id}', [BillController::class, 'printInvoice'])->name('invoice.print');
-
 
     
     Route::resource('UserProfile', AdminProfileController::class);
@@ -157,9 +91,3 @@ Route::get('location', [LocationController::class, 'getLocation']);
 Route::get('lang/home', [LanguageController::class, 'index']);
 
 Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLang');
-
-Route::post('lang/translate', [LanguageController::class, 'translate'])->name('translateText');
-
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-
-Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');

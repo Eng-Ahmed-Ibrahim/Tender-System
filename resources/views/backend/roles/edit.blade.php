@@ -23,7 +23,7 @@
 
                 <div class="form-group mb-3">
                     <label for="name">{{ __('Name')}}</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $role->name) }}" required>
+                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name',  $role->title ) }}" required>
                 </div>
 
     

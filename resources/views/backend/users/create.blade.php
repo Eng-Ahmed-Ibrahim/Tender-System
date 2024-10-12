@@ -7,8 +7,15 @@
     <!--begin::Content container-->
     <div id="kt_app_content_container" class="app-container container-xxl">
         <!--begin::Navbar-->
-      
-        <!--end::Navbar-->
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif        <!--end::Navbar-->
         <div class="card">
             <!--begin::Card header-->
             <div class="card-header">
@@ -17,19 +24,9 @@
                 <!--end::Card title-->
             </div>
 
-            @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
-            <!--end::Card header-->
-            <!--begin::Form-->
 
+            
             <div class="card-body">
         <form method="POST" action="{{ route('AdminUsers.store') }}">
             @csrf
