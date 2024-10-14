@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Enums\DashboardTypeEnum;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();   
+
+        $user = Auth::user();
+        if($user->dashboard === 'company')
+         $users = User::where('company_id',auth()->user()->id)->get();
+        else{
+
+        $users = User::all();
+
+
+
+        }   
           $roles = Role::all();
 
         return view('backend.users.index', compact('users','roles'));
@@ -60,7 +71,7 @@ class UserController extends Controller
             $user = new User();
             $user->fill($validatedData);
             $user->password = Hash::make($validatedData['password']);
-            $user->company_id = $userId;
+            //$user->company_id = $userId;
             $user->save();
     
             // Assign the role to the user

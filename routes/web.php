@@ -1,29 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdsController;
-use App\Http\Controllers\BillController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\OfferController;
-use App\Http\Controllers\PopUpController;
-use App\Http\Controllers\BannerController;
-use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CompanyController;
+
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
-use App\Http\Controllers\NormalAdsController;
-use App\Http\Controllers\CommercialController;
-use App\Http\Controllers\FiltrationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ConfigurationController;
-use App\Http\Controllers\RepresentativeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,13 +21,13 @@ Route::get('/', function () {
 
 Route::get('/admin/dashboard', function () {
     return view('backend.dashboard.index');
-})->middleware(['auth', 'verified'])->name('admin.dashboard');
+})->middleware(['auth'])->name('admin.dashboard');
 
 
 
 Route::get('/company/dashboard', function () {
     return view('company.dashboard.index');
-})->middleware(['auth', 'verified'])->name('company.dashboard');
+})->middleware(['auth'])->name('company.dashboard');
 
 
 
@@ -74,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/{roleId}/permissions/assign', [RoleController::class,'role_permission'])->name('roles.permissions.view');
 
 
+    Route::resource('companies',CompanyController::class);
 
     Route::post('/assign-role/{userId}', [UserController::class, 'assignRole'])->name('assign.role');
 

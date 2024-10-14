@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
         }
     
         // Fallback: Redirect to a default page if no conditions were met
-        return redirect()->route('home'); // Change 'home' to a suitable route for your application
+        return redirect()->back(); // Change 'home' to a suitable route for your application
     }
     
 

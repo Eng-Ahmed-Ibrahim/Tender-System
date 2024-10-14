@@ -1,112 +1,96 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Exception;
+use App\Models\User;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class CompanyController extends BaseController
+class CompanyController extends Controller
 {
-    protected $modelClass = Company::class;
-    protected $viewPrefix = 'backend.companies';
-    protected $routePrefix = 'companies';
-
-    protected function rules()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:companies,email', // For create
-            'password' => 'required|string|min:8|confirmed', // For create
-            'phone' => 'nullable|numeric|digits_between:10,15',
-            'address' => 'nullable|string|max:255',
-            'is_active' => 'nullable|in:1,0',
-         ];
+        
     }
-    public function show($id) {
-        $company = Company::with(['NormalAds', 'CommericalAds', 'subscriptions','bills'])->findOrFail($id);    
-        if (!$company) {
-            return redirect()->back()->with('error', 'company not found.');
-        }
 
-        $companyId = $company->id;
+    /**
+     * Show the form for creating a new resource.
+     */
+   
+     public function create()
+     {
+         return view('backend.companies.create');
 
-    
-        return view('backend.companies.show', compact('company','normalCount','commercialCount','billsCount'));
-    }
-    
-    public function store(Request $request)
+     }
+ 
+
+     public function store(Request $request)
+     {
+         $validatedData = $request->validate([
+             'name' => 'required|string|max:255',
+             'email' => 'required|email|unique:users,email',
+             'password' => 'required|string|min:8',
+             'phone' => 'nullable|string',
+             'address' => 'nullable|string',
+         ]);
+     
+         // Create and save the company
+         $company = new Company(); // Assuming you have a Company model
+         $company->name = $validatedData['name']; // Save the name from validated data
+         // Add any other necessary fields for the Company model here
+         $company->save();
+     
+         // Create and save the user
+         $user = new User();
+         $user->fill($validatedData);
+         $user->password = Hash::make($validatedData['password']);
+         $user->dashboard = 'company';
+         $user->company_id = $company->id; // Save the new company's ID in the user
+         $user->save();
+     
+         return redirect()->back()->with('success', 'User and company created successfully.');
+     }
+     
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $validated = $this->validateRequest($request);
-    
-        // Hash password before storing
-        if (isset($validated['password'])) {
-            $validated['password'] = bcrypt($validated['password']);
-        }
-    
-        // Ensure 'is_active' is treated as a boolean
-        $validated['is_active'] = isset($validated['is_active']) ? (bool) $validated['is_active'] : false;
-    
-        Company::create($validated);
-    
-        return $this->redirectToIndex('company created successfully.');
+        //
     }
-    
-    public function update(Request $request, $id)
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        // Retrieve the company model by ID
-        $company = Company::findOrFail($id);
-    
-        // Validate request with unique email check excluding the current record
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                'unique:companies,email,' . $id,
-            ],
-            'password' => 'nullable|string|min:8|confirmed',
-            'phone' => 'nullable|string',
-            'address' => 'nullable|string|max:255',
-            'is_active' => 'nullable|boolean',
-        ]);
-    
-        // Handle optional password field
-        if (!empty($validated['password'])) {
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            unset($validated['password']);
-        }
-    
-        // Update the company
-
-        $company->update($validated);
-
-        $this->translateAndSave($request->all(), 'store');
-
-    
-        return $this->redirectToIndex('company updated successfully.');
+        //
     }
 
-    public function toggleStatus(Company $company)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $company->is_active = !$company->is_active; // Toggle the status
-        $company->save();
-    
-        return redirect()->back()->with('status', 'company status updated successfully!');
+        //
     }
-    
-  protected function translateAndSave(array $inputs, $operation)
-{
-    $languages = ['en', 'fr', 'es', 'ar', 'de', 'tr', 'it', 'ja', 'zh', 'ur'];
 
-    foreach ($inputs as $key => $value) { 
-        if (is_string($value) && !empty($value)) {
-            dispatch(new TranslateText($key, $value, $languages));
-        }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
-}
-
-    
-
 }

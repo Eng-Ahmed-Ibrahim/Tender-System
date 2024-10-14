@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -18,14 +17,13 @@ class UserDashboard
     {
         // Check if the user is authenticated
         if (Auth::check()) {
-            // Get the current user
             $user = Auth::user();
 
-            // Redirect based on the dashboard column value
+            // Check the 'dashboard' value using the enum instance directly
             if ($user->dashboard === 'admin') {
-                return redirect()->route('admin.dashboard'); // Adjust this route as needed
+                return redirect()->route('admin.dashboard');
             } elseif ($user->dashboard === 'company') {
-                return redirect()->route('company.dashboard'); // Adjust this route as needed
+                return redirect()->route('company.dashboard');
             }
         }
 
@@ -33,3 +31,4 @@ class UserDashboard
         return $next($request);
     }
 }
+

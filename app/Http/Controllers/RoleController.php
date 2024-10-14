@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
@@ -23,9 +24,9 @@ class RoleController extends Controller
      */
     public function create()
     {  $user= Auth::User();
-        $userId = $user->id;
+        $companyId = $user->company_id;
 
-        $roles = Role::where('user_id',$userId)->get();
+        $roles = Role::where('company_id',$companyId)->get();
         $permissions = Permission::all();
         return view('backend.roles.create', compact('roles', 'permissions'));
     }
@@ -64,7 +65,10 @@ public function store(Request $request)
     {
 
         $user= Auth::User();
-        $userId = $user->id;
+        $userId =  $user->company_id;
+
+        $company = Company::where('id',$userId)->first();
+        $CompanyName= $company->name;
         
         $request->validate([
             'title' => 'required|string|max:255',
@@ -73,11 +77,10 @@ public function store(Request $request)
             'permissions.*' => 'exists:permissions,id',
         ]);
 
-        // Create the role
         $role = Role::create([
             'title' => $request->input('title'),
-            'name' => strlen($request->input('title')).'_'. $userId,
-            'user_id' => $userId
+            'name' => strtolower($request->input('title')) .'_'.  $CompanyName,
+            'company_id' => $userId
         ]);
 
         // Filter out non-existent permissions
@@ -97,9 +100,9 @@ public function role_permission($roleId)
     
     $user= Auth::User();
 
-    $userId = $user->id;
+    $userId =  $user->company_id;
 
-    $role = Role::where('user_id',$userId)->findOrFail($roleId);
+    $role = Role::where('company_id',$userId)->findOrFail($roleId);
 
     $permissions = Permission::all();
     return view('backend.permissions.role_permission', compact('role', 'permissions'));
@@ -109,9 +112,9 @@ public function storePermissions(Request $request, $roleId)
 {
  $user= Auth::User();
 
-    $userId = $user->id;
+    $userId = $user->company_id;
 
-    $role = Role::where('user_id',$userId)->findOrFail($roleId);
+    $role = Role::where('company_id',$userId)->findOrFail($roleId);
 
     $permissionIds = $request->input('permissions', []);
     
@@ -140,11 +143,11 @@ public function storePermissions(Request $request, $roleId)
      */
     public function edit($id)
     {
- $user= Auth::User();
+     $user= Auth::User();
 
-    $userId = $user->id;
+    $userId = $user->company_id;
 
-    $role = Role::where('user_id',$userId)->findOrFail($roleId);
+    $role = Role::where('company_id',$userId)->findOrFail($roleId);
     
     return view('backend.roles.edit', compact('role'));
     }
@@ -171,9 +174,9 @@ public function storePermissions(Request $request, $roleId)
     {
         $user= Auth::User();
 
-        $userId = $user->id;
+        $userId = $user->company_id;
     
-        $role = Role::where('user_id',$userId)->findOrFail($id);
+        $role = Role::where('company_id',$userId)->findOrFail($id);
         $role->permissions()->detach();
         $role->delete();
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('roles', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('user_id')->nullable(); // Make it nullable if needed
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id')->nullable(); // Make it nullable if needed
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         
         });
     }
