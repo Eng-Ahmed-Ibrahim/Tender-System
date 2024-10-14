@@ -37,7 +37,7 @@
                             </div>
                         
 
-                            @if(auth()->user()->dashboard == 'admin')
+                            @if(auth()->user()->role == 'admin')
 
                             @include('admin.body.partials.admin_side_nav')
                                 

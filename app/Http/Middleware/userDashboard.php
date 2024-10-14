@@ -13,21 +13,12 @@ class UserDashboard
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    
+ public function handle(Request $request, Closure $next, $role): Response
     {
-        // Check if the user is authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
-
-            // Check the 'dashboard' value using the enum instance directly
-            if ($user->dashboard === 'admin') {
-                return redirect()->route('admin.dashboard');
-            } elseif ($user->dashboard === 'company') {
-                return redirect()->route('company.dashboard');
-            }
+        if($request->user()->role !== $role){
+            return redirect('/');            
         }
-
-        // If not authenticated or no specific dashboard role, proceed with the request
         return $next($request);
     }
 }

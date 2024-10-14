@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\UserDashboard;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CompanyController;
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ConfigurationController;
+use App\Http\Controllers\Company\TenderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,13 +23,11 @@ Route::get('/', function () {
 
 Route::get('/admin/dashboard', function () {
     return view('backend.dashboard.index');
-})->middleware(['auth'])->name('admin.dashboard');
-
-
+})->middleware(['auth', UserDashboard::class . ':admin'])->name('admin.dashboard');
 
 Route::get('/company/dashboard', function () {
     return view('company.dashboard.index');
-})->middleware(['auth'])->name('company.dashboard');
+})->middleware(['auth',UserDashboard::class . ':company'])->name('company.dashboard');
 
 
 
@@ -45,9 +45,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::post('/update-country-session', [CountryController::class, 'updateCountrySession'])
-    ->name('updateCountrySession');
-
+   
     Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configurations.index');
 
     Route::put('configurations/update', [ConfigurationController::class, 'update'])->name('configurations.update');
@@ -89,3 +87,7 @@ Route::get('location', [LocationController::class, 'getLocation']);
 Route::get('lang/home', [LanguageController::class, 'index']);
 
 Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLang');
+
+
+Route::resource('tenders', TenderController::class);
+Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])->name('tenders.qrcode');
