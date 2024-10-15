@@ -69,7 +69,7 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Add customer-->
-                            <a href="{{ route('tenders.create')}}" class="btn btn-secondary">{{__('Create')}}</a>
+                            <a href="{{ route('AdminUsers.create')}}" class="btn btn-secondary">{{__('Create')}}</a>
                             <!--end::Add customer-->
                         </div>
                         <!--end::Card toolbar-->
@@ -91,6 +91,7 @@
                         <th>ID</th>
                         <th>Title</th>
                         <th>Description</th>
+                        <th>Company</th>
                         <th>End Date</th>
                         <th>Show Applicants</th>
                         <th>Actions</th>
@@ -102,6 +103,7 @@
                         <td>{{ $tender->id }}</td> <!-- ID added here -->
                         <td>{{ $tender->title }}</td>
                         <td>{{ $tender->description }}</td>
+                        <td>{{ $tender->company->name }}</td>
                         <td>{{ $tender->end_date }}</td>
                         <td>{{ $tender->show_applicants ? 'Yes' : 'No' }}</td>
                         <td>

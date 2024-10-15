@@ -16,7 +16,17 @@ class TenderController extends Controller
     public function index()
     {
         
-        $tenders = Tender::with('company')->get();
+        if(auth()->user()->role === 'company'){
+
+        $tenders = Tender::where('id',auth()->user()->id)->get();
+        }else {
+
+            $tenders = Tender::all();
+
+        }
+
+
+        
         return view('company.tenders.index', compact('tenders'));
 
     }
@@ -27,7 +37,8 @@ class TenderController extends Controller
     public function create()
     {
         $companies = \App\Models\Company::all();
-        return view('company.tenders.create', compact('companies'));
+        return view('company.tenders.create', compact('companies'));  
+    
     }
 
     /**
@@ -84,7 +95,9 @@ class TenderController extends Controller
     public function edit($id)
     {
         $tender = Tender::findOrFail($id);
-        return view('company.tenders.edit',compact('tender'));
+        $companies = \App\Models\Company::all();
+
+        return view('company.tenders.edit',compact('tender','companies'));
     }
 
     /**

@@ -31,8 +31,21 @@
                         <form id="tender-form">
                             @csrf
                             @method('PUT')
+
+
+                             @if(auth()->user()->role === 'company')
                             <input type="hidden" name="company_id" value="{{ auth()->user()->company_id }}">
-                            <input type="hidden" name="tender_id" id="tender_id" value="{{ $tender->id }}"> <!-- Pass the tender ID -->
+                        @else
+                            <select name="company_id" class="form-control" required>
+                                <option value="">{{ __('select company')}}</option>
+                                @foreach($companies as $company)
+                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
+                        
+
+                            <input type="hidden" name="tender_id" id="tender_id" value="{{ $tender->id }}">
 
                             <div class="form-group">
                                 <label for="title">Title</label>

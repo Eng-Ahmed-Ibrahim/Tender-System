@@ -30,21 +30,8 @@
                         <div class="alert alert-danger" id="error-message"></div>
                         <form id="tender-form">
                             @csrf
-
-
-                            @if(auth()->user()->role === 'company')
                             <input type="hidden" name="company_id" value="{{ auth()->user()->company_id }}">
-                        @else
-                            <select name="company_id" class="form-control" required>
-                                <option value="">{{ __('select company')}}</option>
-                                @foreach($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-                            </select>
-                        @endif
-                        
-
-
+                            
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" name="title" class="form-control" required>

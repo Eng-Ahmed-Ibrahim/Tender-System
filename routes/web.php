@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\AdminTenderController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ConfigurationController;
@@ -91,3 +92,7 @@ Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLa
 
 Route::resource('tenders', TenderController::class);
 Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])->name('tenders.qrcode');
+
+
+
+Route::resource('Admintenders', AdminTenderController::class);

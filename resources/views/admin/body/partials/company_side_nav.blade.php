@@ -65,18 +65,16 @@
 
         <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="{{ route('tenders.create') }}">
+            <a class="menu-link" href="{{ route('tenders.index') }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{{ __('Create Tender')}}</span>
+                <span class="menu-title">{{ __('Tenders')}}</span>
             </a>
             <!--end:Menu link-->
         </div>
 
  
-        <!--end:Menu item-->
-        <!--begin:Menu item-->
 
         <!--end:Menu item-->
     </div>
