@@ -108,6 +108,7 @@
                         <td>{{ $tender->show_applicants ? 'Yes' : 'No' }}</td>
                         <td>
                             <a href="{{ route('tenders.show', $tender->id) }}" class="btn btn-info">View</a>
+                            <a href="{{ route('tenders.edit', $tender->id) }}" class="btn btn-info">edit</a>
                             <button class="btn btn-primary show-qr-code" data-toggle="modal" data-target="#qrCodeModal" data-id="{{ $tender->id }}">Show QR Code</button>
                             <!-- QR Code Modal -->
 <div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModalLabel" aria-hidden="true">

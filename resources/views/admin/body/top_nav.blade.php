@@ -18,7 +18,56 @@
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 
-     
+            <div class="select">
+
+             
+
+
+            </div>
+            
+            </div>
+
+
+            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+
+                <div class="select">
+    
+                    <form action="{{ route('changeLang') }}" method="get">
+                        <select class="form-select" name="lang" onchange="this.form.submit()">
+                            <option value="en" {{ 'en' == session('locale') ? 'selected' : '' }}>{{ __('English') }}</option>
+                            <option value="ar" {{ 'ar' == session('locale') ? 'selected' : '' }}>{{ __('Arabic') }}</option>
+           
+                        </select>
+                    </form>
+                    
+                    
+    
+    
+                </div>
+                
+                </div>
+             
+
+                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+
+                    <div class="select">
+
+
+                        <!--begin::Menu item-->
+                      
+                               
+                        </div>
+
+
+
+                        
+                        
+        
+        
+                    </div>
+                    
+                    </div>
+
 
 
 
@@ -45,13 +94,12 @@
             <!--end::Search-->
         </div>
         <!--end::Search-->
+  @include('admin.body.partials.notifcation')
         <!--end::My apps links-->
-    </div>
-    </div>
-
+        
         <!--begin::User menu-->
  @include('admin.body.partials.user_nav')
-</div>
+
         <!--end::User menu-->
         <!--begin::Header menu toggle-->
         <div class="app-navbar-item d-lg-none ms-2 me-n2" title="Show header menu">

@@ -81,18 +81,48 @@ class TenderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $tender = Tender::findOrFail($id);
+        return view('company.tenders.edit',compact('tender'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    /**
+ * Update the specified resource in storage.
+ */
+public function update(Request $request, string $id)
+{
+    // Validate the incoming data
+    $validatedData = $request->validate([
+        'company_id' => 'required|exists:companies,id',
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'end_date' => 'required|date',
+        'show_applicants' => 'boolean',
+    ]);
+
+    // Find the tender by ID
+    $tender = Tender::findOrFail($id);
+
+    // Update the QR code if the company_id or relevant details change
+    if ($tender->company_id !== $validatedData['company_id'] || $tender->title !== $validatedData['title']) {
+        $qrCode = QrCode::generate(url('/tenders/' . $validatedData['company_id']));
+        $qrCodePath = 'qrcodes/tender_' . time() . '.svg';
+        Storage::disk('public')->put($qrCodePath, $qrCode);
+
+        $validatedData['qr_code'] = $qrCodePath;
     }
+
+    // Update the tender record
+    $tender->update($validatedData);
+
+    // Return a response indicating success
+    return response()->json(['success' => true, 'message' => 'Tender updated successfully.', 'tender' => $tender]);
+}
+
 
     /**
      * Remove the specified resource from storage.
