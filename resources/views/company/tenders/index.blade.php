@@ -109,23 +109,7 @@
                             <a href="{{ route('tenders.edit', $tender->id) }}" class="btn btn-info">edit</a>
                             <button class="btn btn-primary show-qr-code" data-toggle="modal" data-target="#qrCodeModal" data-id="{{ $tender->id }}">Show QR Code</button>
                             <!-- QR Code Modal -->
-<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="qrCodeModalLabel">QR Code</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <div id="qrCodeContainer">
-                    <!-- QR Code will be displayed here -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
                         </td>
                     </tr>
                     @endforeach
@@ -139,6 +123,27 @@
 
 
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR Code Modal -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel">QR Code</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="qrCodeContainer">
+                    <!-- QR Code will be displayed here -->
+                </div>
+                <!-- Add a Print button -->
+                <button class="btn btn-primary mt-3" id="printQrCode">Print QR Code</button>
             </div>
         </div>
     </div>
@@ -163,6 +168,20 @@ $(document).ready(function() {
                 $('#qrCodeContainer').html('<p>Error loading QR code.</p>'); // Handle errors
             }
         });
+    });
+
+    // Handle the print button click event
+    $('#printQrCode').on('click', function() {
+        var printContent = document.getElementById('qrCodeContainer').innerHTML;
+        var originalContent = document.body.innerHTML;
+
+        // Set up a temporary printing area
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+
+        // Re-attach the event listeners after printing
+        location.reload();
     });
 });
 </script>
