@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Company;
 
+use Carbon\Carbon;
 use App\Models\Tender;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -13,23 +15,61 @@ class TenderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        
-        if(auth()->user()->role === 'company'){
 
-        $tenders = Tender::where('id',auth()->user()->id)->get();
-        }else {
-
-            $tenders = Tender::all();
-
-        }
-
-
-        
-        return view('company.tenders.index', compact('tenders'));
-
-    }
+     public function index(Request $request)
+     {
+         $query = Tender::query();
+ 
+         // Apply role-based filtering
+         if (auth()->user()->role === 'company') {
+             $query->where('company_id', auth()->user()->id);
+         }
+ 
+         // Search functionality
+         if ($request->filled('search')) {
+             $searchTerm = $request->search;
+             $query->where(function ($q) use ($searchTerm) {
+                 $q->where('title', 'LIKE', "%{$searchTerm}%")
+                   ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+             });
+         }
+ 
+         // Date range filter
+         if ($request->filled('start_date') && $request->filled('end_date')) {
+             $query->whereBetween('end_date', [$request->start_date, $request->end_date]);
+         }
+ 
+         // Company filter (for admin users)
+         if (auth()->user()->role === 'admin' && $request->filled('company')) {
+             $query->where('company_id', $request->company);
+             
+             // Debugging: Log the company ID and the resulting SQL query
+             Log::info('Filtering by company ID: ' . $request->company);
+             Log::info('SQL Query: ' . $query->toSql());
+             Log::info('SQL Bindings: ' . json_encode($query->getBindings()));
+         }
+ 
+         // Status filter based on end_date
+         if ($request->filled('status')) {
+             $now = Carbon::now();
+             if ($request->status === 'open') {
+                 $query->where('end_date', '>', $now);
+             } elseif ($request->status === 'closed') {
+                 $query->where('end_date', '<=', $now);
+             }
+         }
+ 
+         $tenders = $query->latest()->paginate(10);
+ 
+         // Debugging: Log the count of tenders
+         Log::info('Number of tenders retrieved: ' . $tenders->count());
+ 
+         $companies = auth()->user()->role === 'admin' ? \App\Models\Company::all() : null;
+ 
+         return view('company.tenders.index', compact('tenders', 'companies'));
+     }
+ 
+    
 
     /**
      * Show the form for creating a new resource.
@@ -49,6 +89,8 @@ class TenderController extends Controller
         $validatedData = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'title' => 'required|string|max:255',
+            'first_insurance' => 'number|max:255',
+            'last_insurance' => 'number|max:255',
             'description' => 'required|string',
             'end_date' => 'required|date',
             'show_applicants' => 'boolean',
@@ -112,6 +154,8 @@ public function update(Request $request, string $id)
     $validatedData = $request->validate([
         'company_id' => 'required|exists:companies,id',
         'title' => 'required|string|max:255',
+        'first_insurance' => 'number|max:255',
+        'last_insurance' => 'number|max:255',
         'description' => 'required|string',
         'end_date' => 'required|date',
         'show_applicants' => 'boolean',

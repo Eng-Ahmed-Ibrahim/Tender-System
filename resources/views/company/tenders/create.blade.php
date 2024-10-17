@@ -49,6 +49,16 @@
                                 <label for="title">Title</label>
                                 <input type="text" name="title" class="form-control" required>
                             </div>
+
+                            <div class="form-group">
+                                <label for="title">First Insurance</label>
+                                <input type="text" name="first_insurance" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title">Last Insurance</label>
+                                <input type="text" name="last_insurance" class="form-control" required>
+                            </div>
                 
                             <div class="form-group">
                                 <label for="description">Description</label>

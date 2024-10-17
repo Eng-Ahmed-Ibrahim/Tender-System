@@ -53,6 +53,15 @@
                             </div>
                 
                             <div class="form-group">
+                                <label for="title">First Insurance</label>
+                                <input type="number" name="first_insurance" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title">Last Insurance</label>
+                                <input type="number" name="last_insurance" class="form-control" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea name="description" id="description" class="form-control" required></textarea>
                             </div>
