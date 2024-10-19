@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
 
     
     Route::resource('UserProfile', AdminProfileController::class);
+    
     Route::post('/update-email', [AdminProfileController::class, 'updateEmail'])->name('update.email');
 
 
@@ -91,8 +92,9 @@ Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLa
 
 
 Route::resource('tenders', TenderController::class);
+
 Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])->name('tenders.qrcode');
 
-
+Route::get('/tenders/{id}/download', [TenderController::class, 'download'])->name('tenders.download');
 
 Route::resource('Admintenders', AdminTenderController::class);

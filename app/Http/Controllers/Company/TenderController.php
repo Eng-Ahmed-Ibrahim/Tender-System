@@ -188,4 +188,25 @@ public function update(Request $request, string $id)
     {
         //
     }
+
+    public function download($id)
+    {
+        // Find the tender by ID
+        $tender = Tender::findOrFail($id);
+    
+        $qrCode = QrCode::size(200)
+            ->format('png')
+            ->generate(route('tenders.show', $tender->id));
+    
+        return response()->stream(
+            function () use ($qrCode) {
+                echo $qrCode;
+            },
+            200, // HTTP status code
+            [
+                'Content-Type' => 'image/png',
+            ]
+        );
+    }
+    
 }
