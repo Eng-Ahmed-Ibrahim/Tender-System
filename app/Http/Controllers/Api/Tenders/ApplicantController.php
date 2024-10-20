@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Tenders;
 
+use App\Models\Tender;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

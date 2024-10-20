@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('/ApiAllTenders', TenderController::class);
 
-    Route::get('/tenders/{Id}/users', [ApplicantController::class, 'getUsersByTenderId']);
+    Route::get('/tenders/{Id}/company', [ApplicantController::class, 'getUsersByTenderId']);
 
 });
 
