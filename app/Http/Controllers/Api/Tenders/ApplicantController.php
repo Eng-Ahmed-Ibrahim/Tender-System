@@ -29,7 +29,7 @@ class ApplicantController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Application submitted successfully.',
-            'application' =>UploadResource($application),
+            'application' =>new UploadResource($application),
         ], 201);
     }
 
