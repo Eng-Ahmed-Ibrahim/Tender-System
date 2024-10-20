@@ -16,8 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/tenders/{tenderId}/favorite', [FavoriteController::class, 'store']);
 
-// Endpoint to remove a tender from favorites
-Route::delete('/tenders/{tenderId}/favorite', [FavoriteController::class, 'destroy']);
+    Route::delete('/tenders/{tenderId}/favorite', [FavoriteController::class, 'destroy']);
 
     Route::post('/ApiFileTender', [ApplicantController::class, 'store']);
 

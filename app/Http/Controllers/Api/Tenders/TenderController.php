@@ -22,9 +22,13 @@ class TenderController extends Controller
     // Get the sorting type from the request
     $sortType = $request->input('sort');
 
+    // Get the search input from the request
+    $search = $request->input('search');
+
     // Get the authenticated user
     $user = Auth::user();
 
+    // Apply sorting based on the sort type
     switch ($sortType) {
         case 'current':
             // Current tenders: end_date > current date
@@ -50,6 +54,14 @@ class TenderController extends Controller
             // Default sorting: order by created_at (or end_date as needed)
             $query->orderBy('created_at', 'desc');
             break;
+    }
+
+    // Apply search filter if a search term is provided
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'LIKE', '%' . $search . '%')
+              ->orWhere('description', 'LIKE', '%' . $search . '%');
+        });
     }
 
     // Execute the query and retrieve the tenders
