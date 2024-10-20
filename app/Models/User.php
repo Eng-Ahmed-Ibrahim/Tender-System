@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens; // Import the trait
+use App\Models\Tender;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; // Import the trait
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -41,4 +42,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function favoriteTenders()
+{
+    return $this->belongsToMany(Tender::class, 'favorites');
+}
 }
