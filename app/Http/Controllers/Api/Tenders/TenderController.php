@@ -32,7 +32,7 @@ class TenderController extends Controller
                 break;
             case 'favorite':
                 // Favorite tenders for the authenticated user
-                $favoriteTenderIds = $request->user()->favoriteTenders->pluck('id')->toArray();
+                $favoriteTenderIds = Auth::user()->favoriteTenders->pluck('id')->toArray();
                 $query->whereIn('id', $favoriteTenderIds);
                 break;
             default:
