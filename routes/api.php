@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/ApiFileTender', [ApplicantController::class, 'store']);
 
+    Route::put('/ApiFileTender/{id}', [ApplicantController::class, 'update']);
+
 
     Route::resource('/ApiAllTenders', TenderController::class);
 

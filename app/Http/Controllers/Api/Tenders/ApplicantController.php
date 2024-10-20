@@ -54,10 +54,38 @@ class ApplicantController extends Controller
             'application' =>new UploadResource($application),
         ], 201);
     }
-
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048', // Make file optional for update
+        ]);
+    
+        $application = Applicant::findOrFail($id);
+    
+        if (now()->greaterThanOrEqualTo($application->edit_end_date)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot edit application after the deadline.',
+            ], 403); 
+    
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('applications', 'public');
+            $application->files = $filePath; 
+        }
+    
+        $application->save(); 
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Application updated successfully.',
+            'application' => new UploadResource($application), 
+        ], 200); 
+    }
+    
 
 
     
 
 
+}
 }
