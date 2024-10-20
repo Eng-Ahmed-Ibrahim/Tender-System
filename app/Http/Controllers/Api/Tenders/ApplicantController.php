@@ -20,7 +20,7 @@ class ApplicantController extends Controller
     
         $application = Applicant::create([
             'tender_id' => $validatedData['tender_id'],
-            'user_id' =>Auth::User()->id(),
+            'user_id' => Auth::user()->id,
             'files' => json_encode([$filePath]),
         ]);
     
@@ -30,6 +30,9 @@ class ApplicantController extends Controller
             'application' => $application,
         ], 201);
     }
+
+
+
     
 
 
