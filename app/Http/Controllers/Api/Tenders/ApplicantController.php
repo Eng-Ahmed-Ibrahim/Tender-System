@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Tenders;
 
+use Carbon\Carbon;
 use App\Models\Tender;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
@@ -65,17 +66,12 @@ class ApplicantController extends Controller
         $application = Applicant::findOrFail($id);
     
         // Convert edit_end_date to a Carbon instance
-        $editEndDate = \Carbon\Carbon::parse($application->edit_end_date);
+        $editEndDate = Carbon::parse($application->edit_end_date);
     
         // Check if the current time is before the edit_end_date
-        if (now()->greaterThanOrEqualTo($editEndDate)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot edit application after the deadline.',
-            ], 403); // Forbidden response
-        }
-    
-        // Handle file upload if a new file is provided
+        if (now()->lessThan($editEndDate)) {
+            
+            // Handle file upload if a new file is provided
         if ($request->hasFile('file')) {
             // Store the new file and update the file path
             $filePath = $request->file('file')->store('applications', 'public');
@@ -90,6 +86,14 @@ class ApplicantController extends Controller
             'message' => 'Application updated successfully.',
             'application' => new UploadResource($application), // Use the resource to return the updated application
         ], 200); // OK response
+
+        }
+    
+       
+        return response()->json([
+            'success' => false,
+            'message' => 'Cannot edit application after the deadline.',
+        ], 403); // Forbidden response
     }
     
 }
