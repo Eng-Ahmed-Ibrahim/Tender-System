@@ -22,6 +22,7 @@ class ApplicantController extends Controller
             'tender_id' => $validatedData['tender_id'],
             'user_id' => Auth::user()->id,
             'files' => json_encode([$filePath]),
+            'application_details' => 'tender'
         ]);
     
         return response()->json([
