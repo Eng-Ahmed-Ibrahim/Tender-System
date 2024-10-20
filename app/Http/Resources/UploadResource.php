@@ -16,7 +16,7 @@ class UploadResource extends JsonResource
     {
 
         return [
-            'file' => asset('storage/'.$this->files),
+            'file' => asset('storage/'. $this->files ),
           
         ];
     
