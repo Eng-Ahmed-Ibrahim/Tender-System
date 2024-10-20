@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/ApiFileTender', [ApplicantController::class, 'store']);
 
 
+    Route::resource('/ApiAllTenders', TenderController::class);
 
 });
 
@@ -30,6 +31,5 @@ Route::post('/ApiVerify', [RegisterController::class, 'verify']);
 Route::post('/ApiLogin', [LoginController::class, 'login']);
 
 
-Route::resource('/ApiAllTenders', TenderController::class);
 
 

@@ -12,42 +12,53 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class TenderController extends Controller
 {
     public function index(Request $request)
-    {
-        // Get the current date for comparison
-        $currentDate = now();
-    
-        // Create a query for Tenders
-        $query = Tender::query();
-    
-        // Get the sorting type from the request
-        $sortType = $request->input('sort');
-    
-        switch ($sortType) {
-            case 'current':
-                // Current tenders: end_date > current date
-                $query->where('end_date', '>', $currentDate);
-                break;
-            case 'previous':
-                // Previous tenders: end_date <= current date
-                $query->where('end_date', '<=', $currentDate);
-                break;
-            case 'favorite':
+{
+    // Get the current date for comparison
+    $currentDate = now();
+
+    // Create a query for Tenders
+    $query = Tender::query();
+
+    // Get the sorting type from the request
+    $sortType = $request->input('sort');
+
+    // Get the authenticated user
+    $user = Auth::user();
+
+    switch ($sortType) {
+        case 'current':
+            // Current tenders: end_date > current date
+            $query->where('end_date', '>', $currentDate);
+            break;
+        case 'previous':
+            // Previous tenders: end_date <= current date
+            $query->where('end_date', '<=', $currentDate);
+            break;
+        case 'favorite':
+            if ($user) {
                 // Favorite tenders for the authenticated user
-                $favoriteTenderIds = Auth::user()->favoriteTenders->pluck('id')->toArray();
+                $favoriteTenderIds = $user->favoriteTenders->pluck('id')->toArray();
                 $query->whereIn('id', $favoriteTenderIds);
-                break;
-            default:
-                // Default sorting: order by created_at (or end_date as needed)
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
-    
-        // Execute the query and retrieve the tenders
-        $tenders = $query->get();
-    
-        // Return the tenders as a collection resource
-        return TenderResource::collection($tenders);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not authenticated.',
+                ], 401);
+            }
+            break;
+        default:
+            // Default sorting: order by created_at (or end_date as needed)
+            $query->orderBy('created_at', 'desc');
+            break;
     }
+
+    // Execute the query and retrieve the tenders
+    $tenders = $query->get();
+
+    // Return the tenders as a collection resource
+    return TenderResource::collection($tenders);
+}
+
     
     
 
