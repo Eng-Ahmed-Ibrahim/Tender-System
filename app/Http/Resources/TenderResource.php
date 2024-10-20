@@ -18,6 +18,7 @@ class TenderResource extends JsonResource
     
 
         return [
+            'id' =>$this->id,
             'title' => $this->title,
             'description' =>  $this->description,
             'company' => $this->company->name,

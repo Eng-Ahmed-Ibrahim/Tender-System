@@ -16,7 +16,11 @@ class UserResource extends JsonResource
     {
 
         return [
-            'photo' => asset('storage/'. $this->photo),
+
+            'id' =>$this->id,
+
+            'photo' => $this->photo ? asset('storage/' . $this->photo) : asset('assets/company.jpeg'),
+
             'name' => $this->name,
           
         ];    
