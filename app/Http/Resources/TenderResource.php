@@ -19,11 +19,12 @@ class TenderResource extends JsonResource
 
         return [
             'title' => $this->title,
-            'description' => $this->description,
+            'description' =>  $this->description,
             'company' => $this->company->name,
             'end_date' => $this->end_date,
             'first_insurance' => $this->first_insurance,
             'price' => $this->price,
+            'city' => $this->city,
             'download_QR' => route('tenders.download', $this->id), // Link to download the QR code
         ];
     }
