@@ -41,7 +41,7 @@ class TenderController extends Controller
                 break;
             case 'favorite':
                 if ($user) {
-                    $favoriteTenderIds = $user->favoriteTenders->pluck('id')->toArray();
+                    $favoriteTenderIds = $user->favoriteTenders->pluck('id')->toArray(); 
                     $query->whereIn('id', $favoriteTenderIds);
                 } else {
                     return response()->json([

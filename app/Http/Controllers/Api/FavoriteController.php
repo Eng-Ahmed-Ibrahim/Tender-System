@@ -12,13 +12,24 @@ class FavoriteController extends Controller
     public function store(Request $request, $tenderId)
     {
         $tender = Tender::findOrFail($tenderId);
-        Auth::user()->favoriteTenders()->attach($tender);
-
+        $user = Auth::user();
+    
+        if (!$user->favoriteTenders()->where('tender_id', $tenderId)->exists()) {
+            $user->favoriteTenders()->attach($tender);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Tender added to favorites.',
+            ]);
+        }
+    
         return response()->json([
-            'success' => true,
-            'message' => 'Tender added to favorites.',
+            'success' => false,
+            'message' => 'Tender is already in favorites.',
         ]);
     }
+    
+ 
 
     // Remove a tender from favorites
     public function destroy(Request $request, $tenderId)
