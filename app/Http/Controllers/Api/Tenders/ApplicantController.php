@@ -56,36 +56,40 @@ class ApplicantController extends Controller
     }
     public function update(Request $request, $id)
     {
+        // Validate the request data
         $validatedData = $request->validate([
             'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048', // Make file optional for update
         ]);
     
+        // Find the application by ID
         $application = Applicant::findOrFail($id);
     
-        if (now()->greaterThanOrEqualTo($application->edit_end_date)) {
+        // Convert edit_end_date to a Carbon instance
+        $editEndDate = \Carbon\Carbon::parse($application->edit_end_date);
+    
+        // Check if the current time is before the edit_end_date
+        if (now()->greaterThanOrEqualTo($editEndDate)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Cannot edit application after the deadline.',
-            ], 403); 
-    
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('applications', 'public');
-            $application->files = $filePath; 
+            ], 403); // Forbidden response
         }
     
-        $application->save(); 
+        // Handle file upload if a new file is provided
+        if ($request->hasFile('file')) {
+            // Store the new file and update the file path
+            $filePath = $request->file('file')->store('applications', 'public');
+            $application->files = $filePath; // Update the file path
+        }
+    
+        // Update other application details if necessary
+        $application->save(); // Save the application with the updated fields
     
         return response()->json([
             'success' => true,
             'message' => 'Application updated successfully.',
-            'application' => new UploadResource($application), 
-        ], 200); 
+            'application' => new UploadResource($application), // Use the resource to return the updated application
+        ], 200); // OK response
     }
     
-
-
-    
-
-
-}
 }
