@@ -19,7 +19,7 @@ class UserResource extends JsonResource
 
             'id' =>$this->id,
 
-            'photo' => $this->photo ? asset('storage/' . $this->photo) : asset('assets/company.jpeg'),
+            'photo' => $this->photo ? asset('storage/' . $this->photo) : asset('assets/company.jpg'),
 
             'name' => $this->name,
           
