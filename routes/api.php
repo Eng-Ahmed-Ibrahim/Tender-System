@@ -5,12 +5,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Tenders\TenderController;
+use App\Http\Controllers\Api\Tenders\ApplicantController;
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
+
+Route::middleware('auth:sanctum')->group(function () {
+
+
+
+    Route::post('/ApiFileTender', [ApplicantController::class, 'store']);
+
+
+
+});
 
 
 

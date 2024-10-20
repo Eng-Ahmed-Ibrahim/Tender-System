@@ -30,6 +30,7 @@ class RegisterController extends Controller
             ['email' => $request->email],
             [
                 'name' => $request->name,
+                'role' => 'company',
                 'password' => bcrypt($request->password), // Hash the password
                 'phone' => $request->phone,
                 'verification_code' => $verificationCode,
