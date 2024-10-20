@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RepresntResource extends JsonResource
+class UploadResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,15 +14,11 @@ class RepresntResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
-
-            'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'whatsapp' => $this->whatsapp,
-            'photo' => asset('storage/'.$this->photo)
-
-
+            'file' => asset('storage/'.$this->files),
+          
         ];
+    
     }
 }

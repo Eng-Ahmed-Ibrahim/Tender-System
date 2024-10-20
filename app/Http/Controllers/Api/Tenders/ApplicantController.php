@@ -6,6 +6,7 @@ use App\Models\Applicant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UploadResource;
 
 class ApplicantController extends Controller
 {
@@ -28,7 +29,7 @@ class ApplicantController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Application submitted successfully.',
-            'application' => $application,
+            'application' =>UploadResource($application),
         ], 201);
     }
 
