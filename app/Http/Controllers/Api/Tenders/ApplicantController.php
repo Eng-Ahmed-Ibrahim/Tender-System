@@ -6,6 +6,7 @@ use App\Models\Tender;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UploadResource;
 
@@ -22,7 +23,7 @@ class ApplicantController extends Controller
     
         $users = $tender->applicants;
     
-        return response()->json($users);
+        return UserResource::collection($users);
 
         
     }
