@@ -47,4 +47,13 @@ class User extends Authenticatable
 {
     return $this->belongsToMany(Tender::class, 'favorites');
 }
+
+public function appliedTenders()
+{
+    return $this->belongsToMany(Tender::class, 'applicants')
+                ->withPivot('application_details', 'files')
+                ->withTimestamps();
+}
+
+
 }

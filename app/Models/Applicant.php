@@ -12,5 +12,8 @@ class Applicant extends Model
     protected $guarded=[];
 
 
+
+  
+
     
 }

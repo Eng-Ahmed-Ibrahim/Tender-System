@@ -10,6 +10,26 @@ use App\Http\Resources\UploadResource;
 
 class ApplicantController extends Controller
 {
+
+
+
+    public function getUsersByTenderId($tenderId)
+    {
+
+
+        $tender = Tender::findOrFail($tenderId);
+    
+        $users = $tender->applicants;
+    
+        return response()->json($users);
+
+        
+    }
+
+
+
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([

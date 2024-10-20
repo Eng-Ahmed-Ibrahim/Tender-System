@@ -30,4 +30,16 @@ class Tender extends Model
 {
     return $this->belongsToMany(User::class, 'favorites');
 }
+
+// Tender.php
+public function applicants()
+{
+    return $this->belongsToMany(User::class, 'applicants')
+                ->withPivot('application_details', 'files')
+                ->withTimestamps();
+}
+
+
+
+
 }
