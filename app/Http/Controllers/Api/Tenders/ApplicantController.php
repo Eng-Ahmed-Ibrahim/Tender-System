@@ -47,9 +47,9 @@ class ApplicantController extends Controller
     private function getRemainingTime($deadline)
     {
         // Get the current date and time
-        $currentDate = now();
+        $currentDate = now(); // Assuming now() returns the current date and time, e.g., 2024-10-21 00:00:00
         // Parse the deadline date
-        $deadlineDate = \Carbon\Carbon::parse($deadline);
+        $deadlineDate = \Carbon\Carbon::parse($deadline); // e.g., "2024-10-26 16:45:00"
     
         // Check if the deadline has already passed
         if ($currentDate->greaterThan($deadlineDate)) {
@@ -65,11 +65,16 @@ class ApplicantController extends Controller
         if ($remainingDays > 0) {
             return "يتبقى {$remainingDays} أيام"; // More than 0 days left
         } elseif ($remainingDays === 0) {
+            // Check if the deadline time has passed on the current day
+            if ($currentDate->greaterThan($deadlineDate)) {
+                return "انتهت المهلة"; // Deadline has passed
+            }
             return "يتبقى يوم واحد"; // 1 day remaining
         }
     
         return "انتهت المهلة"; // Fallback in case something unexpected happens
     }
+    
     
     
 
