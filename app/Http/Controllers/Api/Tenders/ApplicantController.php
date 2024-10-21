@@ -48,20 +48,29 @@ class ApplicantController extends Controller
     {
         // Get the current date and time
         $currentDate = now();
+        // Parse the deadline date
         $deadlineDate = \Carbon\Carbon::parse($deadline);
     
+        // Check if the deadline has already passed
+        if ($currentDate->greaterThan($deadlineDate)) {
+            return "انتهت المهلة"; // Deadline has passed
+        }
+    
+        // Calculate the difference
         $difference = $currentDate->diff($deadlineDate);
         
+        // Format the output message in Arabic
         $remainingDays = $difference->days;
     
         if ($remainingDays > 0) {
-            return "يتبقى {$remainingDays} أيام";
+            return "يتبقى {$remainingDays} أيام"; // More than 0 days left
         } elseif ($remainingDays === 0) {
-            return "يتبقى يوم واحد"; 
-        } else {
-            return "انتهت المهلة"; 
+            return "يتبقى يوم واحد"; // 1 day remaining
         }
+    
+        return "انتهت المهلة"; // Fallback in case something unexpected happens
     }
+    
     
 
 
