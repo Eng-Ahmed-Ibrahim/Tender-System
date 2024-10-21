@@ -99,7 +99,7 @@ class ApplicantController extends Controller
             'application' => new UploadResource($application),
         ], 201); // Created
     }
-    public function update(Request $request, $applicantId) 
+    public function update(Request $request) 
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -108,7 +108,7 @@ class ApplicantController extends Controller
         ]);
     
         $userId = Auth::user()->id;
-        
+
         $application = Applicant::findOrFail($userId);
     
         $tender = Tender::findOrFail($validatedData['tender_id']);
