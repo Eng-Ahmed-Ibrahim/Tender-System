@@ -106,9 +106,9 @@ class ApplicantController extends Controller
     
         $application = Applicant::findOrFail($id);
     
-        $editEndDate = Carbon::parse($application->edit_end_date);
+        $editEndDate = $application->edit_end_date;
     
-        if (now()->lessThan($editEndDate)) {
+        if (now() < $editEndDate) {
             
         if ($request->hasFile('file')) {
             $filePath = $request->file('file')->store('applications', 'public');
