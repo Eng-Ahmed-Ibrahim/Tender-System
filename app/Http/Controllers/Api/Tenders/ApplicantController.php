@@ -28,67 +28,29 @@ class ApplicantController extends Controller
 
         
     }  
-    public function deadline($tenderId)
-    {
-        try {
-            $tender = Tender::findOrFail($tenderId);
-            $deadline = $tender->edit_end_date;
-            
-            if (!$deadline) {
-                return response()->json([
-                    'error' => 'تاريخ انتهاء التعديل غير محدد'
-                ], 400);
-            }
-    
-            $remainingMessage = $this->getRemainingTime($deadline);
-    
+
+    public function deadline($tenderId) {
+
+        $tender = Tender::findOrFail($tenderId);
+
+        $deadline = $tender->edit_end_date;
+
+        if (now()>$deadline){
             return response()->json([
-                'deadline' => $remainingMessage
+                'message' => 'أنتهت المهلة للتعديل'
             ]);
-        } catch (\Exception $e) {
+        }else {
+
             return response()->json([
-                'error' => 'حدث خطأ أثناء حساب الوقت المتبقي'
-            ], 500);
+                'message' => "اخر موعد لتعديل الملف هو $deadline" // The last deadline to modify the file is ...
+            ]);
+
+
         }
+
+
     }
-    
-    private function getRemainingTime($deadline)
-    {
-        $currentDate = now();
-        $deadlineDate = \Carbon\Carbon::parse($deadline);
-    
-        if ($currentDate->greaterThan($deadlineDate)) {
-            return "انتهت المهلة";
-        }
-    
-        $difference = $currentDate->diff($deadlineDate);
-    
-        $days = $difference->days;
-        $hours = $difference->h;
-        $minutes = $difference->i;
-    
-        $parts = [];
-    
-        if ($days > 0) {
-            $parts[] = "{$days} " . ($days == 1 ? "يوم" : "أيام");
-        }
-    
-        if ($hours > 0 || $days > 0) {
-            $parts[] = "{$hours} " . ($hours == 1 ? "ساعة" : "ساعات");
-        }
-    
-        if ($minutes > 0 || $hours > 0 || $days > 0) {
-            $parts[] = "{$minutes} " . ($minutes == 1 ? "دقيقة" : "دقائق");
-        }
-    
-        if (empty($parts)) {
-            return "يتبقى أقل من دقيقة";
-        }
-    
-        return "يتبقى " . implode(" و ", $parts);
-    }
-    
-    
+
 
 
 
