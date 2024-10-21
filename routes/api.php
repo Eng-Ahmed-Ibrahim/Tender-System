@@ -28,6 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/tenders/{Id}/company', [ApplicantController::class, 'getUsersByTenderId']);
 
+    Route::get('/min_max_insurance', [TenderController::class, 'min_max_insurance']);
+    
+
 });
 
 

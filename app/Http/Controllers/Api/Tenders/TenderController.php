@@ -74,13 +74,7 @@ class TenderController extends Controller
             $query->where('city', $city);
         }
     
-        // Apply price range filter if provided
-        if ($minPrice) {
-            $query->where('price', '>=', $minPrice);
-        }
-        if ($maxPrice) {
-            $query->where('price', '<=', $maxPrice);
-        }
+        $highestPrice = Tender::max('first_insurance');
     
         // Apply insurance range filter if provided
         if ($minInsurance) {
@@ -109,9 +103,18 @@ class TenderController extends Controller
         // Return the tenders as a collection resource
         return TenderResource::collection($tenders);
     }
-    
+    public function min_max_insurance()
+{
+    $lowestPrice  = Tender::min('first_insurance');
+    $highPrice  = Tender::max('first_insurance');
 
-    
+    return respose()->json([
+        'min_tender_insurance' => $lowestPrice,
+        'max_tender_insurance' => $highPrice,
+    ]);
+
+
+}
     
 
     public function show($id)
