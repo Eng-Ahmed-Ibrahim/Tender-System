@@ -81,10 +81,9 @@
                                     <td>{{ $tender->id }}</td>
                                     <td>{{ $tender->title }}</td>
                                     <td>{{ $tender->first_insurance }}</td>
-                                    <td>{{ $tender->last_insurance }}</td>
                                     <td>{!! $tender->description !!}</td>
                                     @if(auth()->user()->role === 'admin')
-                                    <td>{{$tender->company->name}}</td>
+                                    <td>{{$tender->user->name}}</td>
                                     @endif
                                     <td>{{ $tender->end_date }}</td>
                                     <td>

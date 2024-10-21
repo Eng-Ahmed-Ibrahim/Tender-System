@@ -21,9 +21,9 @@ class Tender extends Model
         'show_applicants',
     ];
 
-    public function company()
+    public function user()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(User::class,'company_id');
     } 
 
     public function favoritedBy()

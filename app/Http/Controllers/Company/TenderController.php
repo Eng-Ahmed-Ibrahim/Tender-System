@@ -76,7 +76,7 @@ class TenderController extends Controller
      */
     public function create()
     {
-        $companies = \App\Models\Company::all();
+        $companies = User::where('role','company')->get();
         return view('company.tenders.create', compact('companies'));  
     
     }
@@ -87,7 +87,7 @@ class TenderController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'company_id' => 'required|exists:companies,id',
+            'company_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'first_insurance' => 'number|max:255',
             'last_insurance' => 'number|max:255',
@@ -152,7 +152,7 @@ public function update(Request $request, string $id)
 {
     // Validate the incoming data
     $validatedData = $request->validate([
-        'company_id' => 'required|exists:companies,id',
+        'company_id' => 'required|exists:users,id',
         'title' => 'required|string|max:255',
         'first_insurance' => 'number|max:255',
         'last_insurance' => 'number|max:255',
