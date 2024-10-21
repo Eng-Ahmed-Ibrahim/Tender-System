@@ -108,7 +108,7 @@ class ApplicantController extends Controller
     
         $deadline = $application->edit_end_date;
     
-        if (now() >$editEndDate) {
+        if (now() >$deadline) {
 
 
                    
