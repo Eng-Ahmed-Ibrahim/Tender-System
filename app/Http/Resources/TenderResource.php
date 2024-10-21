@@ -21,7 +21,7 @@ class TenderResource extends JsonResource
             'id' =>$this->id,
             'title' => $this->title,
             'description' =>  $this->description,
-            'company' => $this->company->name,
+            'company' => $this->user->name,
             'end_date' => $this->end_date,
             'first_insurance' => $this->first_insurance,
             'price' => $this->price,
