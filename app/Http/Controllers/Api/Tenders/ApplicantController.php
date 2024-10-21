@@ -43,7 +43,9 @@ class ApplicantController extends Controller
 
         } else {
 
-            $remainingDays = now()->diffInDays($deadline);
+            $remainingDaysDecimal = now()->diffInDays($deadline);
+
+            $remainingDays = floor($remainingDaysDecimal);
 
             return response()->json([
                 'message' => "اخر موعد لتعديل الملف هو $remainingDays"
