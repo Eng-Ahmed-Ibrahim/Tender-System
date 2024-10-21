@@ -36,13 +36,17 @@ class ApplicantController extends Controller
         $deadline = $tender->edit_end_date;
 
         if (now()>$deadline){
+
             return response()->json([
                 'message' => 'أنتهت المهلة للتعديل'
             ]);
-        }else {
+
+        } else {
+
+            $remianing = now()-$deadline;
 
             return response()->json([
-                'message' => "اخر موعد لتعديل الملف هو $deadline" // The last deadline to modify the file is ...
+                'message' => "اخر موعد لتعديل الملف هو $remianing"
             ]);
 
 
