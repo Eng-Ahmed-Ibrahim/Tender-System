@@ -18,6 +18,7 @@ class ProfileResource extends JsonResource
             'id' =>$this->id,
             'name' => $this->name,
             'email' =>  $this->email,
+            'phone' =>  $this->phone,
             'photo' => $this->photo ? asset('storage/' . $this->photo) : asset('assets/avatar.png'),
 
         ];  
