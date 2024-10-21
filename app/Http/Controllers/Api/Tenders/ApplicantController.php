@@ -99,41 +99,49 @@ class ApplicantController extends Controller
             'application' => new UploadResource($application),
         ], 201); // Created
     }
-    
-    public function update(Request $request, $id)
+    public function update(Request $request, $applicantId) 
     {
- 
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'tender_id' => 'required|exists:tenders,id', 
+            'file' => 'sometimes|file|mimes:pdf,doc,docx,jpg,png|max:2048', 
+        ]);
     
-        $tender = Tender::findOrFail($id);
+        $userId = Auth::user()->id;
+        
+        $application = Applicant::findOrFail($userId);
+    
+        $tender = Tender::findOrFail($validatedData['tender_id']);
 
         $deadline = $tender->edit_end_date;
-        
-        if (now() >$deadline) {
-
-
-                   
-        return response()->json([
-            'success' => false,
-            'message' => 'Cannot edit application after the deadline.',
-        ], 403); // Forbidden response
-      
-        }
-
-
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('applications', 'public');
-            $application->files = $filePath; 
+    
+        if (now()->greaterThan($deadline)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'انتهت المهلة لتعديل الطلب.' // The deadline for modifying the application has passed
+            ], 403);
         }
     
-        $application->save(); // Save the application with the updated fields
+        // Update the applicant record
+        if ($request->hasFile('file')) {
+            // Store the new file
+            $filePath = $request->file('file')->store('applications', 'public');
+            $application->files = $filePath; // Update the file path
+        }
+    
+        // Update other fields if necessary
+        $application->tender_id = $validatedData['tender_id'];
+        $application->application_details = 'تعديل على الطلب'; // You can modify this as needed
+    
+        // Save the updated applicant record
+        $application->save();
     
         return response()->json([
             'success' => true,
-            'message' => 'Application updated successfully.',
-            'application' => new UploadResource($application), // Use the resource to return the updated application
-        ], 200); // OK response
-
-
+            'message' => 'تم تحديث الطلب بنجاح.', // Application updated successfully.
+            'application' => new UploadResource($application),
+        ]);
     }
+    
     
 }
