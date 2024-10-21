@@ -104,10 +104,10 @@ class ApplicantController extends Controller
     {
  
     
-        $application = Applicant::findOrFail($id);
-    
-        $deadline = $application->edit_end_date;
-    
+        $tender = Tender::findOrFail($id);
+
+        $deadline = $tender->edit_end_date;
+        
         if (now() >$deadline) {
 
 
