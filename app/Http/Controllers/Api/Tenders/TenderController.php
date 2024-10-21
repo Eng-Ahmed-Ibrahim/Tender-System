@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Tenders;
 
 use App\Models\Tender;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\TenderResource;
@@ -103,19 +104,30 @@ class TenderController extends Controller
         // Return the tenders as a collection resource
         return TenderResource::collection($tenders);
     }
- public function min_max_insurance()
+public function min_max_insurance()
 {
-    $lowestPrice  = Tender::min('first_insurance');
-    $highPrice  = Tender::max('first_insurance');
+    // Get the lowest and highest insurance prices after casting to float
+    $lowestPrice  = Tender::min(DB::raw('CAST(first_insurance AS DECIMAL)'));
+    $highestPrice = Tender::max(DB::raw('CAST(first_insurance AS DECIMAL)'));
 
+    // Check if the values are null and handle accordingly
+    if (is_null($lowestPrice) || is_null($highestPrice)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No insurance data available.',
+            'min_tender_insurance' => $lowestPrice,
+            'max_tender_insurance' => $highestPrice,
+        ]);
+    }
+
+    // Return the min and max insurance prices
     return response()->json([
+        'success' => true,
         'min_tender_insurance' => $lowestPrice,
-        'max_tender_insurance' => $highPrice,
+        'max_tender_insurance' => $highestPrice,
     ]);
-
-
 }
-    
+ 
 
     public function show($id)
     {
