@@ -108,7 +108,7 @@ class TenderController extends Controller
     $lowestPrice  = Tender::min('first_insurance');
     $highPrice  = Tender::max('first_insurance');
 
-    return respose()->json([
+    return response()->json([
         'min_tender_insurance' => $lowestPrice,
         'max_tender_insurance' => $highPrice,
     ]);
