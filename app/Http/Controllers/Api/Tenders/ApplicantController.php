@@ -106,10 +106,20 @@ class ApplicantController extends Controller
     
         $application = Applicant::findOrFail($id);
     
-        $editEndDate = $application->edit_end_date;
+        $deadline = $application->edit_end_date;
     
-        if (now() < $editEndDate) {
-            
+        if (now() >$editEndDate) {
+
+
+                   
+        return response()->json([
+            'success' => false,
+            'message' => 'Cannot edit application after the deadline.',
+        ], 403); // Forbidden response
+      
+        }
+
+
         if ($request->hasFile('file')) {
             $filePath = $request->file('file')->store('applications', 'public');
             $application->files = $filePath; 
@@ -123,13 +133,7 @@ class ApplicantController extends Controller
             'application' => new UploadResource($application), // Use the resource to return the updated application
         ], 200); // OK response
 
-        }
-    
-       
-        return response()->json([
-            'success' => false,
-            'message' => 'Cannot edit application after the deadline.',
-        ], 403); // Forbidden response
+
     }
     
 }
