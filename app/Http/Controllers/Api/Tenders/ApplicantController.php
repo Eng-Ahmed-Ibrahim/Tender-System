@@ -27,6 +27,19 @@ class ApplicantController extends Controller
         return UserResource::collection($users);
 
         
+    }  
+
+    public function deadline($tenderId) {
+
+        $tender = Tender::findOrFail($tenderId);
+
+        $deadline = $tender->edit_end_date;
+
+        return response()->json([
+            'deadline' => $deadline
+            
+        ]);
+
     }
 
 
@@ -35,26 +48,41 @@ class ApplicantController extends Controller
 
     public function store(Request $request)
     {
+        // Validate the request
         $validatedData = $request->validate([
             'tender_id' => 'required|exists:tenders,id', 
             'file' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048', 
         ]);
     
+        // Check if the user has already submitted an application for this tender
+        $existingApplication = Applicant::where('tender_id', $validatedData['tender_id'])
+            ->where('user_id', Auth::user()->id)
+            ->first();
+    
+        if ($existingApplication) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already submitted an application for this tender.',
+            ], 400); // Bad Request
+        }
+    
+        // Store the uploaded file
         $filePath = $request->file('file')->store('applications', 'public'); 
     
+        // Create a new application record
         $application = Applicant::create([
             'tender_id' => $validatedData['tender_id'],
             'user_id' => Auth::user()->id,
-            'files' =>$filePath,
-            'application_details' => 'tender'
+            'files' => $filePath,
         ]);
     
         return response()->json([
             'success' => true,
             'message' => 'Application submitted successfully.',
-            'application' =>new UploadResource($application),
-        ], 201);
+            'application' => new UploadResource($application),
+        ], 201); // Created
     }
+    
     public function update(Request $request, $id)
     {
  
