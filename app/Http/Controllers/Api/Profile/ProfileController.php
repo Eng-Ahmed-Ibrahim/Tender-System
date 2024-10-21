@@ -35,32 +35,35 @@ class ProfileController extends Controller
     }
 
 
- public function updateProfile(Request $request)
+    public function updateProfile(Request $request)
     {
         // Validate the input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $request->user()->id,
             'phone' => 'required|string|max:15',
-            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'password' => ['required', Password::defaults()],
         ]);
-
+    
         $user = $request->user();
+    
+        // Check if the provided password matches the current password
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Password is incorrect'], 422);
+        }
+    
+        // Update user details
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->phone = $request->input('phone');
-
-        // If the password is provided, update it
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->input('password'));
-        }
-
+    
         // Save the updated user information
         $user->save();
-
+    
         // Return a response
         return response()->json(['message' => 'Profile updated successfully']);
     }
+    
 
     public function changePassword(Request $request)
     {
