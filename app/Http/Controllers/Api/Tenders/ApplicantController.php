@@ -67,17 +67,26 @@ class ApplicantController extends Controller
         $hours = $difference->h;
         $minutes = $difference->i;
     
+        $parts = [];
+    
         if ($days > 0) {
-            return "يتبقى {$days} " . ($days == 1 ? "يوم" : "أيام");
-        } elseif ($hours > 0) {
-            return "يتبقى {$hours} " . ($hours == 1 ? "ساعة" : "ساعات") . " و {$minutes} " . ($minutes == 1 ? "دقيقة" : "دقائق");
-        } elseif ($minutes > 0) {
-            return "يتبقى {$minutes} " . ($minutes == 1 ? "دقيقة" : "دقائق");
-        } else {
+            $parts[] = "{$days} " . ($days == 1 ? "يوم" : "أيام");
+        }
+    
+        if ($hours > 0 || $days > 0) {
+            $parts[] = "{$hours} " . ($hours == 1 ? "ساعة" : "ساعات");
+        }
+    
+        if ($minutes > 0 || $hours > 0 || $days > 0) {
+            $parts[] = "{$minutes} " . ($minutes == 1 ? "دقيقة" : "دقائق");
+        }
+    
+        if (empty($parts)) {
             return "يتبقى أقل من دقيقة";
         }
-    }
     
+        return "يتبقى " . implode(" و ", $parts);
+    }
     
     
 
