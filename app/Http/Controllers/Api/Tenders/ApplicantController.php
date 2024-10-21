@@ -47,8 +47,10 @@ class ApplicantController extends Controller
 
             $remainingDays = floor($remainingDaysDecimal);
 
+            $dayWord = ($remainingDays == 1) ? 'يوم' : 'أيام';
+
             return response()->json([
-                'message' => "اخر موعد لتعديل الملف هو $remainingDays"
+                'message' => "اخر موعد لتعديل الملف هو $remainingDays $dayWord"
             ]);
 
 
