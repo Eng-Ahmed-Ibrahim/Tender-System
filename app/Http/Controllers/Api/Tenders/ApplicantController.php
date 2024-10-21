@@ -28,51 +28,54 @@ class ApplicantController extends Controller
 
         
     }  
-    public function deadline($tenderId) 
+    public function deadline($tenderId)
     {
-        // Retrieve the tender record by its ID
-        $tender = Tender::findOrFail($tenderId);
+        try {
+            $tender = Tender::findOrFail($tenderId);
+            $deadline = $tender->edit_end_date;
+            
+            if (!$deadline) {
+                return response()->json([
+                    'error' => 'تاريخ انتهاء التعديل غير محدد'
+                ], 400);
+            }
     
-        // Get the deadline date
-        $deadline = $tender->edit_end_date;
+            $remainingMessage = $this->getRemainingTime($deadline);
     
-        // Calculate remaining time
-        $remainingMessage = $this->getRemainingTime($deadline);
-    
-        return response()->json([
-            'deadline' => $remainingMessage
-        ]);
+            return response()->json([
+                'deadline' => $remainingMessage
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'حدث خطأ أثناء حساب الوقت المتبقي'
+            ], 500);
+        }
     }
     
     private function getRemainingTime($deadline)
     {
-        // Get the current date and time
-        $currentDate = now(); // Assuming now() returns the current date and time, e.g., 2024-10-21 00:00:00
-        // Parse the deadline date
-        $deadlineDate = \Carbon\Carbon::parse($deadline); // e.g., "2024-10-26 16:45:00"
+        $currentDate = now();
+        $deadlineDate = \Carbon\Carbon::parse($deadline);
     
-        // Check if the deadline has already passed
         if ($currentDate->greaterThan($deadlineDate)) {
-            return "انتهت المهلة"; // Deadline has passed
+            return "انتهت المهلة";
         }
     
-        // Calculate the difference
         $difference = $currentDate->diff($deadlineDate);
-        
-        // Format the output message in Arabic
-        $remainingDays = $difference->days;
     
-        if ($remainingDays > 0) {
-            return "يتبقى {$remainingDays} أيام"; // More than 0 days left
-        } elseif ($remainingDays === 0) {
-            // Check if the deadline time has passed on the current day
-            if ($currentDate->greaterThan($deadlineDate)) {
-                return "انتهت المهلة"; // Deadline has passed
-            }
-            return "يتبقى يوم واحد"; // 1 day remaining
+        $days = $difference->days;
+        $hours = $difference->h;
+        $minutes = $difference->i;
+    
+        if ($days > 0) {
+            return "يتبقى {$days} " . ($days == 1 ? "يوم" : "أيام");
+        } elseif ($hours > 0) {
+            return "يتبقى {$hours} " . ($hours == 1 ? "ساعة" : "ساعات") . " و {$minutes} " . ($minutes == 1 ? "دقيقة" : "دقائق");
+        } elseif ($minutes > 0) {
+            return "يتبقى {$minutes} " . ($minutes == 1 ? "دقيقة" : "دقائق");
+        } else {
+            return "يتبقى أقل من دقيقة";
         }
-    
-        return "انتهت المهلة"; // Fallback in case something unexpected happens
     }
     
     
