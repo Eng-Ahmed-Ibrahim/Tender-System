@@ -28,20 +28,41 @@ class ApplicantController extends Controller
 
         
     }  
-
-    public function deadline($tenderId) {
-
+    public function deadline($tenderId) 
+    {
+        // Retrieve the tender record by its ID
         $tender = Tender::findOrFail($tenderId);
-
+    
+        // Get the deadline date
         $deadline = $tender->edit_end_date;
-
+    
+        // Calculate remaining time
+        $remainingMessage = $this->getRemainingTime($deadline);
+    
         return response()->json([
-            'deadline' => $deadline
-            
+            'deadline' => $remainingMessage
         ]);
-
     }
-
+    
+    private function getRemainingTime($deadline)
+    {
+        // Get the current date and time
+        $currentDate = now();
+        $deadlineDate = \Carbon\Carbon::parse($deadline);
+    
+        $difference = $currentDate->diff($deadlineDate);
+        
+        $remainingDays = $difference->days;
+    
+        if ($remainingDays > 0) {
+            return "يتبقى {$remainingDays} أيام";
+        } elseif ($remainingDays === 0) {
+            return "يتبقى يوم واحد"; 
+        } else {
+            return "انتهت المهلة"; 
+        }
+    }
+    
 
 
 
