@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Tenders\TenderController;
+use App\Http\Controllers\Api\Profile\ProfileController;
 use App\Http\Controllers\Api\Tenders\ApplicantController;
 
 
@@ -39,5 +40,11 @@ Route::post('/ApiVerify', [RegisterController::class, 'verify']);
 Route::post('/ApiLogin', [LoginController::class, 'login']);
 
 
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/Apiprofile', [ProfileController::class, 'user_profile']);
+    Route::post('/Apilogout', [ProfileController::class, 'logout']);
+    Route::put('/Apiprofile/update', [ProfileController::class, 'updateProfile']);
+    Route::put('/Apiprofile/change-password', [ProfileController::class, 'changePassword']);
+    Route::post('/Apiprofile/change-photo', [ProfileController::class, 'changePhoto']);
+});
 
