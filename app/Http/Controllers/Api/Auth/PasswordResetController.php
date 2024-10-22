@@ -23,7 +23,7 @@ class PasswordResetController extends Controller
         }
 
         // Generate a random verification code
-        $verificationCode = Str::random(6);
+        $verificationCode = Str::random(4);
 
         // Save the code to the password_resets table
         PasswordReset::updateOrCreate(
