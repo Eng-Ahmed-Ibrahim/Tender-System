@@ -77,12 +77,20 @@ class TenderController extends Controller
         $highestPrice = Tender::max('first_insurance');
     
         // Apply insurance range filter if provided
-        if ($minInsurance) {
-            $query->where('first_insurance', '>=', $minInsurance);
-        }
-        if ($maxInsurance) {
-            $query->where('first_insurance', '<=', $maxInsurance);
-        }
+      // Apply insurance range filter if provided
+if ($minInsurance && $maxInsurance) {
+    // Both min and max are provided, filter between them
+    $query->whereBetween('first_insurance', [$minInsurance, $maxInsurance]);
+} else {
+    // Apply individual filters
+    if ($minInsurance) {
+        $query->where('first_insurance', '>=', $minInsurance);
+    }
+    if ($maxInsurance) {
+        $query->where('first_insurance', '<=', $maxInsurance);
+    }
+}
+
     
         // Apply end date filter
         switch ($endDateFilter) {
