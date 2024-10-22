@@ -14,38 +14,30 @@ class PasswordResetController extends Controller
     public function sendVerificationCode(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-    
+
+        // Check if the email exists
         $user = User::where('email', $request->email)->first();
-    
+
         if (!$user) {
             return response()->json(['message' => 'Email does not exist'], 404);
         }
-    
-        $verificationCode = 5555; // You can replace this with dynamic code generation logic
-    
-        // Check if the password reset record exists
-        $passwordReset = PasswordReset::where('email', $request->email)->first();
-    
-        if ($passwordReset) {
-            // Update the existing record
-            $passwordReset->token = $verificationCode;
-            $passwordReset->created_at = Carbon::now();
-            $passwordReset->save(); // Save the updated record
-        } else {
-            // Create a new record
-            $passwordReset = new PasswordReset();
-            $passwordReset->email = $request->email;
-            $passwordReset->token = $verificationCode;
-            $passwordReset->created_at = Carbon::now();
-            $passwordReset->save(); // Save the new record
-        }
-    
-        return response()->json([
-            'message' => 'Verification code sent successfully',
-            'code' => $verificationCode 
-        ]);
+
+        // Generate a random verification code
+        $verificationCode = Str::random(6);
+
+        // Save the code to the password_resets table
+        PasswordReset::updateOrCreate(
+            ['email' => $request->email],
+            ['token' => $verificationCode, 'created_at' => Carbon::now()]
+        );
+
+        // Send the verification code via email
+  //      Mail::raw("Your verification code is: $verificationCode", function ($message) use ($request) {
+         //   $message->to($request->email)->subject('Password Reset Verification Code');
+       // });
+
+        return response()->json(['message' => 'Verification code sent successfully']);
     }
-    
 
 
     public function verifyCode(Request $request)
