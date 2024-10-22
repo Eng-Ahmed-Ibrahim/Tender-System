@@ -51,12 +51,10 @@ class PasswordResetController extends Controller
     public function verifyCode(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
             'code' => 'required|string'
         ]);
     
-        $passwordReset = PasswordReset::where('email', $request->email)
-            ->where('token', $request->code)
+        $passwordReset = PasswordReset::where('token', $request->code)
             ->first();
     
         if (!$passwordReset) {
@@ -69,21 +67,32 @@ class PasswordResetController extends Controller
     
         return response()->json(['message' => 'Verification code is valid']);
     }
+    
     public function resetPassword(Request $request)
     {
+        // Validate incoming request data
         $request->validate([
-            'password' => 'required|string|confirmed|min:6'
+            'email' => 'required|email|exists:users,email', // Ensure email is required, valid, and exists in users table
+            'password' => 'required|string|confirmed|min:6', // Validate password and confirmation
         ]);
     
-        // Assuming the user's identity is already established (e.g., through a middleware or token)
-        $user = auth()->user(); // Get the currently authenticated user
+        // Find the user by email
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
     
         // Reset the user's password
         $user->password = bcrypt($request->password);
         $user->save();
     
-        return response()->json(['message' => 'Password has been reset successfully']);
+        // Optional: Send email confirmation (if needed)
+        // Mail::to($user->email)->send(new PasswordResetSuccess($user));
+    
+        return response()->json(['message' => 'Password has been reset successfully.']);
     }
+    
     
 
 
