@@ -37,14 +37,15 @@ class ProfileController extends Controller
     }
 
 
+    
     public function updateProfile(Request $request)
     {
         // Validate the input
         $request->validate([
-            'name' => 'string|max:255',
-            'email' => 'email|unique:users,email,' . $request->user()->id,
-            'phone' => 'string|max:15',
-            'password' => ['required', Password::defaults()],
+            'name' => 'nullable|string|max:255', // Make name nullable
+            'email' => 'nullable|email|unique:users,email,' . $request->user()->id, // Make email nullable
+            'phone' => 'nullable|string|max:15', // Make phone nullable
+            'password' => ['required', Password::defaults()], // Password remains required for verification
         ]);
     
         $user = $request->user();
@@ -54,10 +55,18 @@ class ProfileController extends Controller
             return response()->json(['message' => 'Password is incorrect'], 422);
         }
     
-        // Update user details
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
+        // Update user details only if they are provided
+        if ($request->has('name')) {
+            $user->name = $request->input('name');
+        }
+    
+        if ($request->has('email')) {
+            $user->email = $request->input('email');
+        }
+    
+        if ($request->has('phone')) {
+            $user->phone = $request->input('phone');
+        }
     
         // Save the updated user information
         $user->save();
@@ -66,7 +75,6 @@ class ProfileController extends Controller
         return response()->json(['message' => 'Profile updated successfully']);
     }
     
-
     public function changePassword(Request $request)
     {
         // Validate the current password, new password, and password confirmation
