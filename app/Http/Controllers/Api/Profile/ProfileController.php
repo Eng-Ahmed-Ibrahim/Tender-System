@@ -41,9 +41,9 @@ class ProfileController extends Controller
     {
         // Validate the input
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $request->user()->id,
-            'phone' => 'required|string|max:15',
+            'name' => 'string|max:255',
+            'email' => 'email|unique:users,email,' . $request->user()->id,
+            'phone' => 'string|max:15',
             'password' => ['required', Password::defaults()],
         ]);
     
