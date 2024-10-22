@@ -67,81 +67,68 @@ class ApplicantController extends Controller
     {
         // Validate the request
         $validatedData = $request->validate([
-            'tender_id' => 'required|exists:tenders,id', 
-            'file' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048', 
-        ]);
-    
-        // Check if the user has already submitted an application for this tender
-        $existingApplication = Applicant::where('tender_id', $validatedData['tender_id'])
-            ->where('user_id', Auth::user()->id)
-            ->first();
-    
-        if ($existingApplication) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You have already submitted an application for this tender.',
-            ], 400); // Bad Request
-        }
-    
-        // Store the uploaded file
-        $filePath = $request->file('file')->store('applications', 'public'); 
-    
-        // Create a new application record
-        $application = Applicant::create([
-            'tender_id' => $validatedData['tender_id'],
-            'user_id' => Auth::user()->id,
-            'files' => $filePath,
-        ]);
-    
-        return response()->json([
-            'success' => true,
-            'message' => 'Application submitted successfully.',
-            'application' => new UploadResource($application),
-        ], 201); // Created
-    }
-    public function update(Request $request) 
-    {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'tender_id' => 'required|exists:tenders,id', 
-            'file' => 'sometimes|file|mimes:pdf,doc,docx,jpg,png|max:2048', 
+            'tender_id' => 'required|exists:tenders,id',
+            'file' => 'sometimes|file', // Use 'sometimes' to allow optional file
         ]);
     
         $userId = Auth::user()->id;
-
-        $application = Applicant::findOrFail($userId);
+    
+        // Check if the user has already submitted an application for this tender
+        $application = Applicant::where('tender_id', $validatedData['tender_id'])
+            ->where('user_id', $userId)
+            ->first();
     
         $tender = Tender::findOrFail($validatedData['tender_id']);
-
         $deadline = $tender->edit_end_date;
     
-        if (now()->greaterThan($deadline)) {
+        // Check if the deadline for modifying the application has passed
+        if ($application && now()->greaterThan($deadline)) {
             return response()->json([
                 'success' => false,
                 'message' => 'انتهت المهلة لتعديل الطلب.' // The deadline for modifying the application has passed
             ], 403);
         }
     
-        // Update the applicant record
-        if ($request->hasFile('file')) {
-            // Store the new file
+        if (!$application) {
+            // Store the uploaded file
             $filePath = $request->file('file')->store('applications', 'public');
-            $application->files = $filePath; // Update the file path
+    
+            // Create a new application record
+            $application = Applicant::create([
+                'tender_id' => $validatedData['tender_id'],
+                'user_id' => $userId,
+                'files' => $filePath,
+                'application_details' => 'تقديم طلب جديد', // New application details
+            ]);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Application submitted successfully.',
+                'application' => new UploadResource($application),
+            ], 201); // Created
+        } else {
+            // If an application exists, update it
+            if ($request->hasFile('file')) {
+                // Store the new file
+                $filePath = $request->file('file')->store('applications', 'public');
+                $application->files = $filePath; // Update the file path
+            }
+    
+            // Update other fields if necessary
+            $application->tender_id = $validatedData['tender_id'];
+            $application->application_details = 'تعديل على الطلب'; // Modify this as needed
+    
+            // Save the updated applicant record
+            $application->save();
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'تم تحديث الطلب بنجاح.', // Application updated successfully.
+                'application' => new UploadResource($application),
+            ]);
         }
-    
-        // Update other fields if necessary
-        $application->tender_id = $validatedData['tender_id'];
-        $application->application_details = 'تعديل على الطلب'; // You can modify this as needed
-    
-        // Save the updated applicant record
-        $application->save();
-    
-        return response()->json([
-            'success' => true,
-            'message' => 'تم تحديث الطلب بنجاح.', // Application updated successfully.
-            'application' => new UploadResource($application),
-        ]);
     }
+    
     
     
 }

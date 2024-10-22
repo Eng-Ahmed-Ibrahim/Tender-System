@@ -103,7 +103,10 @@ class TenderController extends Controller
         // Return the tenders as a collection resource
         return TenderResource::collection($tenders);
     }
- public function min_max_insurance()
+
+
+ 
+    public function min_max_insurance()
 {
     $lowestPrice  = Tender::min('first_insurance');
     $highPrice  = Tender::max('first_insurance');
