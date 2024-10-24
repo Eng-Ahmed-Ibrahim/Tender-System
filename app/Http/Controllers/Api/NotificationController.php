@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\FirebaseService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
@@ -25,7 +26,7 @@ class NotificationController extends Controller
         ]);
 
         try {
-            $response = $this->firebaseService->sendNotification(
+            $this->firebaseService->sendNotification(
                 $request->fcm_token,
                 $request->title,
                 $request->body,
@@ -36,11 +37,15 @@ class NotificationController extends Controller
                 'status' => 'success',
                 'message' => 'Notification sent successfully'
             ]);
-            
         } catch (\Exception $e) {
+            Log::error('Notification error:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => 'Failed to send notification'
             ], 500);
         }
     }

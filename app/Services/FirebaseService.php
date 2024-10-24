@@ -17,29 +17,39 @@ class FirebaseService
 
     public function sendNotification(string $token, string $title, string $body, array $data = [])
     {
-        $notification = Notification::create($title, $body);
+        try {
+            $notification = Notification::create($title, $body);
 
-        $message = CloudMessage::withTarget('token', $token)
-            ->withNotification($notification);
+            $message = CloudMessage::withTarget('token', $token)
+                ->withNotification($notification);
 
-        if (!empty($data)) {
-            $message = $message->withData($data);
+            if (!empty($data)) {
+                $message = $message->withData($data);
+            }
+
+            return $this->messaging->send($message);
+        } catch (\Exception $e) {
+            \Log::error('Firebase notification error: ' . $e->getMessage());
+            throw $e;
         }
-
-        return $this->messaging->send($message);
     }
 
     public function sendMulticast(array $tokens, string $title, string $body, array $data = [])
     {
-        $notification = Notification::create($title, $body);
+        try {
+            $notification = Notification::create($title, $body);
 
-        $message = CloudMessage::new()
-            ->withNotification($notification);
+            $message = CloudMessage::new()
+                ->withNotification($notification);
 
-        if (!empty($data)) {
-            $message = $message->withData($data);
+            if (!empty($data)) {
+                $message = $message->withData($data);
+            }
+
+            return $this->messaging->sendMulticast($message, $tokens);
+        } catch (\Exception $e) {
+            \Log::error('Firebase multicast error: ' . $e->getMessage());
+            throw $e;
         }
-
-        return $this->messaging->sendMulticast($message, $tokens);
     }
 }
