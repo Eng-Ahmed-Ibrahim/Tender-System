@@ -39,6 +39,9 @@ return [
         'api_key' => env('Currency_Converter_API_KEY'),
         'api_key2' => env('EXCHANGE_RATE_API_KEY'),
     ],
-
+    'firebase' => [
+        'credentials' => env('FIREBASE_CREDENTIALS'),
+    ],
+    
 
 ];
