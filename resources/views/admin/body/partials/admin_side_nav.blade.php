@@ -165,7 +165,6 @@
     </a>
     <!--end:Menu link-->
 </div>
-notifications.create
 <div class="menu-item pt-5">
     <!--begin:Menu content-->
     <div class="menu-content">

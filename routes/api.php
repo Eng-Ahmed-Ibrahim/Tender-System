@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Tenders\TenderController;
 use App\Http\Controllers\Api\Profile\ProfileController;
+use App\Http\Controllers\Api\UserNotifcationController;
 use App\Http\Controllers\Api\Tenders\ApplicantController;
 use App\Http\Controllers\Api\Auth\PasswordResetController;
 
@@ -42,10 +43,10 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     // Notification routes
     Route::prefix('notifications')->group(function () {
-        Route::get('/', [UserNotificationController::class, 'getNotifications']);
-        Route::get('/unread', [UserNotificationController::class, 'getUnreadNotifications']);
-        Route::post('/{id}/read', [UserNotificationController::class, 'markAsRead']);
-        Route::post('/read-all', [UserNotificationController::class, 'markAllAsRead']);
+        Route::get('/', [UserNotifcationController::class, 'getNotifications']);
+        Route::get('/unread', [UserNotifcationController::class, 'getUnreadNotifications']);
+        Route::post('/{id}/read', [UserNotifcationController::class, 'markAsRead']);
+        Route::post('/read-all', [UserNotifcationController::class, 'markAllAsRead']);
     });
 });
 Route::post('/password/send-code', [PasswordResetController::class, 'sendVerificationCode']);

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
-class UserNotificationController extends Controller
+class UserNotifcationController extends Controller
 {
     public function getNotifications()
     {
