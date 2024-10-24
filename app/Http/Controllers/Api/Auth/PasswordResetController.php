@@ -15,7 +15,7 @@ class PasswordResetController extends Controller
 {
     // Validate the request to ensure either email or phone is provided
     $request->validate([
-        'identifier' => 'required|string', // This will be either email or phone
+        'identifier' => 'required', // This will be either email or phone
     ]);
 
     // Check if the identifier is an email or phone
@@ -78,13 +78,15 @@ class PasswordResetController extends Controller
     {
         // Validate incoming request data
         $request->validate([
-            'email' => 'required|email|exists:users,email', // Ensure email is required, valid, and exists in users table
+            'identifier' => 'required', // Ensure email is required, valid, and exists in users table
             'password' => 'required|string|confirmed|min:6', // Validate password and confirmation
         ]);
     
         // Find the user by email
-        $user = User::where('email', $request->email)->first();
-    
+        $user = User::where('email', $request->identifier)
+        ->orWhere('phone', $request->identifier)
+        ->first();
+            
         if (!$user) {
             return response()->json(['message' => 'User not found.'], 404);
         }
