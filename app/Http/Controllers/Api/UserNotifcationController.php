@@ -13,7 +13,7 @@ class UserNotifcationController extends Controller
         try {
             $notifications = Notification::where('user_id', auth()->id())
                 ->orderBy('created_at', 'desc')
-                ->paginate(10);
+                ->get();
 
             return response()->json([
                 'status' => 'success',
@@ -94,7 +94,7 @@ class UserNotifcationController extends Controller
             $notifications = Notification::where('user_id', auth()->id())
                 ->where('is_read', false)
                 ->orderBy('created_at', 'desc')
-                ->paginate(10);
+                ->get();
 
             return response()->json([
                 'status' => 'success',
