@@ -2,27 +2,22 @@
 
 namespace App\Providers;
 
-use Kreait\Firebase\Factory;
 use Illuminate\Support\ServiceProvider;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging;
 
 class FirebaseServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
     public function register()
     {
-        $this->app->singleton('firebase', function ($app) {
-            return (new Factory)
-                ->withServiceAccount(storage_path('app/firebase.json'))
-                ->createMessaging();
+        $this->app->singleton('firebase.messaging', function ($app) {
+            $factory = (new Factory)
+                ->withServiceAccount(config('firebase.credentials.file'));
+            
+            return $factory->createMessaging();
         });
     }
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        //
-    }
+
+    
 }
+

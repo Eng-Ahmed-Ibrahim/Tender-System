@@ -1,43 +1,45 @@
 <?php
 
-// app/Services/FirebaseService.php
 namespace App\Services;
 
-use GuzzleHttp\Client;
+use Kreait\Firebase\Messaging;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 
 class FirebaseService
 {
-   
-    protected $client;
+    protected $messaging;
 
-    public function __construct(Client $client)
+    public function __construct(Messaging $messaging)
     {
-        $this->client = $client;
-    }
-    public function sendNotification($token, $notification, $data)
-    {
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        $serverKey = 'e9jr1_bEQ8yqzM8QH6ga9L:APA91bHZfFxNwXeijCs9km7hDMPpou9_uxtE9G4omcv1cn50GwCMNQy29ygjOGmGpMwWBpoVZicUaigDHK5wnfYqc_PzBaLZlRCoNMMyONRJNGhnREnTcGw'; // Replace with your FCM server key
-
-        $payload = [
-            'to' => $token,
-            'notification' => $notification,
-            'data' => $data,
-        ];
-
-        $headers = [
-            'Authorization' => 'key=' . $serverKey,
-            'Content-Type' => 'application/json',
-        ];
-
-        $response = $this->client->post($url, [
-            'headers' => $headers,
-            'json' => $payload,
-        ]);
-
-        return json_decode($response->getBody(), true);
+        $this->messaging = $messaging;
     }
 
+    public function sendNotification(string $token, string $title, string $body, array $data = [])
+    {
+        $notification = Notification::create($title, $body);
 
-    
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification($notification);
+
+        if (!empty($data)) {
+            $message = $message->withData($data);
+        }
+
+        return $this->messaging->send($message);
+    }
+
+    public function sendMulticast(array $tokens, string $title, string $body, array $data = [])
+    {
+        $notification = Notification::create($title, $body);
+
+        $message = CloudMessage::new()
+            ->withNotification($notification);
+
+        if (!empty($data)) {
+            $message = $message->withData($data);
+        }
+
+        return $this->messaging->sendMulticast($message, $tokens);
+    }
 }

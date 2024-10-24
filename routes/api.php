@@ -68,4 +68,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 // Send FCM notification
-Route::post('/send-notification', [NotificationController::class, 'sendNotification']);
+
+Route::post('/notifications/send', [NotificationController::class, 'sendNotification']);
