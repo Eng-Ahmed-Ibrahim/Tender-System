@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Kreait\Firebase\Messaging;
+use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 
@@ -29,7 +30,7 @@ class FirebaseService
 
             return $this->messaging->send($message);
         } catch (\Exception $e) {
-            \Log::error('Firebase notification error: ' . $e->getMessage());
+            Log::error('Firebase notification error: ' . $e->getMessage());
             throw $e;
         }
     }

@@ -98,3 +98,7 @@ Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])-
 Route::get('/tenders/{id}/download', [TenderController::class, 'download'])->name('tenders.download');
 
 Route::resource('Admintenders', AdminTenderController::class);
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
+    Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');
