@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Notification routes
+
     Route::prefix('notifications')->group(function () {
         Route::get('/', [UserNotifcationController::class, 'getNotifications']);
         Route::get('/unread', [UserNotifcationController::class, 'getUnreadNotifications']);
@@ -49,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/read-all', [UserNotifcationController::class, 'markAllAsRead']);
     });
 });
+
+
 Route::post('/password/send-code', [PasswordResetController::class, 'sendVerificationCode']);
 Route::post('/password/verify-code', [PasswordResetController::class, 'verifyCode']);
 Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
