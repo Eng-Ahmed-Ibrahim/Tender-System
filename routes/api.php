@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Tenders\TenderController;
@@ -50,11 +51,21 @@ Route::post('/ApiVerify', [RegisterController::class, 'verify']);
 Route::post('/ApiLogin', [LoginController::class, 'login']);
 
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/Apiprofile', [ProfileController::class, 'user_profile']);
     Route::post('/Apilogout', [ProfileController::class, 'logout']);
     Route::post('/Apiprofile/update', [ProfileController::class, 'updateProfile']);
     Route::post('/Apiprofile/change-password', [ProfileController::class, 'changePassword']);
     Route::post('/Apiprofile/change-photo', [ProfileController::class, 'changePhoto']);
+
+    Route::post('/store-fcm-token', [NotificationController::class, 'storeFcmToken']);
+
+
 });
 
+
+
+
+// Send FCM notification
+Route::post('/send-notification', [NotificationController::class, 'sendNotification']);
