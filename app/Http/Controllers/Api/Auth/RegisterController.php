@@ -11,39 +11,40 @@ class RegisterController extends Controller
 {
 
     public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'phone' => 'required|string|max:20|unique:users,phone',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email',
+        'phone' => 'required|string|max:20|unique:users,phone',
+        'password' => 'required|string|min:8|confirmed',
+        'fcm_token' => 'required|string', // Ensure fcm_token is a string
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $verificationCode = 4444; // Generate a 6-digit verification code
-
-        // Create or update the customer record
-        $customer = User::updateOrCreate(
-            ['email' => $request->email],
-            [
-                'name' => $request->name,
-                'role' => 'company',
-                'password' => bcrypt($request->password), // Hash the password
-                'phone' => $request->phone,
-                'verification_code' => $verificationCode,
-            ]
-        );
-
-        // Here, you should implement your SMS/email service to send the verification code
-        // For demonstration, we return the code in the response
-        return response()->json([
-            'message' => 'Verification code sent successfully.',
-            'verification_code' => $verificationCode, // For testing purposes; remove this in production
-        ], 201);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    $verificationCode = 4444; // Generate a 6-digit verification code
+
+    // Create or update the customer record
+    $customer = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'role' => 'company',
+        'password' => bcrypt($request->password), // Hash the password
+        'phone' => $request->phone,
+        'verification_code' => $verificationCode,
+        'fcm_token' => $request->fcm_token, // Store the FCM token
+    ]);
+
+    // Here, you should implement your SMS/email service to send the verification code
+    // For demonstration, we return the code in the response
+    return response()->json([
+        'message' => 'Verification code sent successfully.',
+        'verification_code' => $verificationCode, // For testing purposes; remove this in production
+    ], 201);
+}
+
     
     public function verify(Request $request)
     {

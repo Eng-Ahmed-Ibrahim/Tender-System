@@ -12,40 +12,46 @@ use App\Http\Controllers\Controller;
 class PasswordResetController extends Controller
 {
     public function sendVerificationCode(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-    
-        $user = User::where('email', $request->email)->first();
-    
-        if (!$user) {
-            return response()->json(['message' => 'Email does not exist'], 404);
-        }
-    
-        $verificationCode = 5555; // You can replace this with dynamic code generation logic
-    
-        // Check if the password reset record exists
-        $passwordReset = PasswordReset::where('email', $request->email)->first();
-    
-        if ($passwordReset) {
-            // Update the existing record
-            $passwordReset->token = $verificationCode;
-            $passwordReset->created_at = Carbon::now();
-            $passwordReset->save(); // Save the updated record
-        } else {
-            // Create a new record
-            $passwordReset = new PasswordReset();
-            $passwordReset->email = $request->email;
-            $passwordReset->token = $verificationCode;
-            $passwordReset->created_at = Carbon::now();
-            $passwordReset->save(); // Save the new record
-        }
-    
-        return response()->json([
-            'message' => 'Verification code sent successfully',
-            'code' => $verificationCode 
-        ]);
+{
+    // Validate the request to ensure either email or phone is provided
+    $request->validate([
+        'identifier' => 'required|string', // This will be either email or phone
+    ]);
+
+    // Check if the identifier is an email or phone
+    $user = User::where('email', $request->identifier)
+                ->orWhere('phone', $request->identifier)
+                ->first();
+
+    if (!$user) {
+        return response()->json(['message' => 'Identifier does not exist'], 404);
     }
-    
+
+    $verificationCode = 5555; // You can replace this with dynamic code generation logic
+
+    // Check if the password reset record exists
+    $passwordReset = PasswordReset::where('email', $user->email)->first();
+
+    if ($passwordReset) {
+        // Update the existing record
+        $passwordReset->token = $verificationCode;
+        $passwordReset->created_at = Carbon::now();
+        $passwordReset->save(); // Save the updated record
+    } else {
+        // Create a new record
+        $passwordReset = new PasswordReset();
+        $passwordReset->email = $user->email; // Use the user's email
+        $passwordReset->token = $verificationCode;
+        $passwordReset->created_at = Carbon::now();
+        $passwordReset->save(); // Save the new record
+    }
+
+    return response()->json([
+        'message' => 'Verification code sent successfully',
+        'code' => $verificationCode // For testing purposes; remove this in production
+    ]);
+}
+
 
 
     public function verifyCode(Request $request)
