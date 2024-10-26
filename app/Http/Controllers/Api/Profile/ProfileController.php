@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Profile;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -127,5 +128,52 @@ class ProfileController extends Controller
         return response()->json(['message' => 'Photo updated successfully', 'photo_url' => asset('storage/' . $user->photo)]);
     }
     
-
+    public function deleteAccount(Request $request)
+    {
+        // Validate the password for security
+        $request->validate([
+            'password' => 'required',
+        ]);
+    
+        // Get the authenticated user
+        $user = $request->user();
+    
+        // Verify the password matches
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Password is incorrect'
+            ], 422);
+        }
+    
+        try {
+            // Begin a database transaction
+            DB::beginTransaction();
+    
+            // Revoke all tokens
+            $user->tokens()->delete();
+    
+            // Delete any associated files (like profile photo)
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+    
+            // Delete the user
+            $user->delete();
+    
+            // Commit the transaction
+            DB::commit();
+    
+            return response()->json([
+                'message' => 'Account deleted successfully'
+            ], 200);
+    
+        } catch (\Exception $e) {
+            // Rollback in case of error
+            DB::beginTransaction();
+    
+            return response()->json([
+                'message' => 'Failed to delete account'
+            ], 500);
+        }
+    }
 }

@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/min_max_insurance', [TenderController::class, 'min_max_insurance']);
     
-
+    Route::delete('applications/file', [YourController::class, 'deleteFile']);
 
 
 });
@@ -73,6 +73,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/store-fcm-token', [NotificationController::class, 'storeFcmToken']);
 
+    Route::delete('profile/delete', [ProfileController::class, 'deleteAccount']);
 
 });
 

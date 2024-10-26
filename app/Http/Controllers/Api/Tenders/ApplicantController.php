@@ -129,6 +129,70 @@ class ApplicantController extends Controller
         }
     }
     
-    
+    public function deleteFile(Request $request)
+{
+    // Validate the request
+    $validatedData = $request->validate([
+        'tender_id' => 'required|exists:tenders,id'
+    ]);
+
+    $userId = Auth::user()->id;
+
+    // Find the application
+    $application = Applicant::where('tender_id', $validatedData['tender_id'])
+        ->where('user_id', $userId)
+        ->first();
+
+    // Check if application exists
+    if (!$application) {
+        return response()->json([
+            'success' => false,
+            'message' => 'لم يتم العثور على الطلب.' // Application not found
+        ], 404);
+    }
+
+    // Get the tender to check deadline
+    $tender = Tender::findOrFail($validatedData['tender_id']);
+    $deadline = $tender->edit_end_date;
+
+    // Check if the deadline for modifying the application has passed
+    if (now()->greaterThan($deadline)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'انتهت المهلة لتعديل الطلب.' // The deadline for modifying the application has passed
+        ], 403);
+    }
+
+    try {
+        // Check if file exists
+        if ($application->files && Storage::disk('public')->exists($application->files)) {
+            // Delete the file from storage
+            Storage::disk('public')->delete($application->files);
+            
+            // Update the application record
+            $application->files = null;
+            $application->application_details = 'تم حذف الملف'; // File was deleted
+            $application->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'تم حذف الملف بنجاح.', // File deleted successfully
+                'application' => new UploadResource($application)
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'لم يتم العثور على الملف.' // File not found
+        ], 404);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'فشل في حذف الملف.', // Failed to delete file
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
     
 }
