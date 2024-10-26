@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Tenders;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Tender;
 use App\Models\Applicant;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UploadResource;
+use Illuminate\Support\Facades\Storage;
 
 class ApplicantController extends Controller
 {
@@ -186,7 +188,7 @@ class ApplicantController extends Controller
             'message' => 'لم يتم العثور على الملف.' // File not found
         ], 404);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
             'message' => 'فشل في حذف الملف.', // Failed to delete file
