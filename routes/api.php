@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/min_max_insurance', [TenderController::class, 'min_max_insurance']);
     
-    Route::delete('applications/file', [YourController::class, 'deleteFile']);
+    Route::delete('applications/file', [ApplicantController::class, 'deleteFile']);
 
 
 });
