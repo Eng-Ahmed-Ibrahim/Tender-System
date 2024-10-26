@@ -80,7 +80,6 @@
                                 <thead>
                                     <tr>
                                         <th>Applicant</th>
-                                        <th>Details</th>
                                         <th>Files</th>
                                         <th>Applied Date</th>
                                         <th>Actions</th>
@@ -104,35 +103,28 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" 
-                                                        class="btn btn-sm btn-light-primary" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#detailsModal{{ $applicant->id }}">
-                                                    View Details
-                                                </button>
-                                            </td>
-                                            <td>
-                                                @php
-                                                    $files = json_decode($applicant->pivot->files, true);
-                                                @endphp
-                                                @if(is_array($files) && count($files) > 0)
+                                                @if($applicant->pivot->files)
+                                                    @php
+                                                        $fileArray = array_filter(explode(',', $applicant->pivot->files));
+                                                        $fileCount = count($fileArray);
+                                                    @endphp
                                                     <div class="dropdown">
                                                         <button class="btn btn-sm btn-light-info dropdown-toggle" 
                                                                 type="button" 
                                                                 data-bs-toggle="dropdown">
-                                                            Files ({{ count($files) }})
+                                                            Files ({{ $fileCount }})
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            @foreach($files as $file)
+                                                            @foreach($fileArray as $file)
                                                                 <li>
                                                                     <a class="dropdown-item" 
-                                                                       href="{{ asset('storage/' . $file) }}" 
+                                                                       href="{{ asset('storage/' . trim($file)) }}" 
                                                                        target="_blank">
                                                                         <i class="ki-duotone ki-file fs-5 me-2">
                                                                             <span class="path1"></span>
                                                                             <span class="path2"></span>
                                                                         </i>
-                                                                        {{ basename($file) }}
+                                                                        {{ basename(trim($file)) }}
                                                                     </a>
                                                                 </li>
                                                             @endforeach
