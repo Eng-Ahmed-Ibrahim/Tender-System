@@ -116,8 +116,8 @@ class TenderController extends Controller
             ->backgroundColor(255, 255, 0)
             ->color(0, 0, 255)
             ->margin(1)
-            ->generate(route('tenders.show', $tender->id)); 
-    
+            ->generate(url("/api/ApiAllTenders/{$tender->id}")); 
+
         return view('company.tenders.show', compact('tender', 'qrCode'));
     }
     public function generateQrCode($id)
@@ -128,8 +128,8 @@ class TenderController extends Controller
         return QrCode::size(400)
         ->backgroundColor(128, 128, 128)
             ->margin(1)
-            ->generate(route('tenders.show', $tender->id)); 
-    }
+            ->generate(url("/api/ApiAllTenders/{$tender->id}"));  
+          }
     
     /**
      * Show the form for editing the specified resource.
