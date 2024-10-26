@@ -14,20 +14,19 @@ use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
-    public function user_profile(){
-
-        $user = Auth::User();
-
-        $userId = $user->id;
-
-        $profileDate = User::where('id',$userId)->first();
-
-
-        return response()->json([
-            'profile'=> new ProfileResource($profileDate)
-        ]);
-
-
+    public function user_profile()
+    {
+        // Get the authenticated user directly
+        $user = Auth::guard('sanctum')->user();
+    
+        if ($user) {
+            return response()->json([
+                'profile' => new ProfileResource($user)
+            ]);
+        }
+    
+        // Handle the case where no authenticated user is found
+        return response()->json(['message' => 'User not authenticated'], 401);
     }
 
     public function logout(Request $request)
