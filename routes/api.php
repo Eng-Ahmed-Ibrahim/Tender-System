@@ -27,7 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/ApiFileTenderUpdate', [ApplicantController::class, 'update']);
 
 
-    Route::resource('/ApiAllTenders', TenderController::class);
+    Route::get('/ApiAllTenders', [TenderController::class, 'index']);
+
+    Route::get('/ApiAllTenders/{tender}', [TenderController::class, 'show']);
 
     Route::get('/tenders/{Id}/company', [ApplicantController::class, 'getUsersByTenderId']);
 
