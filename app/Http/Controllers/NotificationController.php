@@ -32,7 +32,7 @@ class NotificationController extends Controller
             'title' => 'required|string|max:255',
             'body' => 'required|string'
         ]);
-
+    
         try {
             foreach ($request->users as $userId) {
                 $user = User::find($userId);
@@ -43,20 +43,17 @@ class NotificationController extends Controller
                     'title' => $request->title,
                     'body' => $request->body,
                 ]);
-
-                // Send FCM notification if user has token
-                if ($user->fcm_token) {
-                    $this->firebaseService->sendNotification(
-                        $user->fcm_token,
-                        $request->title,
-                        $request->body
-                    );
-                }
+    
+                // Send to both mobile and web if tokens exist
+                $this->firebaseService->sendNotificationToAllDevices(
+                    $user,
+                    $request->title,
+                    $request->body
+                );
             }
-
+    
             return redirect()->route('notifications.create')
                            ->with('success', 'Notifications sent successfully');
-
         } catch (\Exception $e) {
             return redirect()->route('notifications.create')
                            ->with('error', 'Failed to send notifications: ' . $e->getMessage());

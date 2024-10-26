@@ -14,9 +14,10 @@ class TenderController extends Controller
     public function index(Request $request)
     {
         $currentDate = now();
+
+        $applied = Applicant::where('user_id',auth()->user()->id)->pluck('tender_id');
     
-        // Create a query for Tenders
-        $query = Tender::query();
+        $query = Tender::wherein('id',$applied);
     
         // Get the sorting type, search input, and other filters from the request
         $sortType = $request->input('sort');
@@ -105,10 +106,8 @@ if ($minInsurance && $maxInsurance) {
                 break;
         }
     
-        // Execute the query and retrieve the tenders
         $tenders = $query->get();
     
-        // Return the tenders as a collection resource
         return TenderResource::collection($tenders);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Tender;
+use App\Models\Notification;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; // Import the trait
@@ -55,5 +56,14 @@ public function appliedTenders()
                 ->withTimestamps();
 }
 
+public function notifications()
+{
+    return $this->hasMany(Notification::class);
+}
+
+public function unreadNotifications()
+{
+    return $this->notifications()->whereNull('read_at');
+}
 
 }

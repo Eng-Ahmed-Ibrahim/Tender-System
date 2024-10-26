@@ -67,6 +67,7 @@ Route::post('/ApiLogin', [LoginController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    
     Route::get('/Apiprofile', [ProfileController::class, 'user_profile']);
     Route::post('/Apilogout', [ProfileController::class, 'logout']);
     Route::post('/Apiprofile/update', [ProfileController::class, 'updateProfile']);

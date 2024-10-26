@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Kreait\Firebase\Messaging;
 use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -53,4 +54,16 @@ class FirebaseService
             throw $e;
         }
     }
+
+
+    public function sendNotificationToAllDevices(User $user, string $title, string $body, array $data = [])
+{
+    $tokens = array_filter([$user->fcm_token, $user->web_fcm_token]);
+    
+    if (!empty($tokens)) {
+        return $this->sendMulticast($tokens, $title, $body, $data);
+    }
+    
+    return null;
+}
 }
