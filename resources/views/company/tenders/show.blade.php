@@ -69,12 +69,126 @@
 
             @if($tender->show_applicants)
                 <div class="card shadow-sm">
-                    <div class="card-header bg-light">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Applicants</h5>
+                        <span class="badge bg-primary">Total: {{ $tender->applicants->count() }}</span>
                     </div>
                     <div class="card-body">
-                        {{-- Add code here to display applicants if you have that relationship set up --}}
-                        <p class="text-muted">Applicant information will be displayed here.</p>
+                        @if($tender->applicants->count() > 0)
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Applicant</th>
+                                            <th>Details</th>
+                                            <th>Files</th>
+                                            <th>Applied Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($tender->applicants as $applicant)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-35px me-2">
+                                                            <span class="symbol-label bg-light-primary">
+                                                                {{ substr($applicant->user->name, 0, 1) }}
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="text-gray-800 fw-bold">{{ $applicant->user->name }}</span>
+                                                            <br>
+                                                            <small class="text-muted">{{ $applicant->user->email }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" 
+                                                            class="btn btn-sm btn-light-primary" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#detailsModal{{ $applicant->id }}">
+                                                        View Details
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        $files = json_decode($applicant->files, true);
+                                                    @endphp
+                                                    @if(is_array($files) && count($files) > 0)
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-light-info dropdown-toggle" 
+                                                                    type="button" 
+                                                                    data-bs-toggle="dropdown">
+                                                                Files ({{ count($files) }})
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                @foreach($files as $file)
+                                                                    <li>
+                                                                        <a class="dropdown-item" 
+                                                                           href="{{ asset('storage/' . $file) }}" 
+                                                                           target="_blank">
+                                                                            <i class="ki-duotone ki-file fs-5 me-2">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                            {{ basename($file) }}
+                                                                        </a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    @else
+                                                        <span class="badge badge-light-warning">No files</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $applicant->created_at->format('M d, Y H:i') }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" 
+                                                                class="btn btn-sm btn-icon btn-light-primary" 
+                                                                title="Send Message"
+                                                                onclick="sendMessage('{{ $applicant->user->id }}')">
+                                                            <i class="ki-duotone ki-message-text-2 fs-2">
+                                                                <span class="path1"></span>
+                                                                <span class="path2"></span>
+                                                                <span class="path3"></span>
+                                                            </i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Details Modal for each applicant -->
+                                            <div class="modal fade" id="detailsModal{{ $applicant->id }}" tabindex="-1">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Application Details</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {!! $applicant->application_details !!}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <div class="text-center py-5">
+                                <i class="ki-duotone ki-people fs-3hx text-muted mb-3">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                    <span class="path5"></span>
+                                </i>
+                                <p class="text-muted">No applicants yet</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -92,9 +206,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-
                     {!!$qrCode!!}
-                   
                 </div>
             </div>
         </div>
@@ -104,10 +216,23 @@
 
 @push('scripts')
 <script>
-    // Initialize all tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+// Initialize tooltips
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+});
+
+// Function to handle sending messages to applicants
+function sendMessage(userId) {
+    // You can implement your message sending functionality here
+    // For example, opening a chat modal or redirecting to a messaging page
+    console.log('Sending message to user:', userId);
+}
+
+// Initialize any dropdowns
+var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+    return new bootstrap.Dropdown(dropdownToggleEl)
+});
 </script>
 @endpush
