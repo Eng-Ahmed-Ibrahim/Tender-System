@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Tenders;
 
 use App\Models\Tender;
+use App\Models\Applicant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,25 @@ class TenderController extends Controller
 {
     public function index(Request $request)
     {
+        // Check if user is authenticated
+        if (!auth()->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated.',
+            ], 401);
+        }
+    
         $currentDate = now();
-
-        $applied = Applicant::where('user_id',auth()->user()->id)->pluck('tender_id');
+        $user = auth()->user();
+        
+        // Get tenders where the user has applied
+        $appliedTenderIds = Applicant::where('user_id', $user->id)
+            ->pluck('tender_id');
+        
+        // Initialize base query with applied tenders
+        $query = Tender::whereIn('id', $appliedTenderIds);
     
-        $query = Tender::wherein('id',$applied);
-    
-        // Get the sorting type, search input, and other filters from the request
+        // Get request parameters
         $sortType = $request->input('sort');
         $search = $request->input('search');
         $city = $request->input('city');
@@ -29,10 +42,7 @@ class TenderController extends Controller
         $maxInsurance = $request->input('max_insurance');
         $endDateFilter = $request->input('end_date_filter');
     
-        // Get the authenticated user
-        $user = Auth::user();
-    
-        // Apply sorting and filtering based on the sort type
+        // Apply sorting
         switch ($sortType) {
             case 'current':
                 $query->where('end_date', '>', $currentDate);
@@ -41,15 +51,8 @@ class TenderController extends Controller
                 $query->where('end_date', '<=', $currentDate);
                 break;
             case 'favorite':
-                if ($user) {
-                    $favoriteTenderIds = $user->favoriteTenders->pluck('id')->toArray(); 
-                    $query->whereIn('id', $favoriteTenderIds);
-                } else {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'User not authenticated.',
-                    ], 401);
-                }
+                $favoriteTenderIds = $user->favoriteTenders()->pluck('id');
+                $query->whereIn('id', $favoriteTenderIds);
                 break;
             case 'lowest_price':
                 $query->orderBy('price', 'asc');
@@ -62,7 +65,7 @@ class TenderController extends Controller
                 break;
         }
     
-        // Apply search filter if a search term is provided
+        // Apply search filter
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'LIKE', '%' . $search . '%')
@@ -70,39 +73,48 @@ class TenderController extends Controller
             });
         }
     
-        // Apply city filter if provided
+        // Apply city filter
         if ($city) {
             $query->where('city', $city);
         }
     
-        $highestPrice = Tender::max('first_insurance');
+        // Apply price range filter
+        if ($minPrice && $maxPrice) {
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        } elseif ($minPrice) {
+            $query->where('price', '>=', $minPrice);
+        } elseif ($maxPrice) {
+            $query->where('price', '<=', $maxPrice);
+        }
     
-        // Apply insurance range filter if provided
-      // Apply insurance range filter if provided
-if ($minInsurance && $maxInsurance) {
-    // Both min and max are provided, filter between them
-    $query->whereBetween('first_insurance', [$minInsurance, $maxInsurance]);
-} else {
-    // Apply individual filters
-    if ($minInsurance) {
-        $query->where('first_insurance', '>=', $minInsurance);
-    }
-    if ($maxInsurance) {
-        $query->where('first_insurance', '<=', $maxInsurance);
-    }
-}
-
+        // Apply insurance range filter
+        if ($minInsurance && $maxInsurance) {
+            $query->whereBetween('first_insurance', [$minInsurance, $maxInsurance]);
+        } elseif ($minInsurance) {
+            $query->where('first_insurance', '>=', $minInsurance);
+        } elseif ($maxInsurance) {
+            $query->where('first_insurance', '<=', $maxInsurance);
+        }
     
         // Apply end date filter
         switch ($endDateFilter) {
             case 'less_than_day':
-                $query->whereBetween('end_date', [$currentDate, $currentDate->copy()->addDay()]);
+                $query->whereBetween('end_date', [
+                    $currentDate,
+                    $currentDate->copy()->addDay()
+                ]);
                 break;
             case 'less_than_week':
-                $query->whereBetween('end_date', [$currentDate, $currentDate->copy()->addWeek()]);
+                $query->whereBetween('end_date', [
+                    $currentDate,
+                    $currentDate->copy()->addWeek()
+                ]);
                 break;
             case 'less_than_month':
-                $query->whereBetween('end_date', [$currentDate, $currentDate->copy()->addMonth()]);
+                $query->whereBetween('end_date', [
+                    $currentDate,
+                    $currentDate->copy()->addMonth()
+                ]);
                 break;
         }
     
@@ -110,8 +122,6 @@ if ($minInsurance && $maxInsurance) {
     
         return TenderResource::collection($tenders);
     }
-
-
  
     public function min_max_insurance()
 {
