@@ -177,8 +177,7 @@ class ProfileController extends Controller
     
             // Clear session after successful deletion
             auth()->guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        
     
             return response()->json([
                 'message' => 'Account deleted successfully'
