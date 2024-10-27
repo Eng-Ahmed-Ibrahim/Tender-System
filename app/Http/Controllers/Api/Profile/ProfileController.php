@@ -21,7 +21,7 @@ class ProfileController extends Controller
     public function user_profile()
     {
         // Get the authenticated user directly
-        $Id = Auth::guard('web')->id();
+        $Id = auth()->id();
 
         $user = User::find($Id);
 
