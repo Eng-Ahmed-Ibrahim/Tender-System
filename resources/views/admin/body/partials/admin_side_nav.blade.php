@@ -130,7 +130,7 @@
 <!--begin:Menu item-->
 <div class="menu-item">
     <!--begin:Menu link-->
-    <a class="menu-link" href="{{ route('companies.create')}}" >
+    <a class="menu-link" href="{{ route('companies.index')}}" >
         <span class="menu-icon">
             <i class="ki-duotone ki-rocket fs-2">
                 <span class="path1"></span>

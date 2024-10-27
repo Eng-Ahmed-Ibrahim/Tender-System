@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Tender;
+use App\Models\Company;
 use App\Models\Notification;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -66,4 +67,9 @@ public function unreadNotifications()
     return $this->notifications()->whereNull('read_at');
 }
 
+
+public function company() {
+
+    return $this->belongsTo(Company::class);
+}
 }

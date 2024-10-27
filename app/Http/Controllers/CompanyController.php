@@ -19,7 +19,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        
+        $companies = Company::with('users')->get();
+        return view('backend.companies.index',compact('companies'));
+
     }
 
     /**
@@ -67,9 +69,20 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+      
+        $company = Company::findOrFail($id);
 
+        // Get some statistics
+        $statistics = [
+            'total_users' => $company->users->count(),
+            'active_users' => $company->users->where('status', 'active')->count(),
+            'created_date' => $company->created_at->format('F d, Y'),
+            'last_updated' => $company->updated_at->format('F d, Y'),
+        ];
+
+        return view('backend.companies.show', compact('company', 'statistics'));
+
+    }
     /**
      * Show the form for editing the specified resource.
      */
