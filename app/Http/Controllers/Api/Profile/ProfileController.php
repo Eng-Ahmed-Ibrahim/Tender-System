@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Api\Profile;
 
+
+use Exception;
 use App\Models\User;
+use App\Models\Applicant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -180,11 +184,11 @@ class ProfileController extends Controller
                 'message' => 'Account deleted successfully'
             ], 200);
     
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Rollback in case of error
             DB::rollBack();
     
-            \Log::error('Account deletion failed: ' . $e->getMessage());
+            Log::error('Account deletion failed: ' . $e->getMessage());
     
             return response()->json([
                 'message' => 'Failed to delete account',
