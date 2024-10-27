@@ -21,10 +21,8 @@ class ProfileController extends Controller
     public function user_profile()
     {
         // Get the authenticated user directly
-        $Id = auth()->id();
-
-        $user = User::find($Id);
-
+        $user = auth()->user();
+    
         if ($user) {
             return response()->json([
                 'profile' => new ProfileResource($user)
@@ -34,6 +32,7 @@ class ProfileController extends Controller
         // Handle the case where no authenticated user is found
         return response()->json(['message' => 'User not authenticated'], 401);
     }
+    
 
     public function logout(Request $request)
     {
