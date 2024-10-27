@@ -148,8 +148,17 @@ class ProfileController extends Controller
             // Begin a database transaction
             DB::beginTransaction();
     
-            // Revoke all tokens
+            // Delete all Sanctum tokens for the user
             $user->tokens()->delete();
+    
+            // Delete related tender applications
+            Applicant::where('user_id', $user->id)->delete();
+    
+            // Delete user's favorite tenders
+            $user->favoriteTenders()->detach();
+    
+            // Delete any notifications related to the user
+            $user->notifications()->delete();
     
             // Delete any associated files (like profile photo)
             if ($user->photo) {
@@ -162,16 +171,24 @@ class ProfileController extends Controller
             // Commit the transaction
             DB::commit();
     
+            // Clear session after successful deletion
+            auth()->guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+    
             return response()->json([
                 'message' => 'Account deleted successfully'
             ], 200);
     
         } catch (\Exception $e) {
             // Rollback in case of error
-            DB::beginTransaction();
+            DB::rollBack();
+    
+            \Log::error('Account deletion failed: ' . $e->getMessage());
     
             return response()->json([
-                'message' => 'Failed to delete account'
+                'message' => 'Failed to delete account',
+                'error' => config('app.debug') ? $e->getMessage() : null
             ], 500);
         }
     }
