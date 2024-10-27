@@ -21,8 +21,10 @@ class ProfileController extends Controller
     public function user_profile()
     {
         // Get the authenticated user directly
-        $user = Auth::guard('sanctum')->user();
-    
+        $Id = Auth::guard('web')->id();
+
+        $user = User::find($Id);
+
         if ($user) {
             return response()->json([
                 'profile' => new ProfileResource($user)
