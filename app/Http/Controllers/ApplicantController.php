@@ -98,9 +98,30 @@ class ApplicantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $applicant = User::with([
+            'applicants' => function($query) {
+                $query->latest();
+            },
+            'applicants.tender',
+            'applicants.tender.company',
+            'company'
+        ])->findOrFail($id);
+
+        // Get statistics
+        $statistics = [
+            'total_applications' => $applicant->applicants->count(),
+            'active_applications' => $applicant->applicants->filter(function($application) {
+                return $application->tender->end_date > now();
+            })->count(),
+            'documents_submitted' => $applicant->applicants->sum(function($application) {
+                return count(json_decode($application->files) ?? []);
+            }),
+            'recent_activity' => $applicant->applicants->where('created_at', '>=', now()->subDays(30))->count()
+        ];
+
+        return view('backend.applicants.show', compact('applicant', 'statistics'));
     }
 
     /**
