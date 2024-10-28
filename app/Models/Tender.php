@@ -21,7 +21,7 @@ class Tender extends Model
         'show_applicants',
     ];
 
-    public function user()
+    public function company()
     {
         return $this->belongsTo(User::class,'company_id');
     } 

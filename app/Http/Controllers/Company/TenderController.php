@@ -19,37 +19,35 @@ class TenderController extends Controller
      public function index(Request $request)
      {
          $query = Tender::query();
- 
+     
          // Apply role-based filtering
          if (auth()->user()->role === 'company') {
-             $query->where('company_id', auth()->user()->id);
+             $query->where('company_id', auth()->user()->company_id);
          }
- 
+     
          // Search functionality
          if ($request->filled('search')) {
              $searchTerm = $request->search;
              $query->where(function ($q) use ($searchTerm) {
                  $q->where('title', 'LIKE', "%{$searchTerm}%")
-                   ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+                    ->orWhere('description', 'LIKE', "%{$searchTerm}%");
              });
          }
- 
+     
          // Date range filter
          if ($request->filled('start_date') && $request->filled('end_date')) {
-             $query->whereBetween('end_date', [$request->start_date, $request->end_date]);
+             $query->whereBetween('end_date', [
+                 Carbon::parse($request->start_date)->startOfDay(),
+                 Carbon::parse($request->end_date)->endOfDay()
+             ]);
          }
- 
+     
          // Company filter (for admin users)
-         if (auth()->user()->role === 'admin' && $request->filled('company')) {
-             $query->where('company_id', $request->company);
-             
-             // Debugging: Log the company ID and the resulting SQL query
-             Log::info('Filtering by company ID: ' . $request->company);
-             Log::info('SQL Query: ' . $query->toSql());
-             Log::info('SQL Bindings: ' . json_encode($query->getBindings()));
+         if (auth()->user()->role === 'admin' && $request->has('companies')) {
+             $query->whereIn('company_id', $request->companies);
          }
- 
-         // Status filter based on end_date
+     
+         // Status filter
          if ($request->filled('status')) {
              $now = Carbon::now();
              if ($request->status === 'open') {
@@ -58,14 +56,34 @@ class TenderController extends Controller
                  $query->where('end_date', '<=', $now);
              }
          }
- 
-         $tenders = $query->latest()->paginate(10);
- 
-         // Debugging: Log the count of tenders
-         Log::info('Number of tenders retrieved: ' . $tenders->count());
- 
+     
+         // Sorting
+         switch ($request->get('sort', 'date-desc')) {
+             case 'date-asc':
+                 $query->oldest();
+                 break;
+             case 'title-asc':
+                 $query->orderBy('title', 'asc');
+                 break;
+             case 'title-desc':
+                 $query->orderBy('title', 'desc');
+                 break;
+             case 'date-desc':
+             default:
+                 $query->latest();
+                 break;
+         }
+     
+         $tenders = $query->paginate(10)->withQueryString();
+         
+         // Get companies for admin users
          $companies = auth()->user()->role === 'admin' ? \App\Models\Company::all() : null;
- 
+     
+         if ($request->ajax() && $request->has('partial')) {
+             // Return only the tender cards
+             return view('company.tenders.partials.tender-grid', compact('tenders'))->render();
+         }
+     
          return view('company.tenders.index', compact('tenders', 'companies'));
      }
  
@@ -76,7 +94,8 @@ class TenderController extends Controller
      */
     public function create()
     {
-        $companies = User::where('role','company')->get();
+        $companies =\App\Models\Company::all();
+
         return view('company.tenders.create', compact('companies'));  
     
     }
@@ -87,12 +106,14 @@ class TenderController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'company_id' => 'required|exists:users,id',
+            'company_id' => 'required|exists:companies,id',
             'title' => 'required|string|max:255',
-            'first_insurance' => 'number|max:255',
-            'last_insurance' => 'number|max:255',
+            'city' => 'required|string|max:255',
+            'first_insurance' => 'required',
+            'price' => 'required',
             'description' => 'required|string',
             'end_date' => 'required|date',
+            'edit_end_date' => 'required|date',
             'show_applicants' => 'boolean',
         ]);
 
@@ -152,12 +173,14 @@ public function update(Request $request, string $id)
 {
     // Validate the incoming data
     $validatedData = $request->validate([
-        'company_id' => 'required|exists:users,id',
+        'company_id' => 'required|exists:companies,id',
         'title' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
         'first_insurance' => 'number|max:255',
-        'last_insurance' => 'number|max:255',
+        'price' => 'number|max:255',
         'description' => 'required|string',
         'end_date' => 'required|date',
+        'edit_end_date' => 'required|date',
         'show_applicants' => 'boolean',
     ]);
 

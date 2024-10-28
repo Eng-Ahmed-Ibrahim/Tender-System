@@ -1,193 +1,256 @@
+{{-- resources/views/backend/users/index.blade.php --}}
 @extends('admin.index')
 
-@section('content')
-
+@section('css')
 <style>
+.header-banner {
+    background: linear-gradient(45deg, #1a73e8 0%, #6c5dd3 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
 
-    .user-info {
-        display: flex;
-        align-items: center;
-    }
-    
-    .user-avatar img {
-        width: 40px; /* Adjust size as needed */
-        height: 40px; /* Adjust size as needed */
-        border-radius: 50%; /* Make the image circular */
-        margin-right: 10px; /* Add spacing between image and name */
-    }
-    
-    .card {
-        margin-top: 20px;
-    }
+.user-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 1rem;
+}
 
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    background: #e9ecef;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.stats-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.search-box {
+    background: #f8f9fa;
+    border: none;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.role-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Add your existing styles here */
 </style>
+@endsection
 
-<!-- Include SweetAlert CSS and JavaScript -->
-<link href="https://cdn.jsdelivr.net/npm/sweetalert2@10" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <!--begin::Content wrapper-->
-    <div class="d-flex flex-column flex-column-fluid">
-        <!--begin::Toolbar-->
-        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-            <!--begin::Toolbar container-->
-            <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
-                <!--begin::Page title-->
-                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">{{__('Users')}}</h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-               
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
-                <!--begin::Actions-->
-        
-                <!--end::Actions-->
+@section('content')
+<div class="container-fluid p-4">
+    <!-- Header Banner -->
+    <div class="header-banner text-white mb-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-6 fw-bold mb-2">{{ __('User Management') }}</h1>
+                <p class="lead mb-0 opacity-75">
+                    {{ __('Manage and monitor user accounts') }}
+                </p>
             </div>
-            <!--end::Toolbar container-->
-        </div>
-        <!--end::Toolbar-->
-        <!--begin::Content-->
-        <div id="kt_app_content" class="app-content flex-column-fluid">
-            <!--begin::Content container-->
-            <div id="kt_app_content_container" class="app-container container-xxl">
-                <!--begin::Category-->
-                <div class="card card-flush">
-                    <!--begin::Card header-->
-                    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                        <!--begin::Card title-->
-                        <div class="card-title">
-                            <!--begin::Search-->
-                            <div class="d-flex align-items-center position-relative my-1">
-                                                                                    </div>
-                            <!--end::Search-->
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <div class="stats-card">
+                            <h3 class="mb-1">{{ $users->total() }}</h3>
+                            <p class="mb-0 text-white-50">{{ __('Total Users') }}</p>
                         </div>
-                        <!--end::Card title-->
-                        <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
-                            <!--begin::Add customer-->
-                            <a href="{{ route('AdminUsers.create')}}" class="btn btn-secondary">{{__('Create')}}</a>
-                            <!--end::Add customer-->
-                        </div>
-                        <!--end::Card toolbar-->
                     </div>
-                    <!--end::Card header-->
-                    <!--begin::Card body-->
-                    <div class="card-body pt-0">
-                        <!--begin::Table-->
-                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
-
-<div class="card">
-
-
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>{{ __('Name')}}</th>
-                        <th>{{ __('Email')}}</th>
-                        <th>{{ __('Phone')}}</th>
-                        <th>{{ __('Address')}}</th>
-                        <th>{{ __('Actions')}}</th>
-                        <th>{{__('Delete')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        {{ $user->name }}
-                                    </div>
-                                </div>
-                            </td>
-                            <!-- Other table columns -->
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone ?? 'N/A' }}</td>
-                            <td>{{ $user->address ?? 'N/A' }}</td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <form id="updateRoleForm" method="POST" action="{{ route('admin.users.updateRole', $user->id) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <select name="role_id" class="btn btn-secondary" onchange="confirmUpdateRole(this)">
-                                            @if (is_null($user->role_id))
-                                                <option value="" disabled selected>no role</option>
-                                            @endif
-                                            @foreach($roles as $role)
-                                                <option value="{{ $role->id }}" {{ $user->role_id === $role->id ? 'selected' : '' }}>
-                                                    {{ $role->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </form>
-                                </div>
-                            </td>
-                            <td>
-                                <form id="deleteUserForm" method="POST" action="{{ route('AdminUsers.destroy', $user->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-secondary" onclick="confirmDeleteUser(this)">{{__('Delete')}}</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    <div class="col-sm-4">
+                        <div class="stats-card">
+                            <h3 class="mb-1">{{ $users->where('created_at', '>=', now()->subDays(30))->count() }}</h3>
+                            <p class="mb-0 text-white-50">{{ __('New Users') }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="stats-card">
+                            <h3 class="mb-1">{{ $roles->count() }}</h3>
+                            <p class="mb-0 text-white-50">{{ __('User Roles') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row g-4" id="usersContainer">
+
+    <!-- Filters Section -->
+    @include('backend.users.partials.filter')
+
+    </div>
+    <!-- Users Grid -->
+    <div class="row g-4" id="usersContainer">
+        @include('backend.users.partials.user-cards')
+    </div>
 </div>
-                </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">{{ __('Confirm Delete') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ __('Are you sure you want to delete this user?') }}</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">{{ __('Delete') }}</button>
             </div>
         </div>
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
 <script>
-    function confirmUpdateRole(selectElement) {
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
+
+    // Handle role updates
+    function updateRole(selectElement, userId) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You are about',
+            title: '{{ __("Update Role") }}',
+            text: '{{ __("Are you sure you want to change this user's role?") }}',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, change it!',
-            cancelButtonText: 'No, keep it'
+            confirmButtonText: '{{ __("Yes, update") }}',
+            cancelButtonText: '{{ __("Cancel") }}',
+            confirmButtonColor: '#1a73e8'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Submit the form
-                selectElement.closest('form').submit();
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/admin/users/${userId}/update-role`;
+                form.innerHTML = `
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="role_id" value="${selectElement.value}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
             } else {
-                // Revert the select element to its original value
-                // For example, you can reload the page or undo the selection change
+                // Reset select to previous value
+                selectElement.value = selectElement.getAttribute('data-previous');
             }
         });
     }
 
-    function confirmDeleteUser(buttonElement) {
+    // Handle user deletion
+    function deleteUser(userId) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You are about to delete',
+            title: '{{ __("Delete User") }}',
+            text: '{{ __("Are you sure you want to delete this user?") }}',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it'
+            confirmButtonText: '{{ __("Yes, delete") }}',
+            cancelButtonText: '{{ __("Cancel") }}',
+            confirmButtonColor: '#dc3545'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Submit the form
-                buttonElement.closest('form').submit();
-            } else {
-                // Do nothing or handle cancel action
+                const form = document.querySelector(`#deleteForm${userId}`);
+                form.submit();
             }
         });
     }
+
+    // Search functionality with debounce
+    let searchTimeout;
+    const searchInput = document.querySelector('#searchInput');
+    
+    searchInput?.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const searchTerm = this.value;
+            updateUsers({ search: searchTerm });
+        }, 500);
+    });
+
+    // Update users list
+    async function updateUsers(params = {}) {
+        const usersContainer = document.querySelector('#usersContainer');
+        usersContainer.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        `;
+
+        try {
+            const queryString = new URLSearchParams(params).toString();
+            const response = await fetch(`${window.location.pathname}?${queryString}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            if (!response.ok) throw new Error('Network response was not ok');
+            
+            const html = await response.text();
+            usersContainer.innerHTML = html;
+            
+            // Update URL without reload
+            window.history.pushState({}, '', `${window.location.pathname}?${queryString}`);
+            
+            // Reinitialize components
+            initializeComponents();
+        } catch (error) {
+            console.error('Error:', error);
+            usersContainer.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        {{ __('An error occurred while fetching users. Please try again.') }}
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Initialize/reinitialize components
+    function initializeComponents() {
+        // Reinitialize tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(tooltip => {
+            new bootstrap.Tooltip(tooltip);
+        });
+
+        // Reinitialize role selects
+        document.querySelectorAll('.role-select').forEach(select => {
+            select.addEventListener('focus', function() {
+                this.setAttribute('data-previous', this.value);
+            });
+        });
+    }
+
+    // Initialize components on page load
+    initializeComponents();
+});
 </script>
-
-
 @endsection

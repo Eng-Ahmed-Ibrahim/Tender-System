@@ -32,8 +32,7 @@
 <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 
-		@yield('js')
-	
+@stack('scripts')	
 
 
 		

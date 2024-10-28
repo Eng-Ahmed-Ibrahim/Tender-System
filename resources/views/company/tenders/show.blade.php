@@ -11,7 +11,7 @@
                     <h5 class="card-title text-primary">Tender Overview</h5>
                     <p class="lead">{!! $tender->description !!}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">{{ $tender->user->name }}</span>
+                        <span class="badge bg-primary">{{ $tender->company->name }}</span>
                         <small class="text-muted">Created {{ $tender->created_at->diffForHumans() }}</small>
                     </div>
                 </div>

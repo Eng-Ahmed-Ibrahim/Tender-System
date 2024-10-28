@@ -19,6 +19,8 @@ class AdminProfileController extends Controller
         return view('backend.profile.index',compact('profile'));
 
     }
+
+    
     public function store(Request $request){
 
         $id = Auth::user()->id;

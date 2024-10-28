@@ -30,7 +30,7 @@ class RegisterController extends Controller
     $customer = User::create([
         'name' => $request->name,
         'email' => $request->email,
-        'role' => 'company',
+        'role' => 'applicant',
         'password' => bcrypt($request->password), // Hash the password
         'phone' => $request->phone,
         'verification_code' => $verificationCode,

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF;
+use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Enums\DashboardTypeEnum;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class UserController extends Controller
@@ -18,25 +21,75 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        // Your existing index method remains the same
+        // But let's add some additional statistics
         $user = Auth::user();
-        if($user->dashboard === 'company')
-         $users = User::where('company_id',auth()->user()->id)->get();
-        else{
+        $query = User::query()
+            ->with(['roles']) // Change 'role' to 'roles' if using spatie/laravel-permission
+            ->when($user->role === 'admin_company', function($query) use ($user) {
+                return $query->where('company_id', $user->id);
+            });
 
-        $users = User::all();
+        // Add status check if you have a status column
+        if ($request->filled('is_active')) {
+            $query->where('is_active', $request->status);
+        }
 
+        // Your existing search, role, and date filters...
 
+        // Get users with pagination
+        $users = $query->paginate(12)->withQueryString();
 
-        }   
-          $roles = Role::all();
+        // Get roles based on company context
+        $roles = Role::when($user->role === 'admin_company', function($query) use ($user) {
+            return $query->where('company_id', $user->company_id);
+        })->get();
 
-        return view('backend.users.index', compact('users','roles'));
+        // Enhanced statistics
+        $statistics = [
+            'total_users' => $query->count(),
+            'new_users' => $query->where('created_at', '>=', now()->subDays(30))->count(),
+            'total_roles' => $roles->count(),
+            'active_users' => $query->where('is_active',1)->count(),
+            'inactive_users' => $query->where('is_active', 0)->count(),
+        ];
+
+        if ($request->ajax()) {
+            return view('backend.users.partials.user-cards', compact('users'))->render();
+        }
+
+        return view('backend.users.index', compact('users', 'roles', 'statistics'));
     }
-    
+    public function export(Request $request)
+    {
+        $format = $request->format ?? 'csv';
+        $user = Auth::user();
+        
+        $query = User::query()
+            ->when($user->dashboard === 'company', function($query) use ($user) {
+                return $query->where('company_id', $user->id);
+            });
 
+        // Apply filters if any
+        if ($request->filled('role')) {
+            $query->where('role_id', $request->role);
+        }
+
+        $users = $query->get();
+
+        // Handle different export formats
+        switch ($format) {
+            case 'excel':
+                return Excel::download(new UsersExport($users), 'users.xlsx');
+            case 'pdf':
+                return PDF::loadView('exports.users', compact('users'))
+                    ->download('users.pdf');
+            default:
+                return (new UsersExport($users))->download('users.csv', \Maatwebsite\Excel\Excel::CSV);
+        }
+    }
   
 
  

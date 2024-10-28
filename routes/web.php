@@ -9,9 +9,11 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AdminTenderController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\CompanyUsersController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\Company\TenderController;
@@ -67,12 +69,20 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('AdminUsers', UserController::class);
 
+    Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
+
+
+    Route::resource('CompanyUsers', CompanyUsersController::class);
+
+    Route::resource('Applicants', ApplicantController::class);
+
     Route::put('/user/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
 
 
 
     
     Route::resource('UserProfile', AdminProfileController::class);
+
     
     Route::post('/update-email', [AdminProfileController::class, 'updateEmail'])->name('update.email');
 

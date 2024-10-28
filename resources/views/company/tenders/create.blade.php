@@ -56,20 +56,28 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="title">Last Insurance</label>
-                                <input type="text" name="last_insurance" class="form-control" required>
+                                <label for="title">Price</label>
+                                <input type="text" name="price" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">City</label>
+                                <input type="text" name="city" class="form-control" required>
                             </div>
                 
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea name="description" id="description" class="form-control" required></textarea>
+                                <textarea name="description" class="form-control" required></textarea>
                             </div>
                 
                             <div class="form-group">
                                 <label for="end_date">End Date</label>
                                 <input type="date" name="end_date" class="form-control" required>
                             </div>
-                
+                            <div class="form-group">
+                                <label for="end_date">deadline to update</label>
+                                <input type="date" name="edit_end_date" class="form-control" required>
+                            </div>
+
                             <div class="form-group">
                                 <label for="show_applicants">Show Applicants</label>
                                 <select name="show_applicants" id="show_applicants" class="form-control">
