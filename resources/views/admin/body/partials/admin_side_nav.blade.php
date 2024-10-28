@@ -219,7 +219,7 @@
                 <span class="path2"></span>
             </i>
         </span>
-        <span class="menu-title">{{__('Tenders')}}</span>
+        <span class="menu-title">{{__('Applicants')}}</span>
     </a>
     <!--end:Menu link-->
 </div>
