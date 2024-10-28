@@ -7,6 +7,7 @@ use App\Models\Tender;
 use App\Models\Company;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {

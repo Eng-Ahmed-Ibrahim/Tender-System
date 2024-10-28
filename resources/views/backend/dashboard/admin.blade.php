@@ -1,207 +1,259 @@
-
 @extends('admin.index')
 
 @section('css')
 <style>
 .stats-card {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    border-radius: 1rem;
-    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
+
+.stats-card-1 { --gradient-start: #4158D0; --gradient-end: #C850C0; }
+.stats-card-2 { --gradient-start: #0093E9; --gradient-end: #80D0C7; }
+.stats-card-3 { --gradient-start: #00C9FF; --gradient-end: #92FE9D; }
+.stats-card-4 { --gradient-start: #FF3CAC; --gradient-end: #784BA0; }
 
 .stats-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.stats-card-1 {
-    --gradient-start: #3b82f6;
-    --gradient-end: #2563eb;
-}
-
-.stats-card-2 {
-    --gradient-start: #10b981;
-    --gradient-end: #059669;
-}
-
-.stats-card-3 {
-    --gradient-start: #f59e0b;
-    --gradient-end: #d97706;
-}
-
-.stats-card-4 {
-    --gradient-start: #6366f1;
-    --gradient-end: #4f46e5;
-}
-
-.dashboard-card {
-    border: none;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+.content-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
 }
 
-.dashboard-card:hover {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+.content-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .chart-container {
-    position: relative;
     height: 300px;
-}
-
-.activity-timeline {
     position: relative;
-    padding-left: 2rem;
 }
 
-.activity-timeline::before {
+.activity-item {
+    padding: 15px;
+    border-left: 2px solid #e2e8f0;
+    position: relative;
+    margin-left: 20px;
+}
+
+.activity-item::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: #e5e7eb;
-}
-
-.timeline-item {
-    position: relative;
-    padding-bottom: 1.5rem;
-}
-
-.timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -2rem;
-    top: 0.25rem;
-    width: 1rem;
-    height: 1rem;
+    left: -8px;
+    top: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
-    background: #3b82f6;
-    border: 3px solid #fff;
-}
-
-.company-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 1rem;
-    padding: 1rem;
-    transition: all 0.3s ease;
-}
-
-.company-card:hover {
-    border-color: #3b82f6;
-    background: #f8fafc;
+    background: #4158D0;
+    border: 3px solid white;
 }
 </style>
 @endsection
 
 @section('content')
 <div class="container-fluid p-4">
-    <!-- Statistics Row -->
+    <!-- Stats Row -->
     <div class="row g-4 mb-4">
+        <!-- Total Tenders -->
         <div class="col-xl-3 col-md-6">
-            <div class="stats-card stats-card-1 text-white">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="stats-icon">
-                        <i class="fas fa-file-alt fa-2x opacity-75"></i>
+            <div class="stats-card stats-card-1">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="icon">
+                        <i class="fas fa-file-alt fa-2x opacity-50"></i>
                     </div>
-                    <div class="dropdown">
-                        <button class="btn btn-link text-white p-0" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('tenders.index') }}">View All</a></li>
-                            <li><a class="dropdown-item" href="{{ route('tenders.create') }}">Create New</a></li>
-                        </ul>
+                    <div class="text-end">
+                        <h3 class="mb-1">{{ $statistics['total_tenders'] }}</h3>
+                        <p class="mb-0">Total Tenders</p>
                     </div>
                 </div>
-                <h3 class="mb-2">{{ $statistics['total_tenders'] }}</h3>
-                <p class="mb-0 opacity-75">Total Tenders</p>
+                <div class="progress bg-white bg-opacity-25" style="height: 4px;">
+                    <div class="progress-bar bg-white" style="width: 75%"></div>
+                </div>
             </div>
         </div>
 
+        <!-- Active Tenders -->
         <div class="col-xl-3 col-md-6">
-            <div class="stats-card stats-card-2 text-white">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="stats-icon">
-                        <i class="fas fa-building fa-2x opacity-75"></i>
+            <div class="stats-card stats-card-2">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="icon">
+                        <i class="fas fa-clock fa-2x opacity-50"></i>
                     </div>
-                    <div class="dropdown">
-                        <button class="btn btn-link text-white p-0" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">View Companies</a></li>
-                        </ul>
+                    <div class="text-end">
+                        <h3 class="mb-1">{{ $statistics['active_tenders'] }}</h3>
+                        <p class="mb-0">Active Tenders</p>
                     </div>
                 </div>
-                <h3 class="mb-2">{{ $statistics['total_companies'] }}</h3>
-                <p class="mb-0 opacity-75">Registered Companies</p>
+                <div class="progress bg-white bg-opacity-25" style="height: 4px;">
+                    <div class="progress-bar bg-white" 
+                         style="width: {{ ($statistics['active_tenders'] / max($statistics['total_tenders'], 1)) * 100 }}%">
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- Total Companies -->
         <div class="col-xl-3 col-md-6">
-            <div class="stats-card stats-card-3 text-white">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="stats-icon">
-                        <i class="fas fa-users fa-2x opacity-75"></i>
+            <div class="stats-card stats-card-3">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="icon">
+                        <i class="fas fa-building fa-2x opacity-50"></i>
                     </div>
-                    <div class="dropdown">
-                        <button class="btn btn-link text-white p-0" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">View Applicants</a></li>
-                        </ul>
+                    <div class="text-end">
+                        <h3 class="mb-1">{{ $statistics['total_companies'] }}</h3>
+                        <p class="mb-0">Companies</p>
                     </div>
                 </div>
-                <h3 class="mb-2">{{ $statistics['total_applicants'] }}</h3>
-                <p class="mb-0 opacity-75">Total Applicants</p>
+                <div class="progress bg-white bg-opacity-25" style="height: 4px;">
+                    <div class="progress-bar bg-white" style="width: 60%"></div>
+                </div>
             </div>
         </div>
 
+        <!-- Total Applicants -->
         <div class="col-xl-3 col-md-6">
-            <div class="stats-card stats-card-4 text-white">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="stats-icon">
-                        <i class="fas fa-clock fa-2x opacity-75"></i>
+            <div class="stats-card stats-card-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="icon">
+                        <i class="fas fa-users fa-2x opacity-50"></i>
                     </div>
-                    <div class="dropdown">
-                        <button class="btn btn-link text-white p-0" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">View Active</a></li>
-                        </ul>
+                    <div class="text-end">
+                        <h3 class="mb-1">{{ $statistics['total_applicants'] }}</h3>
+                        <p class="mb-0">Applicants</p>
                     </div>
                 </div>
-                <h3 class="mb-2">{{ $statistics['active_tenders'] }}</h3>
-                <p class="mb-0 opacity-75">Active Tenders</p>
+                <div class="progress bg-white bg-opacity-25" style="height: 4px;">
+                    <div class="progress-bar bg-white" style="width: 85%"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Charts Row -->
     <div class="row g-4 mb-4">
+        <!-- Applications Chart -->
         <div class="col-xl-8">
-            <div class="dashboard-card">
-                <div class="card-header bg-transparent border-0 py-3">
-                    <h5 class="mb-0">Applications Overview</h5>
+            <div class="content-card h-100">
+                <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Applications Overview</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-light" onclick="updateChart('weekly')">Week</button>
+                            <button class="btn btn-sm btn-light" onclick="updateChart('monthly')">Month</button>
+                            <button class="btn btn-sm btn-light" onclick="updateChart('yearly')">Year</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <div class="chart-container">
                         <canvas id="applicationsChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Recent Applications -->
         <div class="col-xl-4">
-            <div class="dashboard-card">
-                <div class="card-header bg-transparent border-0 py-3">
-                    <h5 class="mb-0">Tender Categories</h5>
+            <div class="content-card h-100">
+                <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
+                    <h5 class="mb-0">Recent Applications</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
+                    <div class="activity-timeline">
+                        @foreach($recentApplicants as $applicant)
+                            <div class="activity-item mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar me-3">
+                                        <div class="avatar-content rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                             style="width: 40px; height: 40px;">
+                                            {{ strtoupper(substr($applicant->name, 0, 2)) }}
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ $applicant->name }}</h6>
+                                        <p class="mb-0 text-muted small">
+                                            Applied for: {{ $applicant->applicants->first()?->tender->title }}
+                                        </p>
+                                        <small class="text-muted">
+                                            {{ $applicant->created_at->diffForHumans() }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="row g-4">
+        <!-- Top Companies -->
+        <div class="col-xl-6">
+            <div class="content-card">
+                <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
+                    <h5 class="mb-0">Top Companies</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Tenders</th>
+                                    <th>Active</th>
+                                    <th>Applications</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($topCompanies as $company)
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar me-2">
+                                                <div class="avatar-content rounded bg-light d-flex align-items-center justify-content-center"
+                                                     style="width: 35px; height: 35px;">
+                                                    {{ strtoupper(substr($company->name, 0, 2)) }}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">{{ $company->name }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ $company->tenders_count }}</td>
+                                    <td>{{ $company->active_tenders_count }}</td>
+                                    <td>
+                                        <div class="progress" style="height: 5px; width: 100px;">
+                                            <div class="progress-bar" style="width: {{ ($company->active_tenders_count / max($company->tenders_count, 1)) * 100 }}%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Distribution -->
+        <div class="col-xl-6">
+            <div class="content-card">
+                <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
+                    <h5 class="mb-0">Category Distribution</h5>
+                </div>
+                <div class="card-body p-4">
                     <div class="chart-container">
                         <canvas id="categoriesChart"></canvas>
                     </div>
@@ -209,133 +261,23 @@
             </div>
         </div>
     </div>
-
-    <!-- Recent Activity & Top Companies -->
-    <div class="row g-4">
-        <div class="col-xl-4">
-            <div class="dashboard-card">
-                <div class="card-header bg-transparent border-0 py-3">
-                    <h5 class="mb-0">Top Companies</h5>
-                </div>
-                <div class="card-body">
-                    @foreach($topCompanies as $company)
-                    <div class="company-card mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <div class="company-avatar me-3">
-                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
-                                         style="width: 40px; height: 40px;">
-                                        {{ strtoupper(substr($company->name, 0, 2)) }}
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-1">{{ $company->name }}</h6>
-                                    <p class="text-muted small mb-0">
-                                        {{ $company->tenders_count }} tenders • 
-                                        {{ $company->active_tenders_count }} active
-                                    </p>
-                                </div>
-                            </div>
-                            <a href="#" class="btn btn-light btn-sm">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>```php
-        <div class="col-xl-4">
-            <div class="dashboard-card">
-                <div class="card-header bg-transparent border-0 py-3">
-                    <h5 class="mb-0">Recent Tenders</h5>
-                </div>
-                <div class="card-body">
-                    <div class="activity-timeline">
-                        @foreach($recentTenders as $tender)
-                        <div class="timeline-item">
-                            <div class="bg-light rounded-3 p-3">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h6 class="mb-0">{{ $tender->title }}</h6>
-                                    <span class="badge {{ $tender->end_date > now() ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $tender->end_date > now() ? 'Active' : 'Closed' }}
-                                    </span>
-                                </div>
-                                <div class="d-flex align-items-center text-muted small mb-2">
-                                    <i class="fas fa-building me-2"></i>
-                                    {{ $tender->company->name }}
-                                </div>
-                                <div class="d-flex align-items-center text-muted small">
-                                    <i class="fas fa-users me-2"></i>
-                                    {{ $tender->applicants_count }} {{ __('Applicants') }}
-                                    <span class="mx-2">•</span>
-                                    <i class="fas fa-clock me-2"></i>
-                                    {{ $tender->end_date->format('M d, Y') }}
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4">
-            <div class="dashboard-card">
-                <div class="card-header bg-transparent border-0 py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Recent Applicants</h5>
-                    <a href="#" class="btn btn-light btn-sm">View All</a>
-                </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
-                        @foreach($recentApplicants as $applicant)
-                        <div class="list-group-item border-0 py-3">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="avatar bg-light rounded-circle d-flex align-items-center justify-content-center"
-                                         style="width: 45px; height: 45px;">
-                                        {{ strtoupper(substr($applicant->name, 0, 2)) }}
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0">{{ $applicant->name }}</h6>
-                                        <small class="text-muted">
-                                            {{ $applicant->created_at->diffForHumans() }}
-                                        </small>
-                                    </div>
-                                    <p class="text-muted small mb-0">
-                                        Applied for 
-                                        <a href="#" class="text-decoration-none">
-                                            {{ $applicant->applicants->first()?->tender->title ?? 'Unknown Tender' }}
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-@endsection
+
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Applications Chart
     const applicationsCtx = document.getElementById('applicationsChart').getContext('2d');
-    new Chart(applicationsCtx, {
+    const applicationsChart = new Chart(applicationsCtx, {
         type: 'line',
         data: {
             labels: {!! json_encode($monthlyApplications->pluck('month')) !!},
             datasets: [{
                 label: 'Applications',
                 data: {!! json_encode($monthlyApplications->pluck('count')) !!},
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderColor: '#4158D0',
+                backgroundColor: 'rgba(65, 88, 208, 0.1)',
                 fill: true,
                 tension: 0.4
             }]
@@ -352,7 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 y: {
                     beginAtZero: true,
                     grid: {
-                        drawBorder: false
+                        drawBorder: false,
+                        color: 'rgba(0, 0, 0, 0.05)'
                     }
                 },
                 x: {
@@ -373,11 +316,11 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 data: {!! json_encode($tenderCategories->pluck('count')) !!},
                 backgroundColor: [
-                    '#3b82f6',
-                    '#10b981',
-                    '#f59e0b',
-                    '#6366f1',
-                    '#ec4899'
+                    '#4158D0',
+                    '#C850C0',
+                    '#00C9FF',
+                    '#92FE9D',
+                    '#FF3CAC'
                 ]
             }]
         },
@@ -388,9 +331,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 legend: {
                     position: 'bottom'
                 }
-            }
+            },
+            cutout: '70%'
         }
     });
 });
 </script>
 @endpush
+@endsection
