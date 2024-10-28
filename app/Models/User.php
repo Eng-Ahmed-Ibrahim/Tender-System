@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Tender;
 use App\Models\Company;
+use App\Models\Applicant;
 use App\Models\Notification;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -72,4 +73,32 @@ public function company() {
 
     return $this->belongsTo(Company::class);
 }
+public function latestApplications($limit = 5)
+{
+    return $this->applicants()
+                ->with(['tender.company'])
+                ->latest()
+                ->take($limit);
+}
+
+// Helper method to check if user has applied to a specific tender
+public function hasAppliedTo(Tender $tender)
+{
+    return $this->applicants()
+                ->where('tender_id', $tender->id)
+                ->exists();
+}
+
+// Helper method to get application for a specific tender
+public function getApplicationFor(Tender $tender)
+{
+    return $this->applicants()
+                ->where('tender_id', $tender->id)
+                ->first();
+}
+public function applicants()
+{
+    return $this->hasMany(Applicant::class);
+}
+
 }
