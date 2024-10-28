@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AdminTenderController;
 use App\Http\Controllers\AdminProfileController;
@@ -70,6 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('AdminUsers', UserController::class);
 
     Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
+
+    Route::get('/TenderDashboard', [DashboardController::class, 'index'])->name('TenderDashboard.index');
 
 
     Route::resource('CompanyUsers', CompanyUsersController::class);

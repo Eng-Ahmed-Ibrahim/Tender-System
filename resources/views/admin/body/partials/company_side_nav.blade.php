@@ -28,7 +28,7 @@
 
         <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="{{route('company.dashboard')}}">
+            <a class="menu-link" href="{{route('TenderDashboard.index')}}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
@@ -46,6 +46,18 @@
     <!--end:Menu sub-->
 </div>
 
+
+<div class="menu-item pt-5">
+    <!--begin:Menu content-->
+    <div class="menu-content">
+        <span class="menu-heading fw-bold text-uppercase fs-7">{{ __('Employees')}}</span>
+    </div>
+    <!--end:Menu content-->
+</div>
+
+
+
+                     
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <!--begin:Menu link-->
     <span class="menu-link">
@@ -53,7 +65,7 @@
             <i class="bi bi-people-fill"></i> <!-- Customers icon -->
 
         </span>
-        <span class="menu-title">{{ __('Tenders')}}</span>
+        <span class="menu-title">{{ __('Employees')}}</span>
         <span class="menu-arrow"></span>
     </span>
 
@@ -65,21 +77,19 @@
 
         <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="{{ route('tenders.index') }}">
+            <a class="menu-link" href="{{ route('AdminUsers.index') }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{{ __('Tenders')}}</span>
+                <span class="menu-title">{{ __('Employees')}}</span>
             </a>
-            <!--end:Menu link-->
         </div>
 
- 
 
-        <!--end:Menu item-->
     </div>
     <!--end:Menu sub-->
 </div>
+
 
 
                      
@@ -125,16 +135,6 @@
         </div>
        
 
-        <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link" href=" {{ route('AdminUsers.index') }}">
-                <span class="menu-bullet">
-                    <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{{__('Users')}}</span>
-            </a>
-            <!--end:Menu link-->
-        </div>
         <!--end:Menu item-->
         <!--begin:Menu item-->
         <div class="menu-item">
@@ -150,4 +150,94 @@
         <!--end:Menu item-->
     </div>
     <!--end:Menu sub-->
+</div>
+
+
+
+
+<div class="menu-item pt-5">
+    <!--begin:Menu content-->
+    <div class="menu-content">
+        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Tenders')}}</span>
+    </div>
+    <!--end:Menu content-->
+</div>
+<!--end:Menu item-->
+<!--begin:Menu item-->
+<div class="menu-item">
+    <!--begin:Menu link-->
+    <a class="menu-link" href="{{ route('tenders.index')}}" >
+        <span class="menu-icon">
+            <i class="ki-duotone ki-rocket fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </span>
+        <span class="menu-title">{{__('Tenders')}}</span>
+    </a>
+    <!--end:Menu link-->
+</div>
+
+
+
+<div class="menu-item pt-5">
+    <!--begin:Menu content-->
+    <div class="menu-content">
+        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Applicants')}}</span>
+    </div>
+    <!--end:Menu content-->
+</div>
+<!--end:Menu item-->
+<!--begin:Menu item-->
+<div class="menu-item">
+    <!--begin:Menu link-->
+    <a class="menu-link" href="{{ route('Applicants.index')}}" >
+        <span class="menu-icon">
+            <i class="ki-duotone ki-rocket fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </span>
+        <span class="menu-title">{{__('Applicants')}}</span>
+    </a>
+    <!--end:Menu link-->
+</div>
+<div class="menu-item pt-5">
+    <!--begin:Menu content-->
+    <div class="menu-content">
+        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Notification')}}</span>
+    </div>
+    <!--end:Menu content-->
+</div>
+<!--end:Menu item-->
+<!--begin:Menu item-->
+<div class="menu-item">
+    <!--begin:Menu link-->
+    <a class="menu-link" href="{{ route('notifications.index')}}" >
+        <span class="menu-icon">
+            <i class="ki-duotone ki-rocket fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </span>
+        <span class="menu-title">{{__('all notification')}}</span>
+    </a>
+    <!--end:Menu link-->
+</div>
+<div class="menu-item">
+    <!--begin:Menu link-->
+    <a class="menu-link" href="{{ route('notifications.create')}}" >
+        <span class="menu-icon">
+            <i class="ki-duotone ki-rocket fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </span>
+        <span class="menu-title">{{__('send notifcation')}}</span>
+    </a>
+</div>
+<div class="menu-item pt-5">
+    <div class="menu-content">
+        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Configuration')}}</span>
+    </div>
 </div>

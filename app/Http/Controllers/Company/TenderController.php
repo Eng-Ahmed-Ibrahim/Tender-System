@@ -20,12 +20,10 @@ class TenderController extends Controller
      {
          $query = Tender::query();
      
-         // Apply role-based filtering
-         if (auth()->user()->role === 'company') {
+         if (auth()->user()->role === 'admin_company') {
              $query->where('company_id', auth()->user()->company_id);
          }
      
-         // Search functionality
          if ($request->filled('search')) {
              $searchTerm = $request->search;
              $query->where(function ($q) use ($searchTerm) {
@@ -34,7 +32,6 @@ class TenderController extends Controller
              });
          }
      
-         // Date range filter
          if ($request->filled('start_date') && $request->filled('end_date')) {
              $query->whereBetween('end_date', [
                  Carbon::parse($request->start_date)->startOfDay(),
@@ -42,12 +39,10 @@ class TenderController extends Controller
              ]);
          }
      
-         // Company filter (for admin users)
          if (auth()->user()->role === 'admin' && $request->has('companies')) {
              $query->whereIn('company_id', $request->companies);
          }
      
-         // Status filter
          if ($request->filled('status')) {
              $now = Carbon::now();
              if ($request->status === 'open') {
@@ -57,7 +52,6 @@ class TenderController extends Controller
              }
          }
      
-         // Sorting
          switch ($request->get('sort', 'date-desc')) {
              case 'date-asc':
                  $query->oldest();
@@ -76,11 +70,10 @@ class TenderController extends Controller
      
          $tenders = $query->paginate(10)->withQueryString();
          
-         // Get companies for admin users
          $companies = auth()->user()->role === 'admin' ? \App\Models\Company::all() : null;
      
          if ($request->ajax() && $request->has('partial')) {
-             // Return only the tender cards
+            
              return view('company.tenders.partials.tender-grid', compact('tenders'))->render();
          }
      

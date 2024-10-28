@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Tender;
+use App\Models\Company;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,49 @@ class ApplicantController extends Controller
         $query = User::query()
             ->where('role', 'applicant')
             ->with(['applicants' => function($query) {
-                $query->with(['tender.company']); // Eager load tender and company
+                $query->with(['tender.company']); 
             }]);
-
+    
+        if(auth()->user()->role == 'admin_company') {
+            $companyId = auth()->user()->company_id;
+            
+            $query->whereHas('applicants.tender', function($q) use ($companyId) {
+                $q->where('company_id', $companyId);
+            });
+    
+            $tenders = Tender::where('company_id', $companyId)
+                ->whereHas('applicants')
+                ->get();
+                
+                $company = Company::find($companyId);
+                $companies = $company ? collect([$company]) : collect([]);
+    
+            // Adjust statistics for company scope
+            $statistics = [
+                'total_applicants' => $query->count(),
+                'total_applications' => Applicant::whereHas('tender', function($q) use ($companyId) {
+                    $q->where('company_id', $companyId);
+                })->count(),
+                'recent_applications' => Applicant::whereHas('tender', function($q) use ($companyId) {
+                    $q->where('company_id', $companyId);
+                })->where('created_at', '>=', now()->subDays(30))->count(),
+                'active_tenders' => Tender::where('company_id', $companyId)
+                    ->whereHas('applicants')
+                    ->where('end_date', '>', now())
+                    ->count()
+            ];
+        } else {
+            $tenders = Tender::whereHas('applicants')->with('company')->get();
+            $companies = $tenders->pluck('company')->unique();
+            
+            $statistics = [
+                'total_applicants' => $query->count(),
+                'total_applications' => Applicant::count(),
+                'recent_applications' => Applicant::where('created_at', '>=', now()->subDays(30))->count(),
+                'active_tenders' => Tender::whereHas('applicants')->where('end_date', '>', now())->count()
+            ];
+        }
+    
         // Search functionality
         if ($request->filled('search')) {
             $searchTerm = $request->search;
@@ -32,21 +73,21 @@ class ApplicantController extends Controller
                   });
             });
         }
-
+    
         // Filter by tender
         if ($request->filled('tender')) {
             $query->whereHas('applicants', function($q) use ($request) {
                 $q->where('tender_id', $request->tender);
             });
         }
-
-        // Filter by company
-        if ($request->filled('company')) {
+    
+        // Filter by company (only for admin users)
+        if (auth()->user()->role !== 'admin_company' && $request->filled('company')) {
             $query->whereHas('applicants.tender', function($q) use ($request) {
                 $q->where('company_id', $request->company);
             });
         }
-
+    
         // Filter by date
         if ($request->filled('date_from') && $request->filled('date_to')) {
             $query->whereHas('applicants', function($q) use ($request) {
@@ -56,29 +97,18 @@ class ApplicantController extends Controller
                 ]);
             });
         }
-
+    
         $applicants = $query->paginate(10)->withQueryString();
-        
-        // Get unique tenders and companies for filters
-        $tenders = Tender::whereHas('applicants')->with('company')->get();
-        $companies = $tenders->pluck('company')->unique();
-
-        // Get statistics
-        $statistics = [
-            'total_applicants' => $query->count(),
-            'total_applications' => Applicant::count(),
-            'recent_applications' => Applicant::where('created_at', '>=', now()->subDays(30))->count(),
-            'active_tenders' => Tender::whereHas('applicants')->where('end_date', '>', now())->count()
-        ];
-
+    
         if ($request->ajax()) {
-            return view('backend.applicants.partials.applicant-list', 
+            return view('backend.applicants.partials.applicant-list',
                 compact('applicants'))->render();
         }
-
-        return view('backend.applicants.index', 
+    
+        return view('backend.applicants.index',
             compact('applicants', 'tenders', 'companies', 'statistics'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
