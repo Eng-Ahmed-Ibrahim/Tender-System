@@ -320,9 +320,7 @@
                                                 <i class="fas fa-file-alt me-1"></i>
                                             </a>
                                     </div>
-                                @else
-                                    <span class="badge bg-warning">{{ __('No files') }}</span>
-                                @endif
+                              
                             </div>
         
                             <!-- Actions -->
