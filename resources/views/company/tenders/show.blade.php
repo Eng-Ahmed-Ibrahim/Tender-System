@@ -313,14 +313,23 @@
         
                             <!-- Files -->
                             <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-0">
-                            
-                                            <a href="{{ asset('storage/'. $applicant->files) }}" 
+                                @if($applicant->pivot->files)
+                                    @php
+                                        $fileArray = array_filter(explode(',', $applicant->pivot->files));
+                                    @endphp
+                                    <div class="d-flex flex-wrap">
+                                        @foreach($fileArray as $file)
+                                            <a href="{{ asset('storage/' . trim($file)) }}" 
                                                class="file-badge text-decoration-none me-2 mb-2" 
                                                target="_blank">
                                                 <i class="fas fa-file-alt me-1"></i>
+                                                {{ basename(trim($file)) }}
                                             </a>
+                                        @endforeach
                                     </div>
-                              
+                                @else
+                                    <span class="badge bg-warning">{{ __('No files') }}</span>
+                                @endif
                             </div>
         
                             <!-- Actions -->
@@ -372,33 +381,31 @@
                 </div>
                 <div class="card-body">
                     <div class="timeline">
-                        <!-- Timeline Item -->
-                        <div class="timeline-item mb-3">
+                        <div class="timeline-item">
                             <h6 class="mb-1">{{ __('Created') }}</h6>
                             <p class="text-muted mb-0 small">
                                 {{ \Carbon\Carbon::parse($tender->created_at)->format('M d, Y H:i') }}
                             </p>
                         </div>
                         
-                        <!-- Conditional Timeline Items -->
                         @if($tender->edit_end_date)
-                        <div class="timeline-item mb-3">
+                        <div class="timeline-item">
                             <h6 class="mb-1">{{ __('Edit Deadline') }}</h6>
                             <p class="text-muted mb-0 small">
                                 {{ \Carbon\Carbon::parse($tender->edit_end_date)->format('M d, Y H:i') }}
                             </p>
                         </div>
                         @endif
-            
+
                         @if($tender->change_uploads)
-                        <div class="timeline-item mb-3">
+                        <div class="timeline-item">
                             <h6 class="mb-1">{{ __('Upload Changes') }}</h6>
                             <p class="text-muted mb-0 small">
                                 {{ \Carbon\Carbon::parse($tender->change_uploads)->format('M d, Y H:i') }}
                             </p>
                         </div>
                         @endif
-            
+
                         <div class="timeline-item">
                             <h6 class="mb-1">{{ __('End Date') }}</h6>
                             <p class="text-muted mb-0 small">
@@ -408,7 +415,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div></div>
 
