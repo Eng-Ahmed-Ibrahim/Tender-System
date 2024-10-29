@@ -36,20 +36,20 @@
                             {{ __('Tender Management') }}
                         </h1>
                         <p class="lead text-white-50 mb-0">
-                            Track and manage all your tender listings efficiently
+                            {{__('Track and manage all your tender listings efficiently')}}
                         </p>
                     </div>
                     <div class="col-lg-6 text-lg-end mt-4 mt-lg-0">
                         <div class="d-inline-flex gap-3">
                             <div class="bg-white bg-opacity-10 rounded-3 p-4 text-center">
                                 <h3 class="text-white mb-1">{{ $tenders->total() }}</h3>
-                                <small class="text-white-50 fw-semibold">Total Tenders</small>
+                                <small class="text-white-50 fw-semibold">  {{__('Total Tenders')}}</small>
                             </div>
                             <div class="bg-white bg-opacity-10 rounded-3 p-4 text-center">
                                 <h3 class="text-white mb-1">
                                     {{ $tenders->where('end_date', '>', now())->count() }}
                                 </h3>
-                                <small class="text-white-50 fw-semibold">Active Tenders</small>
+                                <small class="text-white-50 fw-semibold">  {{__('Active Tenders')}}</small>
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-0">
-                <h5 class="modal-title">QR Code</h5>
+                <h5 class="modal-title">  {{__('QR Code')}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center p-5">
@@ -86,7 +86,7 @@
 
                 </div>
                 <button class="btn btn-primary" id="printQrCode">
-                    <i class="fas fa-print me-2"></i>Print QR Code
+                    <i class="fas fa-print me-2"></i>  {{__('Print QR Code')}}
                 </button>
             </div>
         </div>

@@ -12,13 +12,13 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="{{ route('tenders.show', $tender->id) }}">
-                            <i class="fas fa-eye me-2"></i>View Details
+                            <i class="fas fa-eye me-2"></i>{{__('View Details')}}
                         </a>
                         <a class="dropdown-item" href="{{ route('tenders.edit', $tender->id) }}">
-                            <i class="fas fa-edit me-2"></i>Edit
+                            <i class="fas fa-edit me-2"></i>{{__('Edit')}}
                         </a>
                         <a class="dropdown-item show-qr-code" href="#" data-id="{{ $tender->id }}">
-                            <i class="fas fa-qrcode me-2"></i>Show QR Code
+                            <i class="fas fa-qrcode me-2"></i>{{__('Show QR Code')}}
                         </a>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <i class="fas fa-calendar-alt me-2"></i>
-                    Ends: {{ \Carbon\Carbon::parse($tender->end_date)->format('M d, Y') }}
+                    {{__('Ends')}}: {{ \Carbon\Carbon::parse($tender->end_date)->format('M d, Y') }}
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
             <div class="d-flex justify-content-between align-items-center mt-auto">
                 <button class="btn btn-primary btn-sm rounded-pill px-3" 
                         onclick="window.location.href='{{ route('tenders.show', $tender->id) }}'">
-                    View Details
+                        {{__('View Details')}}
                 </button>
                 <span class="text-muted small">
                     <i class="fas fa-clock me-1"></i>

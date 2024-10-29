@@ -20,7 +20,7 @@ class SetLocale
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         } else {
-            $preferredLanguage = $request->getPreferredLanguage(['en','ar']);
+            $preferredLanguage = $request->getPreferredLanguage(['en','ar','es','fr']);
             App::setLocale($preferredLanguage);
             Session::put('locale', $preferredLanguage);
         }

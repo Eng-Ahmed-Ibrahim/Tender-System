@@ -50,47 +50,47 @@
 
 
                             <div class="form-group">
-                                <label for="title">Title</label>
+                                <label for="title">{{ __('Title')}}</label>
                                 <input type="text" name="title" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="title">First Insurance</label>
+                                <label for="title">{{ __('First Insurance')}}</label>
                                 <input type="text" name="first_insurance" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="title">Price</label>
+                                <label for="title">{{ __('Price')}}</label>
                                 <input type="text" name="price" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="title">City</label>
+                                <label for="title">{{ __('City')}}</label>
                                 <input type="text" name="city" class="form-control" required>
                             </div>
                 
                             <div class="form-group">
-                                <label for="">Description</label>
+                                <label for="">{{ __('Description')}}</label>
                                 <textarea name="description" class="form-control" required></textarea>
                             </div>
                 
                             <div class="form-group">
-                                <label for="end_date">End Date</label>
+                                <label for="end_date">{{ __('End Date')}}</label>
                                 <input type="date" name="end_date" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="end_date">deadline to update</label>
+                                <label for="end_date">{{ __('deadline to update')}}</label>
                                 <input type="date" name="edit_end_date" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="show_applicants">Show Applicants</label>
+                                <label for="show_applicants">{{ __('Show Applicants')}}</label>
                                 <select name="show_applicants" id="show_applicants" class="form-control">
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
+                                    <option value="0">{{ __('No')}}</option>
+                                    <option value="1">{{ __('Yes')}}</option>
                                 </select>
                             </div>
                 
-                            <button type="submit" class="btn btn-success">Update Tender</button>
+                            <button type="submit" class="btn btn-success">{{ __('Update Tender')}}</button>
                         </form>
                     </div>
                 </div>
