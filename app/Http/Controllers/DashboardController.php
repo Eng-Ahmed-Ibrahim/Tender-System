@@ -13,13 +13,20 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role === 'admin_company') {
-            return $this->companyDashboard();
+        if (auth()->user()->role === 'admin') {
+            return $this->adminDashboard();
         }
         
         return $this->adminDashboard();
     }
-
+    
+    public function company()
+    {
+        if (auth()->user()->role === 'admin_company') {
+            return $this->companyDashboard();
+        }
+        
+    }
     private function adminDashboard()
     {
         // Overall statistics

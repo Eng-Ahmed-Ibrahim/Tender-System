@@ -25,13 +25,9 @@ Route::get('/', function () {
 
 
 
-Route::get('/admin/dashboard', function () {
-    return view('backend.dashboard.index');
-})->middleware(['auth', UserDashboard::class . ':admin'])->name('admin.dashboard');
+Route::get('/admin/dashboard',[DashboardController::class, 'index'])->middleware(['auth', UserDashboard::class . ':admin'])->name('admin.dashboard');
 
-Route::get('/company/dashboard', function () {
-    return view('company.dashboard.index');
-})->middleware(['auth',UserDashboard::class . ':company'])->name('company.dashboard');
+Route::get('/company/dashboard',[DashboardController::class, 'company'])->middleware(['auth',UserDashboard::class . ':admin_company'])->name('company.dashboard');
 
 
 
@@ -72,7 +68,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
 
-    Route::get('/TenderDashboard', [DashboardController::class, 'index'])->name('TenderDashboard.index');
 
 
     Route::resource('CompanyUsers', CompanyUsersController::class);

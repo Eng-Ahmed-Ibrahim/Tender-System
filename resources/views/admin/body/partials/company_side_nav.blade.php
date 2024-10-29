@@ -28,7 +28,7 @@
 
         <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="{{route('TenderDashboard.index')}}">
+            <a class="menu-link" href="{{route('company.dashboard')}}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
