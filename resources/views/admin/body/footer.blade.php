@@ -34,7 +34,7 @@
 <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 
 
-    
+    @stack('scripts')
         <!-- Your content here -->
     
         <script type="module">
