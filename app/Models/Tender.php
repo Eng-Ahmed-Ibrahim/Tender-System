@@ -19,6 +19,7 @@ class Tender extends Model
         'edit_end_date',
         'qr_code',
         'show_applicants',
+        'status',
     ];
 
     public function company()

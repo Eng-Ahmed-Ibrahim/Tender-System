@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Company;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Tender;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TenderController extends Controller
 {
@@ -207,7 +210,6 @@ public function update(Request $request, string $id)
 
     public function download($id)
     {
-        // Find the tender by ID
         $tender = Tender::findOrFail($id);
     
         $qrCode = QrCode::size(200)
@@ -218,11 +220,37 @@ public function update(Request $request, string $id)
             function () use ($qrCode) {
                 echo $qrCode;
             },
-            200, // HTTP status code
+            200, 
             [
                 'Content-Type' => 'image/png',
             ]
         );
     }
+
+
+    public function stopTender($id)
+    {
+      
+            $tender = Tender::findOrFail($id);
+            
+            if ($tender->end_date <= now()) {
+                return redirect()->back()->with('error', __('Tender is already ended or stopped'));
+            }
+    
+            DB::beginTransaction();
+    
+            $tender->update([
+                'status' => 0,
+                'end_date' => now()
+            ]);
+
+            DB::commit();
+    
+            return redirect()->back()->with('success', __('Tender has been stopped successfully'));
+    
+      
+    }
+
+
     
 }

@@ -101,6 +101,9 @@ Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLa
 
 Route::resource('tenders', TenderController::class);
 
+
+Route::post('/tenders/{id}/stop', [TenderController::class, 'stopTender'])->name('stopTender');
+
 Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])->name('tenders.qrcode');
 
 Route::get('/tenders/{id}/download', [TenderController::class, 'download'])->name('tenders.download');
