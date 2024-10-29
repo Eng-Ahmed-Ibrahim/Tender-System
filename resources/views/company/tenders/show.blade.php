@@ -290,12 +290,12 @@
                 </div>
                 <div class="card-body p-0">
                     @forelse($tender->applicants as $applicant)
-                    <div class="applicant-card">
+                    <div class="applicant-card p-3 border-bottom">
                         <div class="row align-items-center">
                             <!-- Applicant Info -->
-                            <div class="col-lg-4">
+                            <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-0">
                                 <div class="d-flex align-items-center">
-                                    <div class="applicant-avatar me-3">
+                                    <div class="applicant-avatar me-3 text-center bg-primary text-white rounded-circle" style="width: 40px; height: 40px;">
                                         {{ strtoupper(substr($applicant->name ?? 'U', 0, 2)) }}
                                     </div>
                                     <div>
@@ -304,17 +304,15 @@
                                     </div>
                                 </div>
                             </div>
-
+        
                             <!-- Application Date -->
-                            <div class="col-lg-3">
-                                <div class="text-muted small">
-                                    <i class="fas fa-clock me-2"></i>
-                                    {{ \Carbon\Carbon::parse($applicant->pivot->created_at)->format('M d, Y H:i') }}
-                                </div>
+                            <div class="col-12 col-md-3 col-lg-2 text-muted small mb-3 mb-md-0">
+                                <i class="fas fa-clock me-2"></i>
+                                {{ \Carbon\Carbon::parse($applicant->pivot->created_at)->format('M d, Y H:i') }}
                             </div>
-
+        
                             <!-- Files -->
-                            <div class="col-lg-3">
+                            <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-0">
                                 @if($applicant->pivot->files)
                                     @php
                                         $fileArray = array_filter(explode(',', $applicant->pivot->files));
@@ -322,9 +320,9 @@
                                     <div class="d-flex flex-wrap">
                                         @foreach($fileArray as $file)
                                             <a href="{{ asset('storage/' . trim($file)) }}" 
-                                               class="file-badge text-decoration-none"
+                                               class="file-badge text-decoration-none me-2 mb-2" 
                                                target="_blank">
-                                                <i class="fas fa-file-alt me-2"></i>
+                                                <i class="fas fa-file-alt me-1"></i>
                                                 {{ basename(trim($file)) }}
                                             </a>
                                         @endforeach
@@ -333,9 +331,9 @@
                                     <span class="badge bg-warning">{{ __('No files') }}</span>
                                 @endif
                             </div>
-
+        
                             <!-- Actions -->
-                            <div class="col-lg-2 text-end">
+                            <div class="col-12 col-md-3 col-lg-2 text-end">
                                 <button class="btn btn-primary btn-sm px-3 rounded-pill"
                                         onclick="viewApplicant('{{ $applicant->id }}')">
                                     <i class="fas fa-eye me-2"></i>
@@ -355,7 +353,8 @@
                     @endforelse
                 </div>
             </div>
-            @endif
+        @endif
+        
         </div>
 
         <!-- Sidebar -->
@@ -382,31 +381,33 @@
                 </div>
                 <div class="card-body">
                     <div class="timeline">
-                        <div class="timeline-item">
+                        <!-- Timeline Item -->
+                        <div class="timeline-item mb-3">
                             <h6 class="mb-1">{{ __('Created') }}</h6>
                             <p class="text-muted mb-0 small">
                                 {{ \Carbon\Carbon::parse($tender->created_at)->format('M d, Y H:i') }}
                             </p>
                         </div>
                         
+                        <!-- Conditional Timeline Items -->
                         @if($tender->edit_end_date)
-                        <div class="timeline-item">
+                        <div class="timeline-item mb-3">
                             <h6 class="mb-1">{{ __('Edit Deadline') }}</h6>
                             <p class="text-muted mb-0 small">
                                 {{ \Carbon\Carbon::parse($tender->edit_end_date)->format('M d, Y H:i') }}
                             </p>
                         </div>
                         @endif
-
+            
                         @if($tender->change_uploads)
-                        <div class="timeline-item">
+                        <div class="timeline-item mb-3">
                             <h6 class="mb-1">{{ __('Upload Changes') }}</h6>
                             <p class="text-muted mb-0 small">
                                 {{ \Carbon\Carbon::parse($tender->change_uploads)->format('M d, Y H:i') }}
                             </p>
                         </div>
                         @endif
-
+            
                         <div class="timeline-item">
                             <h6 class="mb-1">{{ __('End Date') }}</h6>
                             <p class="text-muted mb-0 small">
@@ -416,6 +417,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
     </div></div>
 
