@@ -313,19 +313,12 @@
         
                             <!-- Files -->
                             <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-0">
-                                @if($applicant->pivot->files)
-                                    @php
-                                        $fileArray = array_filter(explode(',', $applicant->pivot->files));
-                                    @endphp
-                                    <div class="d-flex flex-wrap">
-                                        @foreach($fileArray as $file)
-                                            <a href="{{ asset('storage/' . trim($file)) }}" 
+                            
+                                            <a href="{{ asset('storage/'. $applicant->files) }}" 
                                                class="file-badge text-decoration-none me-2 mb-2" 
                                                target="_blank">
                                                 <i class="fas fa-file-alt me-1"></i>
-                                                {{ basename(trim($file)) }}
                                             </a>
-                                        @endforeach
                                     </div>
                                 @else
                                     <span class="badge bg-warning">{{ __('No files') }}</span>
