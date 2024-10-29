@@ -110,7 +110,7 @@
                         <div class="stats-card">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
-                                    <p class="mb-0 opacity-75">Active Tenders</p>
+                                    <p class="mb-0 opacity-75">{{ __('active_tenders') }}</p>
                                     <h2 class="mb-0">{{ $statistics['active_tenders'] }}</h2>
                                 </div>
                                 <div class="fs-1 opacity-25">
@@ -128,7 +128,7 @@
                         <div class="stats-card">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
-                                    <p class="mb-0 opacity-75">Total Applicants</p>
+                                    <p class="mb-0 opacity-75">{{ __('total_applicants') }}</p>
                                     <h2 class="mb-0">{{ $statistics['total_applicants'] }}</h2>
                                 </div>
                                 <div class="fs-1 opacity-25">
@@ -137,7 +137,7 @@
                             </div>
                             <p class="mb-0 small opacity-75">
                                 <i class="fas fa-arrow-up me-1"></i>
-                                {{ $statistics['recent_applications'] }} new this month
+                                {{ $statistics['recent_applications'] }} {{ __('new_this_month') }}
                             </p>
                         </div>
                     </div>
@@ -151,27 +151,27 @@
         <div class="col-xl-3 col-md-6">
             <a href="{{ route('tenders.create') }}" class="quick-action d-block bg-primary bg-opacity-10 text-primary">
                 <i class="fas fa-plus-circle fa-2x mb-3"></i>
-                <h5 class="mb-0">Create Tender</h5>
+                <h5 class="mb-0">{{ __('create_tender') }}</h5>
             </a>
         </div>
         <div class="col-xl-3 col-md-6">
             <a href="{{ route('tenders.index', ['status' => 'active']) }}" 
                class="quick-action d-block bg-success bg-opacity-10 text-success">
                 <i class="fas fa-clock fa-2x mb-3"></i>
-                <h5 class="mb-0">Active Tenders</h5>
+                <h5 class="mb-0">{{ __('active_tenders') }}</h5>
             </a>
         </div>
         <div class="col-xl-3 col-md-6">
             <a href="{{ route('Applicants.index') }}" 
                class="quick-action d-block bg-info bg-opacity-10 text-info">
                 <i class="fas fa-users fa-2x mb-3"></i>
-                <h5 class="mb-0">View Applicants</h5>
+                <h5 class="mb-0">{{ __('view_applicants') }}</h5>
             </a>
         </div>
         <div class="col-xl-3 col-md-6">
             <a href="#" class="quick-action d-block bg-warning bg-opacity-10 text-warning">
                 <i class="fas fa-chart-line fa-2x mb-3"></i>
-                <h5 class="mb-0">Analytics</h5>
+                <h5 class="mb-0">{{ __('analytics') }}</h5>
             </a>
         </div>
     </div>
@@ -183,7 +183,7 @@
             <div class="content-card h-100">
                 <div class="card-header bg-transparent border-0 py-4">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Applications Overview</h5>
+                        <h5 class="mb-0">{{ __('applications_overview') }}</h5>
                         <div class="btn-group">
                             <button class="btn btn-sm btn-light" onclick="updateChart('week')">Week</button>
                             <button class="btn btn-sm btn-light" onclick="updateChart('month')">Month</button>
@@ -211,18 +211,18 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h6 class="mb-0">{{ $tender->title }}</h6>
                             <span class="badge {{ $tender->end_date > now() ? 'bg-success' : 'bg-danger' }}">
-                                {{ $tender->end_date > now() ? 'Active' : 'Closed' }}
+                                {{ $tender->end_date > now() ? __('active') : __('closed') }}
                             </span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="small text-muted">{{ $tender->applicants_count }} applicants</span>
+                            <span class="small text-muted">{{ $tender->applicants_count }} {{ __('applicant') }}</span>
                             <span class="small text-muted">
                                 Ends {{ $tender->end_date->format('M d, Y') }}
                             </span>
                         </div>
                         <div class="progress" style="height: 6px;">
                             <div class="progress-bar bg-primary" 
-                                 style="width: {{ min(($tender->applicants_count / 20) * 100, 100) }}%">
+                                 style="width: {{ ($tender->applicants_count / $tender->max_applicants) * 100 }}%">
                             </div>
                         </div>
                     </div>
@@ -232,82 +232,39 @@
         </div>
     </div>
 
-    <!-- Bottom Row -->
-    <div class="row g-4">
-        <!-- Recent Applicants -->
-        <div class="col-xl-8">
-            <div class="content-card">
-                <div class="card-header bg-transparent border-0 py-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Recent Applicants</h5>
-                        <a href="{{ route('Applicants.index') }}" class="btn btn-sm btn-primary">View All</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Applicant</th>
-                                    <th>Tender</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($recentApplicants as $applicant)
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-3">
-                                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
-                                                     style="width: 40px; height: 40px;">
-                                                    {{ strtoupper(substr($applicant->user->name, 0, 2)) }}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">{{ $applicant->user->name }}</h6>
-                                                <small class="text-muted">{{ $applicant->user->email }}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ $applicant->tender->title }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $applicant->tender->end_date > now() ? 'success' : 'danger' }}">
-                                            {{ $applicant->tender->end_date > now() ? 'Active' : 'Closed' }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $applicant->created_at->format('M d, Y') }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-light" onclick="viewApplication({{ $applicant->id }})">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <!-- Recent Applicants -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">{{ __('recent_applicants') }}</h5>
         </div>
-
-        <!-- Status Distribution -->
-        <div class="col-xl-4">
-            <div class="content-card">
-                <div class="card-header bg-transparent border-0 py-4">
-                    <h5 class="mb-0">Application Status</h5>
-                </div>
-                <div class="card-body">
-                    <div class="chart-container">
-                        <canvas id="statusChart"></canvas>
-                    </div>
-                </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>{{ __('applicant') }}</th>
+                        <th>{{ __('tender') }}</th>
+                        <th>{{ __('status') }}</th>
+                        <th>{{ __('date') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($recentApplicants as $applicant)
+                    <tr>
+                        <td>{{ $applicant->name }}</td>
+                        <td>{{ $applicant->tender->title }}</td>
+                        <td>{{ $applicant->status }}</td>
+                        <td>{{ $applicant->created_at->format('M d, Y') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="text-end">
+                <a href="{{ route('applicants.index') }}" class="btn btn-primary">{{ __('view_all') }}</a>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -9,7 +9,7 @@
     
     <base href="{{ asset('../../../') }}"/>
     <link rel="shortcut icon" href="{{ asset('storage/' . $configuration->logo) }}"/>
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @if(Session('locale') == 'ar') 
         <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.rtl.css')}}" rel="stylesheet" type="text/css">
         <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.rtl.css')}}" rel="stylesheet" type="text/css">

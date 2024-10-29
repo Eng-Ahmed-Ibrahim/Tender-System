@@ -333,13 +333,7 @@
                             </div>
         
                             <!-- Actions -->
-                            <div class="col-12 col-md-3 col-lg-2 text-end">
-                                <button class="btn btn-primary btn-sm px-3 rounded-pill"
-                                        onclick="viewApplicant('{{ $applicant->id }}')">
-                                    <i class="fas fa-eye me-2"></i>
-                                    {{ __('View') }}
-                                </button>
-                            </div>
+                         
                         </div>
                     </div>
                     @empty

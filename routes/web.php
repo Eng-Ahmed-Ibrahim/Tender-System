@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::post('/save-token', [NotificationController::class, 'saveToken']);
 
 
 

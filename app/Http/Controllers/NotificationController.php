@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Services\FirebaseService;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -159,4 +160,18 @@ class NotificationController extends Controller
                                    
         return view('backend.notifications.index', compact('notifications'));
     }
+
+    public function saveToken(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+        ]);
+
+        $user = auth()->user(); // Assuming user is authenticate
+        $user->update(['fcm_token' => $request->token]); // or save token in another way
+
+        return response()->json(['message' => 'Token stored successfully']);
+    }
 }
+
+

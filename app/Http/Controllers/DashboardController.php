@@ -72,15 +72,8 @@ class DashboardController extends Controller
             ->get();
     
         // Status distribution instead of categories
-        $tenderStatus = Tender::select(
-            DB::raw('CASE 
-                WHEN end_date > NOW() THEN "Active" 
-                ELSE "Closed" 
-            END as status'),
-            DB::raw('count(*) as count')
-        )
-            ->groupBy('status')
-            ->get();
+        $tenderStatus = Tender::all();
+           
     
         // Activity log (you'll need to implement activity logging)
         $recentActivities = [];  // Implement based on your activity logging system

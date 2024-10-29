@@ -72,7 +72,7 @@
                     </div>
                     <div class="text-end">
                         <h3 class="mb-1">{{ $statistics['total_tenders'] }}</h3>
-                        <p class="mb-0">Total Tenders</p>
+                        <p class="mb-0">{{__('Total Tenders')}}</p>
                     </div>
                 </div>
                 <div class="progress bg-white bg-opacity-25" style="height: 4px;">
