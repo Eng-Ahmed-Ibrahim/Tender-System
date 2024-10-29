@@ -307,34 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Categories Chart
-    const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
-    new Chart(categoriesCtx, {
-        type: 'doughnut',
-        data: {
-            labels: {!! json_encode($tenderCategories->pluck('category')) !!},
-            datasets: [{
-                data: {!! json_encode($tenderCategories->pluck('count')) !!},
-                backgroundColor: [
-                    '#4158D0',
-                    '#C850C0',
-                    '#00C9FF',
-                    '#92FE9D',
-                    '#FF3CAC'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            },
-            cutout: '70%'
-        }
-    });
+    // Categorie
 });
 </script>
 @endpush

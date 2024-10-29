@@ -29,13 +29,13 @@ class DashboardController extends Controller
             'total_companies' => Company::count(),
             'total_applicants' => User::where('role', 'applicant')->count()
         ];
-
+    
         // Recent tenders
         $recentTenders = Tender::with(['company', 'applicants'])
             ->latest()
             ->take(5)
             ->get();
-
+    
         // Top companies by tenders
         $topCompanies = Company::withCount('tenders')
             ->withCount(['tenders as active_tenders_count' => function($query) {
@@ -44,7 +44,7 @@ class DashboardController extends Controller
             ->orderByDesc('tenders_count')
             ->take(5)
             ->get();
-
+    
         // Monthly applications chart data
         $monthlyApplications = Applicant::select(
             DB::raw('COUNT(*) as count'),
@@ -54,7 +54,7 @@ class DashboardController extends Controller
             ->orderBy('month')
             ->take(6)
             ->get();
-
+    
         // Recent applicants
         $recentApplicants = User::where('role', 'applicant')
             ->with(['applicants' => function($query) {
@@ -63,26 +63,31 @@ class DashboardController extends Controller
             ->latest()
             ->take(5)
             ->get();
-
-        // Tender categories distribution
-        $tenderCategories = Tender::select('category', DB::raw('count(*) as count'))
-            ->groupBy('category')
+    
+        // Status distribution instead of categories
+        $tenderStatus = Tender::select(
+            DB::raw('CASE 
+                WHEN end_date > NOW() THEN "Active" 
+                ELSE "Closed" 
+            END as status'),
+            DB::raw('count(*) as count')
+        )
+            ->groupBy('status')
             ->get();
-
+    
         // Activity log (you'll need to implement activity logging)
         $recentActivities = [];  // Implement based on your activity logging system
-
+    
         return view('backend.dashboard.admin', compact(
             'statistics',
             'recentTenders',
             'topCompanies',
             'monthlyApplications',
             'recentApplicants',
-            'tenderCategories',
+            'tenderStatus', // Changed from tenderCategories
             'recentActivities'
         ));
     }
-
     private function companyDashboard()
     {
         $company = auth()->user()->company;
