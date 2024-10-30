@@ -90,7 +90,7 @@
                     </div>
                     <div class="text-end">
                         <h3 class="mb-1">{{ $statistics['active_tenders'] }}</h3>
-                        <p class="mb-0">Active Tenders</p>
+                        <p class="mb-0">{{__('Active Tenders')}}</p>
                     </div>
                 </div>
                 <div class="progress bg-white bg-opacity-25" style="height: 4px;">
@@ -110,7 +110,7 @@
                     </div>
                     <div class="text-end">
                         <h3 class="mb-1">{{ $statistics['total_companies'] }}</h3>
-                        <p class="mb-0">Companies</p>
+                        <p class="mb-0">{{__('Companies')}}</p>
                     </div>
                 </div>
                 <div class="progress bg-white bg-opacity-25" style="height: 4px;">
@@ -128,7 +128,7 @@
                     </div>
                     <div class="text-end">
                         <h3 class="mb-1">{{ $statistics['total_applicants'] }}</h3>
-                        <p class="mb-0">Applicants</p>
+                        <p class="mb-0">{{__('Applicants')}}</p>
                     </div>
                 </div>
                 <div class="progress bg-white bg-opacity-25" style="height: 4px;">
@@ -145,7 +145,7 @@
             <div class="content-card h-100">
                 <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Applications Overview</h5>
+                        <h5 class="mb-0">{{__('Applications Overview')}}</h5>
                         <div class="btn-group">
                             <button class="btn btn-sm btn-light" onclick="updateChart('weekly')">Week</button>
                             <button class="btn btn-sm btn-light" onclick="updateChart('monthly')">Month</button>
@@ -165,7 +165,7 @@
         <div class="col-xl-4">
             <div class="content-card h-100">
                 <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
-                    <h5 class="mb-0">Recent Applications</h5>
+                    <h5 class="mb-0">{{__('Recent Applications')}}</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="activity-timeline">
@@ -202,17 +202,17 @@
         <div class="col-xl-6">
             <div class="content-card">
                 <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
-                    <h5 class="mb-0">Top Companies</h5>
+                    <h5 class="mb-0">{{__('Top Companies')}}</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Company</th>
-                                    <th>Tenders</th>
-                                    <th>Active</th>
-                                    <th>Applications</th>
+                                    <th>{{__('Company')}}</th>
+                                    <th>{{__('Tenders')}}</th>
+                                    <th>{{__('Active')}}</th>
+                                    <th>{{__('Applications')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -251,7 +251,7 @@
         <div class="col-xl-6">
             <div class="content-card">
                 <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
-                    <h5 class="mb-0">Category Distribution</h5>
+                    <h5 class="mb-0">{{__('Category Distribution')}}</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="chart-container">

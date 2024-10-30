@@ -5,8 +5,8 @@
         <div class="card-header bg-gradient-primary text-white py-3">
             <div class="d-flex align-items-center">
                 <i class="fas fa-bell fa-2x me-3"></i>
-                <h3 class="card-title mb-0 flex-grow-1">Send Notification</h3>
-                <span class="badge bg-light text-primary" id="selectedCount">0 selected</span>
+                <h3 class="card-title mb-0 flex-grow-1">{{__('Send Notification')}}</h3>
+                <span class="badge bg-light text-primary" id="selectedCount">0 {{__('selected')}}</span>
             </div>
         </div>
         
@@ -30,22 +30,22 @@
             <form action="{{ route('notifications.store') }}" method="POST" id="notificationForm">
                 @csrf
                 <div class="mb-4">
-                    <label class="form-label h6">Recipients</label>
+                    <label class="form-label h6">{{__('Recipients')}}</label>
                     <div class="recipient-type p-3 bg-light rounded mb-3">
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="recipient_type" id="specificUsers" value="specific" checked>
                             <label class="btn btn-outline-primary" for="specificUsers">
-                                <i class="fas fa-users me-2"></i>Specific Users
+                                <i class="fas fa-users me-2"></i>{{__('Specific Users')}}
                             </label>
                             
                             <input type="radio" class="btn-check" name="recipient_type" id="allCompanies" value="companies">
                             <label class="btn btn-outline-primary" for="allCompanies">
-                                <i class="fas fa-building me-2"></i>All Companies
+                                <i class="fas fa-building me-2"></i>{{__('All Companies')}}
                             </label>
                             
                             <input type="radio" class="btn-check" name="recipient_type" id="allUsers" value="all">
                             <label class="btn btn-outline-primary" for="allUsers">
-                                <i class="fas fa-globe me-2"></i>All Users
+                                <i class="fas fa-globe me-2"></i>{{__('All Users')}}
                             </label>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                                 </div>
                                 <small class="form-text text-muted">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Use Ctrl/Cmd + Click for multiple selections
+                                    {{__('Use Ctrl/Cmd + Click for multiple selections')}}
                                 </small>
                             </div>
                             
@@ -96,17 +96,17 @@
                                 <div class="card h-100 border-0 shadow-sm">
                                     <div class="card-body">
                                         <h6 class="card-title mb-3">
-                                            <i class="fas fa-filter me-2"></i>Quick Filters
+                                            <i class="fas fa-filter me-2"></i>{{__('Quick Filters')}}
                                         </h6>
                                         <div class="d-grid gap-2">
                                             <button type="button" class="btn btn-outline-primary btn-sm select-companies">
-                                                <i class="fas fa-building me-2"></i>Select All Companies
+                                                <i class="fas fa-building me-2"></i>{{__('Select All Companies')}}
                                             </button>
                                             <button type="button" class="btn btn-outline-secondary btn-sm select-others">
-                                                <i class="fas fa-users me-2"></i>Select All Other Users
+                                                <i class="fas fa-users me-2"></i>{{__('Select All Other Users')}}
                                             </button>
                                             <button type="button" class="btn btn-outline-danger btn-sm clear-selection">
-                                                <i class="fas fa-times me-2"></i>Clear Selection
+                                                <i class="fas fa-times me-2"></i>{{__('Clear Selection')}}
                                             </button>
                                         </div>
                                     </div>
@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label h6">Notification Title</label>
+                    <label class="form-label h6">{{__('Notification Title')}}</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="fas fa-heading"></i>
@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label h6">Message Content</label>
+                    <label class="form-label h6">{{__('Message Content')}}</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="fas fa-comment-alt"></i>
@@ -148,10 +148,10 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <button type="button" class="btn btn-outline-secondary" onclick="window.history.back()">
-                        <i class="fas fa-arrow-left me-2"></i>Cancel
+                        <i class="fas fa-arrow-left me-2"></i>{{__('Cancel')}}
                     </button>
                     <button type="submit" class="btn btn-primary" id="sendButton">
-                        <i class="fas fa-paper-plane me-2"></i>Send Notification
+                        <i class="fas fa-paper-plane me-2"></i>{{__('Send Notification')}}
                         <span class="badge bg-light text-primary ms-2" id="recipientCount">0</span>
                     </button>
                 </div>

@@ -1,5 +1,4 @@
 {{-- resources/views/backend/users/partials/filters.blade.php --}}
-<div class="card user-card mb-4">
     <div class="card-body p-4">
         <form id="filterForm" action="{{ route('AdminUsers.index') }}" method="GET">
             <div class="row g-3 align-items-center">
@@ -130,5 +129,4 @@
                 </div>
             </div>
         </form>
-    </div>
 </div>

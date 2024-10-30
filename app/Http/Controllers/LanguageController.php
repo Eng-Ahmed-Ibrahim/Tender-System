@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class LanguageController extends Controller
@@ -26,12 +27,21 @@ class LanguageController extends Controller
      */
     public function change(Request $request)
     {
-        App::setLocale($request->lang);
+        $validated = $request->validate([
+            'lang' => 'required|string|in:en,ar'
+        ]);
 
-        session()->put('locale', $request->lang);
+        $locale = $validated['lang'];
         
-        return redirect()->back();
+        // Set session
+        session()->put('locale', $locale);
+        
+        // Set locale immediately for current request
+        App::setLocale($locale);
+        
+        return redirect()->back()->with('locale_changed', true);
     }
+
 
   
     public function translate(Request $request)

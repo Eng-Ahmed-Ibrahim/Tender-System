@@ -19,8 +19,8 @@
                         <h1 class="h3 mb-1 fw-bold text-gray-800">{{ $company->name }}</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb bg-transparent p-0 mb-0">
-                                <li class="breadcrumb-item"><a href="{{ route('companies.index') }}">Companies</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Company Details</li>
+                                <li class="breadcrumb-item"><a href="{{ route('companies.index') }}">{{__('Companies')}}</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{__('Company Details')}}</li>
                             </ol>
                         </nav>
                     </div>
@@ -28,10 +28,10 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-light">
-                    <i class="fas fa-edit me-2"></i>Edit
+                    <i class="fas fa-edit me-2"></i>{{__('Edit')}}
                 </a>
                 <button type="button" class="btn btn-danger" onclick="deleteCompany({{ $company->id }})">
-                    <i class="fas fa-trash me-2"></i>Delete
+                    <i class="fas fa-trash me-2"></i>{{__('Delete')}}
                 </button>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <div class="company-info">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title mb-0 fw-bold">Company Details</h4>
+                            <h4 class="card-title mb-0 fw-bold">{{__('Company Details')}}</h4>
                             <span class="badge bg-{{ $company->status === 'active' ? 'success' : 'danger' }} rounded-pill px-3 py-2">
                                 {{ ucfirst($company->status ?? 'Unknown') }}
                             </span>
@@ -60,7 +60,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <label class="text-muted small mb-0">Email</label>
+                                        <label class="text-muted small mb-0">{{__('Email')}}</label>
                                         <p class="mb-0 fw-medium">{{ $company->email }}</p>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <label class="text-muted small mb-0">Phone</label>
+                                        <label class="text-muted small mb-0">{{__('Phone')}}</label>
                                         <p class="mb-0 fw-medium">{{ $company->phone ?? 'Not specified' }}</p>
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <label class="text-muted small mb-0">Address</label>
+                                        <label class="text-muted small mb-0">{{__('Address')}}</label>
                                         <p class="mb-0 fw-medium">{{ $company->address ?? 'Not specified' }}</p>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                         
                         <!-- Statistics Section -->
                         <div class="statistics mt-4">
-                            <h5 class="fw-bold mb-3">Statistics</h5>
+                            <h5 class="fw-bold mb-3">{{__('Statistics')}}</h5>
                             <div class="row g-3">
                                 <div class="col-6">
                                     <div class="stat-card bg-primary bg-opacity-10 p-3 rounded-3">
@@ -107,7 +107,7 @@
                                         <div class="stat-value fw-bold text-primary h4 mb-0">
                                             {{ $statistics['total_users'] }}
                                         </div>
-                                        <div class="stat-label text-muted small">Total Users</div>
+                                        <div class="stat-label text-muted small">{{__('Total Users')}}</div>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -118,7 +118,7 @@
                                         <div class="stat-value fw-bold text-success h4 mb-0">
                                             {{ $statistics['active_users'] }}
                                         </div>
-                                        <div class="stat-label text-muted small">Active Users</div>
+                                        <div class="stat-label text-muted small">{{__('Active Users')}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -136,12 +136,12 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#users" role="tab">
-                                <i class="fas fa-users me-2"></i>Users
+                                <i class="fas fa-users me-2"></i>{{__('Users')}}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#tenders" role="tab">
-                                <i class="fas fa-file-contract me-2"></i>Tenders
+                                <i class="fas fa-file-contract me-2"></i>{{__('Tenders')}}
                             </a>
                         </li>
                     </ul>
@@ -152,9 +152,9 @@
                         <!-- Users Tab -->
                         <div class="tab-pane fade show active" id="users" role="tabpanel">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="card-title mb-0 fw-bold">Company Users</h5>
+                                <h5 class="card-title mb-0 fw-bold">{{__('Company Users')}}</h5>
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                    <i class="fas fa-plus me-2"></i>Add User
+                                    <i class="fas fa-plus me-2"></i>{{__('Add User')}}
                                 </button>
                             </div>
                             
@@ -162,12 +162,12 @@
                                 <table class="table table-hover" id="usersTable">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Status</th>
-                                            <th>Joined Date</th>
-                                            <th>Actions</th>
+                                            <th>{{__('Name')}}</th>
+                                            <th>{{__('Email')}}</th>
+                                            <th>{{__('Phone')}}</th>
+                                            <th>{{__('Status')}}</th>
+                                            <th>{{__('Joined Date')}}</th>
+                                            <th>{{__('Actions')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -214,9 +214,9 @@
                         <!-- Tenders Tab -->
                         <div class="tab-pane fade" id="tenders" role="tabpanel">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="card-title mb-0 fw-bold">Company Tenders</h5>
+                                <h5 class="card-title mb-0 fw-bold">{{__('Company Tenders')}}</h5>
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTenderModal">
-                                    <i class="fas fa-plus me-2"></i>Add Tender
+                                    <i class="fas fa-plus me-2"></i>{{__('Add Tender')}}
                                 </button>
                             </div>
                             
@@ -224,11 +224,11 @@
                                 <table class="table table-hover" id="tendersTable">
                                     <thead>
                                         <tr>
-                                            <th>Tender ID</th>
-                                            <th>Title</th>
-                                            <th>inurance</th>
-                                            <th>Due Date</th>
-                                            <th>Actions</th>
+                                            <th>{{__('Tender ID')}}</th>
+                                            <th>{{__('Title')}}</th>
+                                            <th>{{__('inurance')}}</th>
+                                            <th>{{__('Due Date')}}</th>
+                                            <th>{{__('Actions')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -268,7 +268,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-light">
-                <h5 class="modal-title">Add New User</h5>
+                <h5 class="modal-title">{{__('Add New User')}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="addUserForm">
@@ -278,37 +278,37 @@
                 <div class="modal-body">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Name<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Name')}}<span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Email<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Email')}}<span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Phone</label>
+                            <label class="form-label fw-bold">{{__('Phone')}}</label>
                             <input type="tel" name="phone" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Role<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Role')}}<span class="text-danger">*</span></label>
                             <select name="role" class="form-select" required>
-                                <option value="user_company">User</option>
-                                <option value="admin_company">Admin</option>
+                                <option value="user_company">{{__('User')}}</option>
+                                <option value="admin_company">{{__('Admin')}}</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Password<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Password')}}<span class="text-danger">*</span></label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Confirm Password<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Confirm Password')}}<span class="text-danger">*</span></label>
                             <input type="password" name="password_confirmation" class="form-control" required>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add User</button>
+                    <button type="submit" class="btn btn-primary">{{__('Add User')}}</button>
                 </div>
             </form>
         </div>
@@ -320,7 +320,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-light">
-                <h5 class="modal-title">Edit User</h5>
+                <h5 class="modal-title">{{__('Edit User')}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="editUserForm">
@@ -330,44 +330,44 @@
                 <div class="modal-body">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Name<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Name')}}<span class="text-danger">*</span></label>
                             <input type="text" name="name" id="edit_name" class="form-control" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Email<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Email')}}<span class="text-danger">*</span></label>
                             <input type="email" name="email" id="edit_email" class="form-control" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Phone</label>
+                            <label class="form-label fw-bold">{{__('Phone')}}</label>
                             <input type="tel" name="phone" id="edit_phone" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Role<span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">{{__('Role')}}<span class="text-danger">*</span></label>
                             <select name="role" id="edit_role" class="form-select" required>
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="manager">Manager</option>
+                                <option value="user">{{__('User')}}</option>
+                                <option value="admin">{{__('Admin')}}</option>
+                                <option value="manager">{{__('Manager')}}</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="change_password">
-                                <label class="form-check-label">Change Password</label>
+                                <label class="form-check-label">{{__('Change Password')}}</label>
                             </div>
                         </div>
                         <div class="col-md-6 password-fields d-none">
-                            <label class="form-label fw-bold">New Password</label>
+                            <label class="form-label fw-bold">{{__('New Password')}}</label>
                             <input type="password" name="password" class="form-control">
                         </div>
                         <div class="col-md-6 password-fields d-none">
-                            <label class="form-label fw-bold">Confirm New Password</label>
+                            <label class="form-label fw-bold">{{__('Confirm New Password')}}</label>
                             <input type="password" name="password_confirmation" class="form-control">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update User</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{__('Cancel')}}</button>
+                    <button type="submit" class="btn btn-primary">{{__('Update User')}}</button>
                 </div>
             </form>
         </div>
@@ -379,7 +379,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header  text-white">
-                <h5 class="modal-title" id="addTenderModalLabel">Add New Tender</h5>
+                <h5 class="modal-title" id="addTenderModalLabel">{{__('Add New Tender')}}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addTenderForm" class="p-3">
@@ -387,47 +387,47 @@
                 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="title" class="form-label">Title</label>
+                        <label for="title" class="form-label">{{__('Title')}}</label>
                         <input type="text" name="title" class="form-control" required>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="first_insurance" class="form-label">First Insurance</label>
+                        <label for="first_insurance" class="form-label">{{__('First Insurance')}}</label>
                         <input type="text" name="first_insurance" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="price" class="form-label">Price</label>
+                        <label for="price" class="form-label">{{__('Price')}}</label>
                         <input type="text" name="price" class="form-control" required>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="city" class="form-label">City</label>
+                        <label for="city" class="form-label">{{__('City')}}</label>
                         <input type="text" name="city" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
+                    <label for="description" class="form-label">{{__('Description')}}</label>
                     <textarea name="description" class="form-control" rows="3" required></textarea>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="end_date" class="form-label">End Date</label>
+                        <label for="end_date" class="form-label">{{__('End Date')}}</label>
                         <input type="date" name="end_date" class="form-control" required>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="edit_end_date" class="form-label">Deadline to Update</label>
+                        <label for="edit_end_date" class="form-label">{{__('Deadline to Update')}}</label>
                         <input type="date" name="edit_end_date" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="show_applicants" class="form-label">Show Applicants</label>
+                    <label for="show_applicants" class="form-label">{{__('Show Applicants')}}</label>
                     <select name="show_applicants" id="show_applicants" class="form-select">
                         <option value="0">No</option>
                         <option value="1">Yes</option>
@@ -435,8 +435,8 @@
                 </div>
 
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Tender</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('Cancel')}}</button>
+                    <button type="submit" class="btn btn-primary">{{__('Add Tender')}}</button>
                 </div>
             </form>
         </div>

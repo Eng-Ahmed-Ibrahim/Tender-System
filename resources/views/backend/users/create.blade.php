@@ -20,7 +20,7 @@
             <!--begin::Card header-->
             <div class="card-header">
                 <!--begin::Card title-->
-                <div class="card-title fs-3 fw-bold">Create Users</div>
+                <div class="card-title fs-3 fw-bold">{{__('Create Users')}}</div>
                 <!--end::Card title-->
             </div>
 
@@ -60,7 +60,7 @@
                 <label for="role_id">{{ __('Role')}}</label>
                 <select name="role_id" id="role_id" class="form-control" required>
                     @foreach($roles as $role)
-                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                        <option value="{{ $role->id }}">{{ $role->title }}</option>
                     @endforeach
                 </select>
             </div>

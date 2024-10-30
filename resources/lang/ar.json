@@ -35,7 +35,7 @@
     "Start Date": "تاريخ البدء",
     "End Date": "تاريخ الانتهاء",
     "Apply": "تطبيق",
-    "Company": "شركة",
+    "Company": "الشركات",
     "All": "الجميع",
     "Open": "مفتوح",
     "Closed": "مغلق",
@@ -114,6 +114,29 @@
         "Applicant": "المتقدم",
         "Latest Tender": "أحدث عطاء", 
         
+            "Company Management": "إدارة الشركات",
+            "Add New Company": "إضافة شركة جديدة",
+            "Total Companies": "إجمالي الشركات",
+            "Active Companies": "الشركات النشطة",
+            "New This Month": "الجديد هذا الشهر",
+            "Companies List": "قائمة الشركات",
+            "ID": "الرقم التعريفي",
+            "Company Name": "اسم الشركة",
+            "Admin": "المدير",
+   
+            "Created At": "تاريخ الإنشاء",
+            "Export Options:": "خيارات التصدير:",
+            "Export Excel": "تصدير إلى إكسل",
+            "Export PDF": "تصدير إلى PDF",
+            "No Admin": "لا يوجد مدير",
+            "N/A": "غير متوفر",
+            "Unknown": "غير معروف",
+        
+            "Close": "إغلاق",
+            "Save Company": "حفظ الشركة",
+            "View": "عرض",
+        
+        
             "Total Applications": "إجمالي الطلبات",
             "Active Applications": "طلبات نشطة",
             "Application History": "تاريخ الطلبات",
@@ -129,11 +152,157 @@
             "Member Since": "عضو منذ",
             "Activity Statistics": "إحصائيات النشاط",
             "Documents Submitted": "المستندات المقدمة",
-            "Recent Activity": "النشاط الأخير"
+            "Recent Activity": "النشاط الأخير",
+          
+            "Employees": "الموظفون",
+            "Roles And Permissions": "الأدوار والصلاحيات",
+            "Roles": "الأدوار",
+            "Permissions": "الصلاحيات",
+            "Tenders": "المناقصات",
+            "Notification": "الإشعارات",
+            "all notification": "جميع الإشعارات",
+            "send notifcation": "إرسال إشعار",
+            "Configuration": "الإعدادات",
+            "configurations": "إعدادات",
+            "Dashboard": "لوحة التحكم",
         
         
     
 
-
+            
+                "Applied for: ": "تقدم بطلب للحصول على: ",
+                "User": "مستخدم",
+    "Contact": "اتصال",
+    "Role": "دور",
+    "Joined Date": "تاريخ الانضمام",
+    "Actions": "إجراءات",
+    "No Role": "لا دور",
+    "No users found": "لم يتم العثور على مستخدمين",
+    "Reset Password": "إعادة تعيين كلمة المرور",
+    "Search users...": "ابحث عن المستخدمين...",
+    "All Roles": "جميع الأدوار",
+    "From Date": "من تاريخ",
+    "To Date": "إلى تاريخ",
+    "Newest First": "الأحدث أولاً",
+    "Name A-Z": "الاسم أ-ي",
+    "Name Z-A": "الاسم ي-أ",
+    "Apply Filters": "تطبيق الفلاتر",
+    "Reset": "إعادة تعيين",
+    "Export": "تصدير",
+    "Activate Selected": "تفعيل المختارين",
+    "Deactivate Selected": "تعطيل المختارين",
+    "Delete Selected": "حذف المختارين",
+    "Add User": "إضافة مستخدم",
+    "Manage and monitor user accounts": "إدارة ومراقبة حسابات المستخدمين",
+    "Total Users": "إجمالي المستخدمين",
+    "New Users": "مستخدمون جدد",
+    "User Roles": "أدوار المستخدمين",
+    "Confirm Delete": "تأكيد الحذف",
+    "Are you sure you want to delete this user?": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
+    "Update Role": "تحديث الدور",
+    "Are you sure you want to change this user's role?": "هل أنت متأكد أنك تريد تغيير دور هذا المستخدم؟",
+    "Yes, update": "نعم، تحديث",
+    "Cancel": "إلغاء",
+    "Yes, delete": "نعم، حذف",
+    "An error occurred while fetching users. Please try again.": "حدث خطأ أثناء جلب المستخدمين. يرجى المحاولة مرة أخرى.",
     
-}
+        "Name": "الاسم",
+        "Email": "البريد الإلكتروني",
+        "Password": "كلمة المرور",
+        "Phone": "الهاتف",
+       
+        "Create": "إنشاء",
+        "Create Users": " انشاء عامل",
+        
+            "Manage permissions for this role": "إدارة الأذونات لهذا الدور",
+            "Total Permissions": "إجمالي الأذونات",
+            "Assigned Permissions": "الأذونات المعينة",
+            "Administrator Access": "وصول المسؤول",
+            "Grant all permissions to this role": "منح جميع الأذونات لهذا الدور",
+            "permissions": "أذونات",
+            "No description available": "لا يوجد وصف متاح",
+            "Save Changes": "حفظ التغييرات",
+            "Save Changes?": "هل تريد حفظ التغييرات؟",
+            "Are you sure you want to update the permissions for this role?": "هل أنت متأكد أنك تريد تحديث الأذونات لهذا الدور؟",
+            "Yes, save changes": "نعم، احفظ التغييرات",
+            "Add a Role": "اضف دورا جديدا",
+            "Role Name": "اسم الدور",
+            
+                "Configurations": "الإعدادات",
+                "Logo": "الشعار",
+                "Change logo": "تغيير الشعار",
+                "Cancel logo": "إلغاء الشعار",
+                "Remove logo": "إزالة الشعار",
+                "Allowed file types: png, jpg, jpeg.": "أنواع الملفات المسموح بها: png، jpg، jpeg.",
+                "WhatsApp": "واتساب",
+              
+                "Owner Name": "اسم المالك",
+                "Terms and Conditions (English)": "الشروط والأحكام (بالإنجليزية)",
+                "Terms and Conditions (Arabic)": "الشروط والأحكام (بالعربية)",
+                "Refund Policy (English)": "سياسة الاسترداد (بالإنجليزية)",
+                "Refund Policy (Arabic)": "سياسة الاسترداد (بالعربية)",
+                "Privacy Policy (English)": "سياسة الخصوصية (بالإنجليزية)",
+                "Privacy Policy (Arabic)": "سياسة الخصوصية (بالعربية)",
+                "Discard": "تجاهل",
+            
+            
+            
+                "Create New Company": "إنشاء شركة جديدة",
+                "Back to List": "العودة إلى القائمة",
+                "Company Information": "معلومات الشركة",
+                "Basic company details and contact information": "تفاصيل الشركة الأساسية ومعلومات الاتصال",
+                "Company Email": "بريد الشركة الإلكتروني",
+                "Website": "الموقع الإلكتروني",
+                "Company Logo": "شعار الشركة",
+                "Recommended size: 200x200px (Max: 2MB)": "الحجم الموصى به: 200x200 بكسل (الحد الأقصى: 2 ميجابايت)",
+                "Admin Account": "حساب المدير",
+                "Create administrator account for the company": "إنشاء حساب إداري للشركة",
+                "Admin Name": "اسم المدير",
+                "Admin Email": "البريد الإلكتروني للمدير",
+                "Minimum 8 characters, include numbers and special characters": "الحد الأدنى 8 أحرف، تتضمن أرقام ورموز خاصة",
+                "Confirm Password": "تأكيد كلمة المرور",
+                "Company Settings": "إعدادات الشركة",
+                "Additional company configuration": "تكوين إضافي للشركة",
+            
+                "Inactive": "غير نشط",
+                
+                    "Sent Notifications": "الإشعارات المرسلة",
+                    "Send New Notification": "إرسال إشعار جديد",
+                
+                    "Message": "الرسالة",
+                    "Sent At": "تم الإرسال في",
+                    "Read": "مقروء",
+                    "Unread": "غير مقروء",
+                    "Search:": "بحث:",
+                    "Show _MENU_ entries": "عرض _MENU_ إدخالات",
+                    "Showing _START_ to _END_ of _TOTAL_ notifications": "عرض _START_ إلى _END_ من _TOTAL_ إشعارات",
+                    "No notifications found": "لا توجد إشعارات",
+                
+                
+                    "selected": "محدد",
+                    "Recipients": "المستلمين",
+                    "Specific Users": "مستخدمين محددين",
+                    "All Users": "جميع المستخدمين",
+                    "Use Ctrl/Cmd + Click for multiple selections": "استخدم Ctrl/Cmd + Click لتحديد عدة خيارات",
+                    "Notification Title": "عنوان الإشعار",
+                    "Enter notification title": "أدخل عنوان الإشعار",
+                    "Message Content": "محتوى الرسالة",
+                    "Enter your message here...": "أدخل رسالتك هنا...",
+                    "Send Notification": "إرسال الإشعار",
+                    "Quick Filters": "مرشحات سريعة",
+                    "Select All Companies": "تحديد جميع الشركات",
+                    "Select All Other Users": "تحديد جميع المستخدمين الآخرين",
+                    "Clear Selection": "مسح التحديد",
+                    "Info": "معلومات",
+                    "Success": "نجاح",
+                    "Error": "خطأ"
+                
+                
+            
+            
+    }
+    
+
+            
+            
+    

@@ -87,17 +87,18 @@
     <div class="bg-white shadow-sm rounded-3 p-4 mb-4">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h3 class="mb-1">Create New Company</h3>
+                <h3 class="mb-1">{{__('Create New Company')}}</h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('companies.index') }}">Companies</a></li>
+                <i class="fas fa-chevron-left me-2"></i>{{__('Back to List')}}
+                        <li class="breadcrumb-item"><a href="">{{__('Dashboard')}}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('companies.index') }}">{{__('Companies')}}</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </nav>
             </div>
             <a href="{{ route('companies.index') }}" class="btn btn-outline-primary">
-                <i class="fas fa-chevron-left me-2"></i>Back to List
+                <i class="fas fa-chevron-left me-2"></i>{{__('Back to List')}}
             </a>
         </div>
     </div>
@@ -116,8 +117,8 @@
                                 <i class="fas fa-building text-white fs-4"></i>
                             </div>
                             <div>
-                                <h4 class="card-title mb-0">Company Information</h4>
-                                <small class="text-muted">Basic company details and contact information</small>
+                                <h4 class="card-title mb-0">{{__('Company Information')}}</h4>
+                                <small class="text-muted">{{__('Basic company details and contact information')}}</small>
                             </div>
                         </div>
                     </div>
@@ -126,13 +127,13 @@
                             <!-- Company Name -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">
-                                    Company Name<span class="text-danger">*</span>
+                                    {{__('Company Name')}}<span class="text-danger">*</span>
                                 </label>
                                 <input type="text" 
                                        name="name" 
                                        class="form-control form-control-lg @error('name') is-invalid @enderror" 
                                        value="{{ old('name') }}" 
-                                       placeholder="Enter company name"
+                                       placeholder="{{__('Enter company name')}}"
                                        required>
                                 @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -141,13 +142,13 @@
 
                             <!-- Email -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Company Email<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Company Email')}}<span class="text-danger">*</span></label>
                                 <div class="input-group input-group-lg">
                                     <input type="email" 
                                            name="email" 
                                            class="form-control @error('email') is-invalid @enderror"
                                            value="{{ old('email') }}"
-                                           placeholder="company@example.com"
+                                           placeholder="{{__('company@example.com')}}"
                                            required>
                                     @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -157,7 +158,7 @@
 
                             <!-- Phone -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Phone Number</label>
+                                <label class="form-label fw-bold">{{__('Phone Number')}}</label>
                                 <div class="input-group input-group-lg">
                                     <input type="tel" 
                                            name="phone" 
@@ -172,7 +173,7 @@
                     
                             <!-- Website -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Website</label>
+                                <label class="form-label fw-bold">{{__('Website')}}</label>
                                 <div class="input-group input-group-lg">
                                     <input type="url" 
                                            name="website" 
@@ -187,7 +188,7 @@
 
                             <!-- Logo -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Company Logo</label>
+                                <label class="form-label fw-bold">{{__('Company Logo')}}</label>
                                 <input type="file" 
                                        name="logo" 
                                        class="form-control form-control-lg @error('logo') is-invalid @enderror"
@@ -197,17 +198,17 @@
                                 @enderror
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Recommended size: 200x200px (Max: 2MB)
+                                    {{__('Recommended size: 200x200px (Max: 2MB)')}}
                                 </small>
                             </div>
 
                             <!-- Address -->
                             <div class="col-12">
-                                <label class="form-label fw-bold">Address</label>
+                                <label class="form-label fw-bold">{{__('Address')}}</label>
                                 <textarea name="address" 
                                           rows="3" 
                                           class="form-control @error('address') is-invalid @enderror"
-                                          placeholder="Enter company address">{{ old('address') }}</textarea>
+                                          placeholder="{{__('Enter company address')}}">{{ old('address') }}</textarea>
                                 @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -224,8 +225,8 @@
                                 <i class="fas fa-user-shield text-white fs-4"></i>
                             </div>
                             <div>
-                                <h4 class="card-title mb-0">Admin Account</h4>
-                                <small class="text-muted">Create administrator account for the company</small>
+                                <h4 class="card-title mb-0">{{__('Admin Account')}}</h4>
+                                <small class="text-muted">{{__('Create administrator account for the company')}}</small>
                             </div>
                         </div>
                     </div>
@@ -233,13 +234,13 @@
                         <div class="row g-4">
                             <!-- Admin Name -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Admin Name<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Admin Name')}}<span class="text-danger">*</span></label>
                                 <input type="text" 
                                        name="admin_name" 
                                        class="form-control form-control-lg @error('admin_name') is-invalid @enderror"
                                        value="{{ old('admin_name') }}"
                                        required
-                                       placeholder="Enter admin name">
+                                       placeholder="{{__('Enter admin name')}}">
                                 @error('admin_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -247,7 +248,7 @@
 
                             <!-- Admin Email -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Admin Email<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Admin Email')}}<span class="text-danger">*</span></label>
                                 <input type="email" 
                                        name="admin_email" 
                                        class="form-control form-control-lg @error('admin_email') is-invalid @enderror"
@@ -261,29 +262,29 @@
 
                             <!-- Password -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Password<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Password')}}<span class="text-danger">*</span></label>
                                 <input type="password" 
                                        name="password" 
                                        class="form-control form-control-lg @error('password') is-invalid @enderror"
                                        required
-                                       placeholder="Enter password">
+                                       placeholder="{{__('Enter password')}}">
                                 @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Minimum 8 characters, include numbers and special characters
+                                    {{__('Minimum 8 characters, include numbers and special characters')}}
                                 </small>
                             </div>
 
                             <!-- Confirm Password -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Confirm Password<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Confirm Password')}}<span class="text-danger">*</span></label>
                                 <input type="password" 
                                        name="password_confirmation" 
                                        class="form-control form-control-lg"
                                        required
-                                       placeholder="Confirm password">
+                                       placeholder="{{__('Confirm password')}}">
                             </div>
                         </div>
                     </div>
@@ -297,8 +298,8 @@
                                 <i class="fas fa-cogs text-white fs-4"></i>
                             </div>
                             <div>
-                                <h4 class="card-title mb-0">Company Settings</h4>
-                                <small class="text-muted">Additional company configuration</small>
+                                <h4 class="card-title mb-0">{{__('Company Settings')}}</h4>
+                                <small class="text-muted">{{__('Additional company configuration')}}</small>
                             </div>
                         </div>
                     </div>
@@ -306,7 +307,7 @@
                         <div class="row g-4">
                             <!-- Status -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Status</label>
+                                <label class="form-label fw-bold">{{__('Status')}}</label>
                                 <div class="d-flex gap-4">
                                     <div class="form-check">
                                         <input type="radio" 
@@ -314,7 +315,7 @@
                                                value="active" 
                                                class="form-check-input" 
                                                {{ old('status', 'active') == 'active' ? 'checked' : '' }}>
-                                        <label class="form-check-label">Active</label>
+                                        <label class="form-check-label">{{__('Active')}}</label>
                                     </div>
                                     <div class="form-check">
                                         <input type="radio" 
@@ -322,7 +323,7 @@
                                                value="inactive" 
                                                class="form-check-input"
                                                {{ old('status') == 'inactive' ? 'checked' : '' }}>
-                                        <label class="form-check-label">Inactive</label>
+                                        <label class="form-check-label">{{__('Inactive')}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -336,10 +337,10 @@
                 <!-- Form Actions -->
                 <div class="d-flex justify-content-end gap-3 mb-4">
                     <a href="{{ route('companies.index') }}" class="btn btn-light btn-lg px-5">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>{{__('Cancel')}}
                     </a>
                     <button type="submit" class="btn btn-primary btn-lg px-5">
-                        <i class="fas fa-save me-2"></i>Create Company
+                        <i class="fas fa-save me-2"></i>{{__('Create Company')}}
                     </button>
                 </div>
             </form>

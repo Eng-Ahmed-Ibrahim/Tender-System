@@ -91,7 +91,6 @@ Route::post('/save-token', [NotificationController::class, 'saveToken']);
 
 
 
-Route::get('lang', [LanguageController::class, 'switch'])->name('lang.switch');
 
 Route::get('location', [LocationController::class, 'getLocation']);
 

@@ -21,7 +21,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Companies</div>
+                                {{__('Total Companies')}}</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $companies->count() }}</div>
                         </div>
                         <div class="col-auto">
@@ -39,7 +39,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Active Companies</div>
+                                {{__('Active Companies')}}</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $companies->where('status', 'active')->count() }}</div>
                         </div>
                         <div class="col-auto">
@@ -57,7 +57,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                New This Month</div>
+                                {{__('New This Month')}}</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 {{ $companies->where('created_at', '>=', now()->startOfMonth())->count() }}
                             </div>
@@ -83,8 +83,8 @@
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                     aria-labelledby="dropdownMenuLink">
                     <div class="dropdown-header">Export Options:</div>
-                    <a class="dropdown-item" href="#"><i class="fas fa-file-excel mr-2"></i>Export Excel</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-file-pdf mr-2"></i>Export PDF</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-file-excel mr-2"></i>Export Excel') }}</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-file-pdf mr-2"></i>Export PDF') }}</a>
                 </div>
             </div>
         </div>
@@ -94,14 +94,14 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Company Name</th>
-                            <th>Admin</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Total Users</th>
-                            <th>Status</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
+                            <th>{{__('Company Name') }}</th>
+                            <th>{{__('Admin') }}</th>
+                            <th>{{__('Email') }}</th>
+                            <th>{{__('Phone') }}</th>
+                            <th>{{__('Total Users') }}</th>
+                            <th>{{__('Status') }}</th>
+                            <th>{{__('Created At') }}</th>
+                            <th>{{__('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -156,7 +156,7 @@
             <form action="{{ route('companies.store') }}" method="POST" id="addCompanyForm">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Company</h5>
+                    <h5 class="modal-title">{{__('Add New Company') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -165,39 +165,39 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Company Name <span class="text-danger">*</span></label>
+                                <label>{{__('Company Name') }}<span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Email Address <span class="text-danger">*</span></label>
+                                <label>{{__('Email Address') }} <span class="text-danger">*</span></label>
                                 <input type="email" name="email" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Password <span class="text-danger">*</span></label>
+                                <label>{{__('Password') }} <span class="text-danger">*</span></label>
                                 <input type="password" name="password" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Phone Number</label>
+                                <label>{{__('Phone Number') }}</label>
                                 <input type="text" name="phone" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Address</label>
+                                <label>{{__('Address') }}</label>
                                 <textarea name="address" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Company</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close') }}</button>
+                    <button type="submit" class="btn btn-primary">{{__('Save Company') }}</button>
                 </div>
             </form>
         </div>

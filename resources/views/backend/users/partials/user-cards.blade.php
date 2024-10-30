@@ -106,16 +106,7 @@
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('AdminUsers.edit', $user->id) }}">
-                                            <i class="fas fa-edit me-2"></i>{{ __('Edit') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="resetPassword({{ $user->id }})">
-                                            <i class="fas fa-key me-2"></i>{{ __('Reset Password') }}
-                                        </a>
-                                    </li>
+                                 
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('AdminUsers.destroy', $user->id) }}" 

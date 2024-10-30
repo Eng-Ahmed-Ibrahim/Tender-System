@@ -4,9 +4,9 @@
 <div class="container py-4">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title m-0">Sent Notifications</h3>
+            <h3 class="card-title m-0">{{__('Sent Notifications')}}</h3>
             <a href="{{ route('notifications.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Send New Notification
+                <i class="fas fa-plus me-2"></i>{{__('Send New Notification')}}
             </a>
         </div>
         <div class="card-body">
@@ -14,11 +14,11 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>User</th>
-                            <th>Title</th>
-                            <th>Message</th>
-                            <th>Sent At</th>
-                            <th>Status</th>
+                            <th>{{__('User')}}</th>
+                            <th>{{__('Title')}}</th>
+                            <th>{{__('Message')}}</th>
+                            <th>{{__('Sent At')}}</th>
+                            <th>{{__('Status')}}</th>
                         </tr>
                     </thead>
                     <tbody>

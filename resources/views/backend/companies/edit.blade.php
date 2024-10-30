@@ -8,9 +8,9 @@
                 <h3 class="mb-1">Edit Company</h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('companies.index') }}">Companies</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('companies.index') }}">{{__('Companies')}}</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('companies.show', $company->id) }}">{{ $company->name }}</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item active">{{__('Edit')}}</li>
                     </ol>
                 </nav>
             </div>
@@ -47,7 +47,7 @@
 
                             <!-- Company Name -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Company Name<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Company Name')}}<span class="text-danger">*</span></label>
                                 <input type="text" 
                                        name="name" 
                                        class="form-control form-control-lg" 
@@ -57,7 +57,7 @@
 
                             <!-- Email -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Email<span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">{{__('Email')}}<span class="text-danger">*</span></label>
                                 <input type="email" 
                                        name="email" 
                                        class="form-control form-control-lg" 
@@ -67,7 +67,7 @@
 
                             <!-- Phone -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Phone Number</label>
+                                <label class="form-label fw-bold">{{__('Phone Number')}}</label>
                                 <input type="tel" 
                                        name="phone" 
                                        class="form-control form-control-lg" 
@@ -76,7 +76,7 @@
 
                             <!-- Website -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Website</label>
+                                <label class="form-label fw-bold">{{__('Website')}}</label>
                                 <input type="url" 
                                        name="website" 
                                        class="form-control form-control-lg" 
@@ -94,7 +94,7 @@
 
                             <!-- Address -->
                             <div class="col-12">
-                                <label class="form-label fw-bold">Address</label>
+                                <label class="form-label fw-bold">{{__('Address')}}</label>
                                 <textarea name="address" 
                                           class="form-control" 
                                           rows="3">{{ $company->address }}</textarea>
@@ -104,7 +104,7 @@
                             <div class="col-12 text-end">
                                 <a href="{{ route('companies.show', $company->id) }}" class="btn btn-light btn-lg me-2">Cancel</a>
                                 <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-save me-2"></i>Save Changes
+                                    <i class="fas fa-save me-2"></i>{{__('Save Changes')}}
                                 </button>
                             </div>
                         </div>
@@ -117,18 +117,18 @@
         <div class="col-lg-4">
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-bold mb-4">Company Information</h5>
+                    <h5 class="card-title fw-bold mb-4">{{__('Company Information')}}</h5>
                     <div class="info-list">
                         <div class="info-item mb-3">
-                            <label class="text-muted small mb-1">Created Date</label>
+                            <label class="text-muted small mb-1">{{__('Created Date')}}</label>
                             <p class="mb-0 fw-medium">{{ $company->created_at->format('M d, Y') }}</p>
                         </div>
                         <div class="info-item mb-3">
-                            <label class="text-muted small mb-1">Last Updated</label>
+                            <label class="text-muted small mb-1">{{__('Last Updated')}}</label>
                             <p class="mb-0 fw-medium">{{ $company->updated_at->format('M d, Y H:i') }}</p>
                         </div>
                         <div class="info-item">
-                            <label class="text-muted small mb-1">Total Users</label>
+                            <label class="text-muted small mb-1">{{__('Total Users')}}</label>
                             <p class="mb-0 fw-medium">{{ $company->users->count() }}</p>
                         </div>
                     </div>
