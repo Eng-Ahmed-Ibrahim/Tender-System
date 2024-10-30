@@ -16,14 +16,18 @@
 
                 <!-- Role Filter -->
                 <div class="col-lg-2">
-                    <select class="form-select" name="role">
-                        <option value="">{{ __('All Roles') }}</option>
-                        @foreach($roles as $role)
-                            <option value="{{ $role->id }}" {{ request('role') == $role->id ? 'selected' : '' }}>
-                                {{ $role->title }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <select class="form-select form-select-solid" 
+            name="role" 
+            data-control="select2" 
+            data-placeholder="{{ __('Select Role') }}">
+        <option value="">{{ __('All Roles') }}</option>
+        @foreach($roles as $role)
+            <option value="{{ $role->id }}" 
+                    {{ (string)request('role') === (string)$role->id ? 'selected' : '' }}>
+                {{ $role->title }}
+            </option>
+        @endforeach
+    </select>
                 </div>
 
                 <!-- Date Range -->
@@ -88,11 +92,7 @@
                                         <i class="fas fa-file-pdf me-2"></i>PDF
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('users.export', ['format' => 'csv']) }}">
-                                        <i class="fas fa-file-csv me-2"></i>CSV
-                                    </a>
-                                </li>
+                             
                             </ul>
                         </div>
 
@@ -122,7 +122,7 @@
                         </div>
 
                         <!-- Add User Button -->
-                        <a href="{{ route('AdminUsers.create') }}" class="btn btn-primary">
+                        <a href="{{ route('AdminUsers.create') }}" style="padding-top:17px;">
                             <i class="fas fa-plus me-2"></i>{{ __('Add User') }}
                         </a>
                     </div>

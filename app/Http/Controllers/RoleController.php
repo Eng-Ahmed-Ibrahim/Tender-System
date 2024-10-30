@@ -62,38 +62,40 @@ $user->save();
 
 
 public function store(Request $request)
-    {
+{
+    $user = Auth::user();
+    $userId = $user->company_id;
 
-        $user= Auth::User();
-        $userId =  $user->company_id;
-
-        $company = Company::where('id',$userId)->first();
-        $CompanyName= $company->name;
-        
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'permissions' => 'array',
-            
-            'permissions.*' => 'exists:permissions,id',
-        ]);
-
-        $role = Role::create([
-            'title' => $request->input('title'),
-            'name' => strtolower($request->input('title')) .'_'.  $CompanyName,
-            'company_id' => $userId
-        ]);
-
-        // Filter out non-existent permissions
-        $permissions = Permission::whereIn('id', $request->input('permissions', []))->pluck('id');
-
-        // Attach permissions to the role
-        if ($permissions->isNotEmpty()) {
-            $role->syncPermissions($permissions);
-        }
-
-        // Redirect with success message
-        return redirect()->back();
+    if (auth()->user()->role == "admin_company" && $userId) {
+        $company = Company::where('id', $userId)->first();
+        $CompanyName = $company ? $company->name : 'UnknownCompany'.$user->email;
+    } else {
+        $CompanyName = 'Admin';
     }
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'permissions' => 'array',
+        'permissions.*' => 'exists:permissions,id',
+    ]);
+
+    $role = Role::create([
+        'title' => $request->input('title'),
+        'name' => strtolower($request->input('title')) . '_' . $CompanyName,
+        'company_id' => $userId ?? null,
+    ]);
+
+    $permissions = Permission::whereIn('id', $request->input('permissions', []))->pluck('id');
+
+    // Attach permissions to the role
+    if ($permissions->isNotEmpty()) {
+        $role->syncPermissions($permissions);
+    }
+
+    // Redirect with success message
+    return redirect()->back();
+}
+
 
 public function role_permission($roleId)
 {

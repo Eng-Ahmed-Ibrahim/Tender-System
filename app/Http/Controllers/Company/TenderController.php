@@ -31,7 +31,7 @@ class TenderController extends Controller
              $searchTerm = $request->search;
              $query->where(function ($q) use ($searchTerm) {
                  $q->where('title', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+                    ->orWhere('description', 'LIKE', "%{$searcrm}%hTe");
              });
          }
      

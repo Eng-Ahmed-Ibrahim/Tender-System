@@ -22,46 +22,96 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        // Your existing index method remains the same
-        // But let's add some additional statistics
-        $user = Auth::user();
-        $query = User::query()
-            ->with(['roles']) // Change 'role' to 'roles' if using spatie/laravel-permission
-            ->when($user->role === 'admin_company', function($query) use ($user) {
-                return $query->where('company_id', $user->id);
-            });
+{
+    $user = Auth::user();
+    $query = User::query();
 
-        // Add status check if you have a status column
-        if ($request->filled('is_active')) {
-            $query->where('is_active', $request->status);
-        }
-
-        // Your existing search, role, and date filters...
-
-        // Get users with pagination
-        $users = $query->paginate(12)->withQueryString();
-
-        // Get roles based on company context
-        $roles = Role::when($user->role === 'admin_company', function($query) use ($user) {
-            return $query->where('company_id', $user->company_id);
-        })->get();
-
-        // Enhanced statistics
-        $statistics = [
-            'total_users' => $query->count(),
-            'new_users' => $query->where('created_at', '>=', now()->subDays(30))->count(),
-            'total_roles' => $roles->count(),
-            'active_users' => $query->where('is_active',1)->count(),
-            'inactive_users' => $query->where('is_active', 0)->count(),
-        ];
-
-        if ($request->ajax()) {
-            return view('backend.users.partials.user-cards', compact('users'))->render();
-        }
-
-        return view('backend.users.index', compact('users', 'roles', 'statistics'));
+    // Apply company filters based on user role
+    if ($user->role == 'admin') {
+        $query->whereNull('company_id');
+        $roles = Role::whereNull('company_id')->get();
+    } else {
+        $query->where('company_id', $user->company_id);
+        $roles = Role::where('company_id', $user->company_id)->get();
     }
+
+    // Filter by active status
+    if ($request->filled('is_active')) {
+        $query->where('is_active', $request->is_active);
+    }
+
+    // Search filter
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'LIKE', "%{$search}%")
+              ->orWhere('email', 'LIKE', "%{$search}%");
+        });
+    }
+
+    if ($request->filled('role')) {
+        $query->where('role_id', $request->role);
+    }
+
+    // Date range filter
+    if ($request->filled('date_from') && $request->filled('date_to')) {
+        $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+    }
+
+    // Sort filter
+    if ($request->filled('sort')) {
+        switch ($request->sort) {
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+        }
+    }
+
+    if ($request->filled('bulk_action') && $request->filled('user_ids')) {
+        $userIds = $request->user_ids;
+
+        switch ($request->bulk_action) {
+            case 'activate':
+                User::whereIn('id', $userIds)->update(['is_active' => 1]);
+                break;
+
+            case 'deactivate':
+                User::whereIn('id', $userIds)->update(['is_active' => 0]);
+                break;
+
+            case 'delete':
+                User::whereIn('id', $userIds)->delete();
+                break;
+        }
+    }
+    $users = $query->paginate(12)->withQueryString();
+
+    $statistics = [
+        'total_users' => $query->count(),
+        'new_users' => $query->where('created_at', '>=', now()->subDays(30))->count(),
+        'total_roles' => $roles->count(),
+        'active_users' => $query->where('is_active', 1)->count(),
+        'inactive_users' => $query->where('is_active', 0)->count(),
+    ];
+
+    // Handle AJAX requests for user cards partial
+    if ($request->ajax()) {
+        return view('backend.users.partials.user-cards', compact('users'))->render();
+    }
+
+    // Return the view with data
+    return view('backend.users.index', compact('users', 'roles', 'statistics'));
+}
+
     public function export(Request $request)
     {
         $format = $request->format ?? 'csv';

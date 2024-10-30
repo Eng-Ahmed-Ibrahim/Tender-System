@@ -19,13 +19,12 @@
                 </thead>
                 <tbody>
                     @forelse($users as $user)
-                    <tr>
                         <td class="ps-4">
                             <div class="form-check">
                                 <input class="form-check-input user-checkbox" 
                                        type="checkbox" 
                                        value="{{ $user->id }}"
-                                       name="selected_users[]">
+                                       name="user_ids[]">
                             </div>
                         </td>
                         <td>

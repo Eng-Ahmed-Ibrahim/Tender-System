@@ -77,7 +77,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="stats-card">
                             <h3 class="mb-1">{{ $statistics['total_applicants'] }}</h3>
-                            <p class="mb-0 text-white-50">{{ __('Total Applicants') }}</p>
+                            <p class="mb-0 text-white-50">{{ __('Applicants') }}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -95,7 +95,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="stats-card">
                             <h3 class="mb-1">{{ $statistics['active_tenders'] }}</h3>
-                            <p class="mb-0 text-white-50">{{ __('Active Tenders') }}</p>
+                            <p class="mb-0 text-white-50">{{ __('Active') }}</p>
                         </div>
                     </div>
                 </div>
@@ -104,50 +104,201 @@
     </div>
 
     <!-- Filters -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form id="filterForm" class="row g-3">
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                        <input type="text" 
-                               class="form-control ps-5" 
-                               placeholder="{{ __('Search applicants...') }}"
-                               name="search"
-                               value="{{ request('search') }}">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" name="tender">
-                        <option value="">{{ __('All Tenders') }}</option>
-                        @foreach($tenders as $tender)
-                            <option value="{{ $tender->id }}" 
-                                    {{ request('tender') == $tender->id ? 'selected' : '' }}>
-                                {{ $tender->title }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" name="company">
-                        <option value="">{{ __('All Companies') }}</option>
-                        @foreach($companies as $company)
-                            <option value="{{ $company->id }}" 
-                                    {{ request('company') == $company->id ? 'selected' : '' }}>
-                                {{ $company->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group">
-                        <input type="date" class="form-control" name="date_from" value="{{ request('date_from') }}">
-                        <input type="date" class="form-control" name="date_to" value="{{ request('date_to') }}">
-                    </div>
-                </div>
-            </form>
+<!-- Advanced Filter Section -->
+<div class="card card-flush mb-5 shadow-sm">
+    <div class="card-header min-h-65px">
+        <h3 class="card-title align-items-start flex-column">
+          
+        </h3>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-sm btn-light" id="resetFilters">
+                <i class="ki-duotone ki-filter-off fs-2">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                {{ __('Reset') }}
+            </button>
         </div>
     </div>
+
+    <div class="card-body pt-5">
+        <form id="filterForm" class="row g-4">
+            <!-- Search Input -->
+            <div class="col-12 col-md-3">
+                <label class="form-label text-gray-600">{{ __('Search') }}</label>
+                <div class="position-relative">
+                    <span class="position-absolute top-50 translate-middle-y ms-4">
+                        <i class="ki-duotone ki-magnifier fs-3 text-gray-500">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                    <input type="text"
+                           class="form-control form-control-solid ps-12"
+                           placeholder="{{ __('Search applicants...') }}"
+                           name="search"
+                           value="{{ request('search') }}"
+                           data-kt-filter="search"/>
+                </div>
+            </div>
+
+            <!-- Tender Selection -->
+            <div class="col-12 col-md-3"  style="padding-top:9px;">
+                <label class="form-label text-gray-600">{{ __('Tender') }}</label>
+                <select class="form-select form-select-solid" 
+                        name="tender" 
+                        data-control="select2" 
+                        data-placeholder="{{ __('Select Tender') }}">
+                    <option value="">{{ __('All Tenders') }}</option>
+                    @foreach($tenders as $tender)
+                        <option value="{{ $tender->id }}" 
+                                {{ request('tender') == $tender->id ? 'selected' : '' }}>
+                            {{ $tender->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Company Selection -->
+            <div class="col-12 col-md-3" style="padding-top:9px;">
+                <label class="form-label text-gray-600">{{ __('Company') }}</label>
+                <select class="form-select form-select-solid" 
+                        name="company" 
+                        data-control="select2" 
+                        data-placeholder="{{ __('Select Company') }}">
+                    <option value="">{{ __('All Companies') }}</option>
+                    @foreach($companies as $company)
+                        <option value="{{ $company->id }}" 
+                                {{ request('company') == $company->id ? 'selected' : '' }}>
+                            {{ $company->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Date Range Picker -->
+            <div class="col-12 col-md-3">
+                <label class="form-label text-gray-600">{{ __('Date Range') }}</label>
+                <div class="position-relative">
+                    <span class="position-absolute top-50 translate-middle-y ms-4">
+                        <i class="ki-duotone ki-calendar fs-3 text-gray-500">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                    <input class="form-control form-control-solid ps-12" 
+                           placeholder="{{ __('Pick date range') }}" 
+                           id="dateRangePicker"/>
+                    <input type="hidden" name="date_from" value="{{ request('date_from') }}">
+                    <input type="hidden" name="date_to" value="{{ request('date_to') }}">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('styles')
+<style>
+    .form-select-solid,
+    .form-control-solid {
+        transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .form-select-solid:focus,
+    .form-control-solid:focus {
+        background-color: #f5f8fa;
+        border-color: #009ef7;
+        color: #5e6278;
+        box-shadow: none;
+    }
+
+    .daterangepicker {
+        box-shadow: 0 0 50px 0 rgb(82 63 105 / 15%);
+        border: 0;
+    }
+
+    .daterangepicker .ranges ul {
+        padding: 1rem 0;
+        width: 175px;
+    }
+
+    .daterangepicker .ranges li:hover {
+        background-color: #f5f8fa;
+    }
+
+    .daterangepicker .ranges li.active {
+        background-color: #009ef7;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Initialize Select2
+    $('select[data-control="select2"]').select2({
+        minimumResultsForSearch: 10,
+        dropdownParent: $('#filterForm')
+    });
+
+    // Initialize DateRangePicker
+    $('#dateRangePicker').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: '{{ __("Clear") }}',
+            applyLabel: '{{ __("Apply") }}',
+            fromLabel: '{{ __("From") }}',
+            toLabel: '{{ __("To") }}',
+            customRangeLabel: '{{ __("Custom") }}',
+            weekLabel: 'W',
+            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December'],
+            firstDay: 1
+        },
+        ranges: {
+           '{{ __("Today") }}': [moment(), moment()],
+           '{{ __("Yesterday") }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           '{{ __("Last 7 Days") }}': [moment().subtract(6, 'days'), moment()],
+           '{{ __("Last 30 Days") }}': [moment().subtract(29, 'days'), moment()],
+           '{{ __("This Month") }}': [moment().startOf('month'), moment().endOf('month')],
+           '{{ __("Last Month") }}': [moment().subtract(1, 'month').startOf('month'), 
+                                     moment().subtract(1, 'month').endOf('month')]
+        }
+    });
+
+    // Handle date range picker events
+    $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        $('input[name="date_from"]').val(picker.startDate.format('YYYY-MM-DD'));
+        $('input[name="date_to"]').val(picker.endDate.format('YYYY-MM-DD'));
+        $('#filterForm').submit();
+    });
+
+    $('#dateRangePicker').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+        $('input[name="date_from"]').val('');
+        $('input[name="date_to"]').val('');
+        $('#filterForm').submit();
+    });
+
+    // Auto-submit form on change
+    $('#filterForm select, #filterForm input[type="text"]').on('change', function() {
+        $('#filterForm').submit();
+    });
+
+    // Reset filters
+    $('#resetFilters').on('click', function() {
+        $('#filterForm')[0].reset();
+        $('select[data-control="select2"]').val(null).trigger('change');
+        $('#dateRangePicker').val('');
+        $('input[name="date_from"]').val('');
+        $('input[name="date_to"]').val('');
+        $('#filterForm').submit();
+    });
+});
+</script>
+@endpush
 
     <!-- Applicants List -->
     <div class="card">
