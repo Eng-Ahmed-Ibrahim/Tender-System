@@ -369,46 +369,7 @@
             @endif
 
             <!-- Timeline -->
-            <div class="content-card">
-                <div class="card-header bg-transparent border-0 p-4">
-                    <h5 class="mb-0">{{ __('Timeline') }}</h5>
-                </div>
-                <div class="card-body">
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <h6 class="mb-1">{{ __('Created') }}</h6>
-                            <p class="text-muted mb-0 small">
-                                {{ \Carbon\Carbon::parse($tender->created_at)->format('M d, Y H:i') }}
-                            </p>
-                        </div>
-                        
-                        @if($tender->edit_end_date)
-                        <div class="timeline-item">
-                            <h6 class="mb-1">{{ __('Edit Deadline') }}</h6>
-                            <p class="text-muted mb-0 small">
-                                {{ \Carbon\Carbon::parse($tender->edit_end_date)->format('M d, Y H:i') }}
-                            </p>
-                        </div>
-                        @endif
-
-                        @if($tender->change_uploads)
-                        <div class="timeline-item">
-                            <h6 class="mb-1">{{ __('Upload Changes') }}</h6>
-                            <p class="text-muted mb-0 small">
-                                {{ \Carbon\Carbon::parse($tender->change_uploads)->format('M d, Y H:i') }}
-                            </p>
-                        </div>
-                        @endif
-
-                        <div class="timeline-item">
-                            <h6 class="mb-1">{{ __('End Date') }}</h6>
-                            <p class="text-muted mb-0 small">
-                                {{ \Carbon\Carbon::parse($tender->end_date)->format('M d, Y H:i') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+         
         </div>
     </div></div>
 
