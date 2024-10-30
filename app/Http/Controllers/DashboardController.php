@@ -145,16 +145,8 @@ class DashboardController extends Controller
             ->get();
 
         // Application status distribution
-        $applicationStatus = Tender::where('company_id', $companyId)
-            ->select(
-                DB::raw('CASE 
-                    WHEN end_date > NOW() THEN "Active" 
-                    ELSE "Closed" 
-                END as status'),
-                DB::raw('count(*) as count')
-            )
-            ->groupBy('status')
-            ->get();
+        $applicationStatus = Tender::all();
+            
 
         return view('backend.dashboard.company', compact(
             'statistics',
