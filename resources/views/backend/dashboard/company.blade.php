@@ -217,7 +217,7 @@
                         <div class="d-flex justify-content-between mb-2">
                             <span class="small text-muted">{{ $tender->applicants_count }} {{ __('applicant') }}</span>
                             <span class="small text-muted">
-                                Ends {{ $tender->end_date->format('M d, Y') }}
+                                Ends {{ $tender->end_date }}
                             </span>
                         </div>
                         <div class="progress" style="height: 6px;">
@@ -253,7 +253,7 @@
                         <td>{{ $applicant->name }}</td>
                         <td>{{ $applicant->tender->title }}</td>
                         <td>{{ $applicant->status }}</td>
-                        <td>{{ $applicant->created_at->format('M d, Y') }}</td>
+                        <td>{{ $applicant->created_at}}</td>
                     </tr>
                     @endforeach
                 </tbody>
