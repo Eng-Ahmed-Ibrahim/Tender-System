@@ -222,7 +222,7 @@
                         </div>
                         <div class="progress" style="height: 6px;">
                             <div class="progress-bar bg-primary" 
-                                 style="width: {{ ($tender->applicants_count / $tender->max_applicants) * 100 }}%">
+                                 style="width: 30%">
                             </div>
                         </div>
                     </div>
