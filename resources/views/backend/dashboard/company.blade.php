@@ -259,7 +259,7 @@
                 </tbody>
             </table>
             <div class="text-end">
-                <a href="{{ route('applicants.index') }}" class="btn btn-primary">{{ __('view_all') }}</a>
+                <a href="{{ route('Applicants.index') }}" class="btn btn-primary">{{ __('view_all') }}</a>
             </div>
         </div>
     </div>
