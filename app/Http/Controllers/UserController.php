@@ -111,36 +111,37 @@ class UserController extends Controller
     // Return the view with data
     return view('backend.users.index', compact('users', 'roles', 'statistics'));
 }
+public function export(Request $request)
+{
+    $format = $request->format ?? 'csv';
+    $user = Auth::user();
+    
+    $query = User::query()
+        ->when($user->dashboard === 'company', function($query) use ($user) {
+            return $query->where('company_id', $user->id);
+        });
 
-    public function export(Request $request)
-    {
-        $format = $request->format ?? 'csv';
-        $user = Auth::user();
-        
-        $query = User::query()
-            ->when($user->dashboard === 'company', function($query) use ($user) {
-                return $query->where('company_id', $user->id);
-            });
 
-        // Apply filters if any
-        if ($request->filled('role')) {
-            $query->where('role_id', $request->role);
-        }
 
-        $users = $query->get();
-
-        // Handle different export formats
-        switch ($format) {
-            case 'excel':
-                return Excel::download(new UsersExport($users), 'users.xlsx');
-            case 'pdf':
-                return PDF::loadView('exports.users', compact('users'))
-                    ->download('users.pdf');
-            default:
-                return (new UsersExport($users))->download('users.csv', \Maatwebsite\Excel\Excel::CSV);
-        }
+    if ($request->filled('role')) {
+        $query->where('role_id', $request->role);
     }
-  
+
+    $users = $query->get();
+    $roles = Role::all();
+    
+
+    switch ($format) {
+        case 'excel':
+            return Excel::download(new UsersExport($users), 'users.xlsx');
+        case 'pdf':
+            $pdf = app('dompdf.wrapper');
+            return $pdf->loadView('pdf.users', compact('users','roles'))
+                      ->download('users.pdf');
+        default:
+            return (new UsersExport($users))->download('users.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+}
 
  
     public function create()
