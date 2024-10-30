@@ -63,7 +63,7 @@
                                 <div class="user-select-wrapper">
                                     <select name="users[]" multiple class="form-select user-select" size="12">
                                         <optgroup label="Companies" class="user-group">
-                                            @foreach($users->where('role', 'company') as $user)
+                                            @foreach($users->where('role', 'admin_company') as $user)
                                                 <option value="{{ $user->id }}" data-search="{{ strtolower($user->name . ' ' . $user->email) }}">
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-building me-2"></i>

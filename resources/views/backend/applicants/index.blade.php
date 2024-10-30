@@ -246,13 +246,7 @@
                                                     {{ __('View Details') }}
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a class="dropdown-item" 
-                                                   href="{{ route('Applicants.edit', $applicant->id) }}">
-                                                    <i class="fas fa-edit me-2"></i>
-                                                    {{ __('Edit') }}
-                                                </a>
-                                            </li>
+                                     
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
                                                 <form action="{{ route('Applicants.destroy', $applicant->id) }}" 

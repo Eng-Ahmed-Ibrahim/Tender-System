@@ -20,7 +20,16 @@ class NotificationController extends Controller
     // Show form to send notification
     public function create()
     {
-        $users = User::select('id', 'name', 'email')->get();
+        if(auth()->user()->role="admin_company")
+        {
+            $users = User::select('id', 'name', 'email')->where('company_id',auth()->user()->company_id)->get();
+
+        }else{
+
+            $users = User::select('id', 'name', 'email')->get();
+
+        }
+
         return view('backend.notifications.create', compact('users'));
     }
 
@@ -48,17 +57,16 @@ class NotificationController extends Controller
                     break;
                 
                 case 'companies':
-                    $users = User::where('role', 'company')
+                    $users = User::where('role', 'admin_company')
                                 ->where('status', 'active')
                                 ->get();
                     break;
                 
                 case 'all':
-                    $users = User::where('status', 'active')->get();
+                    $users = User::where('is_active', 'active')->get();
                     break;
             }
     
-            // Counter for successful notifications
             $successCount = 0;
             $failedCount = 0;
             $errors = [];
@@ -96,20 +104,18 @@ class NotificationController extends Controller
     
             DB::commit();
     
-            // Prepare response message
             $message = "Successfully sent {$successCount} notifications.";
             if ($failedCount > 0) {
                 $message .= " Failed to send {$failedCount} notifications.";
             }
     
-            // Log detailed errors for admin review
             if (!empty($errors)) {
                 \Log::error('Notification Errors:', $errors);
             }
     
             return redirect()->route('notifications.create')
                 ->with('success', $message)
-                ->with('errors', $errors); // Pass errors to view if you want to display them
+                ->with('errors', $errors); 
     
         } catch (\Exception $e) {
             DB::rollBack();
@@ -120,10 +126,7 @@ class NotificationController extends Controller
         }
     }
     
-    /**
-     * Helper method to chunk notifications for large user groups
-     * Use this if you're dealing with large numbers of users
-     */
+
     private function sendNotificationsInChunks($users, $title, $body, $chunkSize = 500)
     {
         $users->chunk($chunkSize)->each(function ($chunk) use ($title, $body) {
