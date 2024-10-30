@@ -31,7 +31,7 @@ class TenderController extends Controller
              $searchTerm = $request->search;
              $query->where(function ($q) use ($searchTerm) {
                  $q->where('title', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('description', 'LIKE', "%{$searcrm}%hTe");
+                    ->orWhere('description', 'LIKE', "%{$searchTerm}%");
              });
          }
      
@@ -128,15 +128,17 @@ class TenderController extends Controller
     public function show($id)
     {
         $tender = Tender::findOrFail($id);
-    
+        
         $qrCode = QrCode::size(200)
-            ->backgroundColor(255, 255, 0)
-            ->color(0, 0, 255)
+            ->backgroundColor(255, 255, 255) // Set background to white
+            ->color(0, 0, 0) // Set QR code color to black
             ->margin(1)
             ->generate(url("/api/ApiAllTenders/{$tender->id}")); 
-
+    
         return view('company.tenders.show', compact('tender', 'qrCode'));
     }
+    
+
     public function generateQrCode($id)
     {
         $tender = Tender::findOrFail($id);
