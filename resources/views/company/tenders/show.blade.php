@@ -280,7 +280,7 @@
             </div>
 
             <!-- Applicants Section -->
-            @if($tender->show_applicants)
+            @if($tender->show_applicants  && $tender->end_date > now())
             <div class="content-card">
                 <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center p-4">
                     <h5 class="mb-0">{{ __('Applicants') }}</h5>
@@ -289,6 +289,7 @@
                     </span>
                 </div>
                 <div class="card-body p-0">
+
                     @forelse($tender->applicants as $applicant)
                     <div class="applicant-card p-3 border-bottom">
                         <div class="row align-items-center">
