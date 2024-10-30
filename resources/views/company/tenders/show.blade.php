@@ -280,7 +280,8 @@
             </div>
 
             <!-- Applicants Section -->
-            @if($tender->show_applicants  && $tender->end_date > now())
+
+            @if($tender->end_date > now())
             <div class="content-card">
                 <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center p-4">
                     <h5 class="mb-0">{{ __('Applicants') }}</h5>
