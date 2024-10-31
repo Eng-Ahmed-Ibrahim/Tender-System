@@ -59,10 +59,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/roles/{roleId}/permissions/assign', [RoleController::class,'role_permission'])->name('roles.permissions.view');
 
+    Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
 
     Route::middleware(['permission:company.view'])->group(function () {
         Route::get('companies', [CompanyController::class, 'index'])->name('companies.index');
-        Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
 
     });
     
