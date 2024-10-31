@@ -84,11 +84,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/assign-role/{userId}', [UserController::class, 'assignRole'])->name('assign.role');
 
 
-Route::middleware(['permission:employee.view'])->group(function () {
     Route::get('AdminUsers', [UserController::class, 'index'])->name('AdminUsers.index');
     Route::get('AdminUsers/{user}', [UserController::class, 'show'])->name('AdminUsers.show');
 
-});
 
 Route::middleware(['permission:employee.create'])->group(function () {
     Route::get('AdminUsers/create', [UserController::class, 'create'])->name('AdminUsers.create');
@@ -112,7 +110,7 @@ Route::middleware(['permission:Employee.delete'])->group(function () {
 
 
     
-    // Separate resource routes for Applicants with permissions
+
     Route::middleware(['permission:applicant.view'])->group(function () {
         Route::get('Applicants', [ApplicantController::class, 'index'])->name('Applicants.index');
         Route::get('Applicants/{applicant}', [ApplicantController::class, 'show'])->name('Applicants.show');
