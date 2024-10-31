@@ -60,19 +60,28 @@
                         </td>
                         <td>
                             @if(auth()->user()->role === 'admin')
-                            <select class="form-select form-select-sm role-select" 
-                                    onchange="updateRole(this, {{ $user->id }})"
-                                    style="width: 150px;">
-                                <option value="" disabled {{ is_null($user->role_id) ? 'selected' : '' }}>
-                                    {{ __('No Role') }}
-                                </option>
-                                @foreach($roles as $role)
-                                <option value="{{ $role->id }}" 
-                                        {{ $user->role_id === $role->id ? 'selected' : '' }}>
-                                    {{ $role->title }}
-                                </option>
-                                @endforeach
-                            </select>
+                            <form id="roleForm{{ $user->id }}" action="{{ route('assign.role', $user->id) }}" method="POST">
+                                @csrf
+                                <select name="role_id" class="form-select form-select-sm role-select"
+                                        style="width: 150px;"
+                                        onchange="submitRoleForm({{ $user->id }})">
+                                    <option value="" disabled {{ is_null($user->role_id) ? 'selected' : '' }}>
+                                        {{ __('No Role') }}
+                                    </option>
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}" {{ $user->role_id === $role->id ? 'selected' : '' }}>
+                                            {{ $role->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                            
+                            <script>
+                                function submitRoleForm(userId) {
+                                    document.getElementById('roleForm' + userId).submit();
+                                }
+                            </script>
+                            
                             @else
                             <span class="badge bg-light text-dark">
                                 {{ $user->role?->title ?? 'No Role' }}
