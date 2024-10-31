@@ -1,282 +1,232 @@
+<!-- Dashboard Section -->
 <div class="menu-item pt-5">
-    <!--begin:Menu content-->
     <div class="menu-content">
         <span class="menu-heading fw-bold text-uppercase fs-7">{{ __('Dashboard')}}</span>
     </div>
-    <!--end:Menu content-->
 </div>
 
-
-
-                     
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-    <!--begin:Menu link-->
     <span class="menu-link">
         <span class="menu-icon">
-            <i class="bi bi-people-fill"></i> <!-- Customers icon -->
-
+            <i class="bi bi-speedometer2"></i>
         </span>
         <span class="menu-title">{{ __('Dashboard')}}</span>
         <span class="menu-arrow"></span>
     </span>
-
     <div class="menu-sub menu-sub-accordion">
-     
-
- 
-
-
         <div class="menu-item">
-            <!--begin:Menu link-->
             <a class="menu-link" href="{{ route('admin.dashboard')}}">
                 <span class="menu-bullet">
-                    <span class="bullet bullet-dot"></span>
+                    <i class="bi bi-graph-up-arrow fs-6 me-2"></i>
                 </span>
-                <span class="menu-title">{{ __('Dashboard')}}</span>
+                <span class="menu-title">{{ __('Overview')}}</span>
             </a>
-            <!--end:Menu link-->
         </div>
-
- 
-        <!--end:Menu item-->
-        <!--begin:Menu item-->
-
-        <!--end:Menu item-->
+        
     </div>
-    <!--end:Menu sub-->
 </div>
 
-
+<!-- Employees Section -->
 <div class="menu-item pt-5">
-    <!--begin:Menu content-->
     <div class="menu-content">
         <span class="menu-heading fw-bold text-uppercase fs-7">{{ __('Employees')}}</span>
     </div>
-    <!--end:Menu content-->
 </div>
 
-
-
-                     
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-    <!--begin:Menu link-->
     <span class="menu-link">
         <span class="menu-icon">
-            <i class="bi bi-people-fill"></i> <!-- Customers icon -->
-
+            <i class="bi bi-person-badge-fill"></i>
         </span>
         <span class="menu-title">{{ __('Employees')}}</span>
         <span class="menu-arrow"></span>
     </span>
-
     <div class="menu-sub menu-sub-accordion">
-     
-
- 
-
-
         <div class="menu-item">
-            <!--begin:Menu link-->
             <a class="menu-link" href="{{ route('AdminUsers.index') }}">
                 <span class="menu-bullet">
-                    <span class="bullet bullet-dot"></span>
+                    <i class="bi bi-people fs-6 me-2"></i>
                 </span>
-                <span class="menu-title">{{ __('Employees')}}</span>
+                <span class="menu-title">{{ __('All Employees')}}</span>
             </a>
         </div>
-
-
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('AdminUsers.create') }}">
+                <span class="menu-bullet">
+                    <i class="bi bi-person-plus-fill fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{ __('Add Employee')}}</span>
+            </a>
+        </div>
     </div>
-    <!--end:Menu sub-->
 </div>
 
-
-
-                     
-
-
-      
-     
-
-
+<!-- Roles and Permissions Section -->
 <div class="menu-item pt-5">
-    <!--begin:Menu content-->
     <div class="menu-content">
         <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Roles And Permissions')}}</span>
     </div>
-    <!--end:Menu content-->
 </div>
 
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-    <!--begin:Menu link-->
     <span class="menu-link">
         <span class="menu-icon">
-            <i class="fas fa-globe"></i>
+            <i class="bi bi-shield-lock-fill"></i>
         </span>
-        <span class="menu-title">{{__('Roles')}}</span>
+        <span class="menu-title">{{__('Access Management')}}</span>
         <span class="menu-arrow"></span>
     </span>
-    <!--end:Menu link-->
-    <!--begin:Menu sub-->
     <div class="menu-sub menu-sub-accordion">
-        <!--begin:Menu item-->
-
-        <!--end:Menu item-->
-        <!--begin:Menu item-->
         <div class="menu-item">
-            <!--begin:Menu link-->
             <a class="menu-link" href="{{route('role.create')}}">
                 <span class="menu-bullet">
-                    <span class="bullet bullet-dot"></span>
+                    <i class="bi bi-person-gear fs-6 me-2"></i>
                 </span>
-                <span class="menu-title"> {{__('Roles')}}</span>
+                <span class="menu-title">{{__('All Roles')}}</span>
             </a>
-            <!--end:Menu link-->
         </div>
        
-
-        <!--end:Menu item-->
-        <!--begin:Menu item-->
+        
         <div class="menu-item">
-            <!--begin:Menu link-->
             <a class="menu-link" href="{{route('permissions.create')}}">
                 <span class="menu-bullet">
-                    <span class="bullet bullet-dot"></span>
+                    <i class="bi bi-plus-circle fs-6 me-2"></i>
                 </span>
-                <span class="menu-title">{{__('Permissions')}}</span>
+                <span class="menu-title">{{__('Add Permission')}}</span>
             </a>
-            <!--end:Menu link-->
         </div>
-        <!--end:Menu item-->
     </div>
-    <!--end:Menu sub-->
 </div>
 
-<div class="menu-item pt-5">
-    <!--begin:Menu content-->
-    <div class="menu-content">
-        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Company')}}</span>
-    </div>
-    <!--end:Menu content-->
-</div>
-<!--end:Menu item-->
-<!--begin:Menu item-->
-<div class="menu-item">
-    <!--begin:Menu link-->
-    <a class="menu-link" href="{{ route('companies.index')}}" >
+<!-- Company Section -->
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+    <span class="menu-link">
         <span class="menu-icon">
-            <i class="ki-duotone ki-rocket fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
+            <i class="bi bi-building-fill"></i>
         </span>
         <span class="menu-title">{{__('Company')}}</span>
-    </a>
-    <!--end:Menu link-->
-</div>
-
-
-<div class="menu-item pt-5">
-    <!--begin:Menu content-->
-    <div class="menu-content">
-        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Tenders')}}</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('companies.index')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-buildings fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('All Companies')}}</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('companies.create')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-building-add fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('Add Company')}}</span>
+            </a>
+        </div>
     </div>
-    <!--end:Menu content-->
 </div>
-<!--end:Menu item-->
-<!--begin:Menu item-->
-<div class="menu-item">
-    <!--begin:Menu link-->
-    <a class="menu-link" href="{{ route('tenders.index')}}" >
+
+<!-- Tenders Section -->
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+    <span class="menu-link">
         <span class="menu-icon">
-            <i class="ki-duotone ki-rocket fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
+            <i class="bi bi-file-earmark-text-fill"></i>
         </span>
         <span class="menu-title">{{__('Tenders')}}</span>
-    </a>
-    <!--end:Menu link-->
-</div>
-
-
-
-<div class="menu-item pt-5">
-    <!--begin:Menu content-->
-    <div class="menu-content">
-        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Applicants')}}</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('tenders.index')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-files fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('All Tenders')}}</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('tenders.create')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-file-earmark-plus fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('Create Tender')}}</span>
+            </a>
+        </div>
+        
     </div>
-    <!--end:Menu content-->
 </div>
-<!--end:Menu item-->
-<!--begin:Menu item-->
-<div class="menu-item">
-    <!--begin:Menu link-->
-    <a class="menu-link" href="{{ route('Applicants.index')}}" >
+
+<!-- Applicants Section -->
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+    <span class="menu-link">
         <span class="menu-icon">
-            <i class="ki-duotone ki-rocket fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
+            <i class="bi bi-people-fill"></i>
         </span>
         <span class="menu-title">{{__('Applicants')}}</span>
-    </a>
-    <!--end:Menu link-->
-</div>
-<div class="menu-item pt-5">
-    <!--begin:Menu content-->
-    <div class="menu-content">
-        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Notification')}}</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('Applicants.index')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-person-lines-fill fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('All Applicants')}}</span>
+            </a>
+        </div>
+
     </div>
-    <!--end:Menu content-->
 </div>
-<!--end:Menu item-->
-<!--begin:Menu item-->
-<div class="menu-item">
-    <!--begin:Menu link-->
-    <a class="menu-link" href="{{ route('notifications.index')}}" >
+
+<!-- Notification Section -->
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+    <span class="menu-link">
         <span class="menu-icon">
-            <i class="ki-duotone ki-rocket fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
+            <i class="bi bi-bell-fill"></i>
         </span>
-        <span class="menu-title">{{__('all notification')}}</span>
-    </a>
-    <!--end:Menu link-->
-</div>
-<div class="menu-item">
-    <!--begin:Menu link-->
-    <a class="menu-link" href="{{ route('notifications.create')}}" >
-        <span class="menu-icon">
-            <i class="ki-duotone ki-rocket fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
-        </span>
-        <span class="menu-title">{{__('send notifcation')}}</span>
-    </a>
-    <!--end:Menu link-->
-</div>
-<div class="menu-item pt-5">
-    <!--begin:Menu content-->
-    <div class="menu-content">
-        <span class="menu-heading fw-bold text-uppercase fs-7">{{__('Configuration')}}</span>
+        <span class="menu-title">{{__('Notifications')}}</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('notifications.index')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-inbox-fill fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('All Notifications')}}</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('notifications.create')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-send-fill fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('Send Notification')}}</span>
+            </a>
+        </div>
+     
     </div>
-    <!--end:Menu content-->
 </div>
-<!--end:Menu item-->
-<!--begin:Menu item-->
-<div class="menu-item">
-    <!--begin:Menu link-->
-    <a class="menu-link" href="{{route('configurations.index')}}" >
+
+<!-- Configuration Section -->
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+    <span class="menu-link">
         <span class="menu-icon">
-            <i class="ki-duotone ki-rocket fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
+            <i class="bi bi-gear-fill"></i>
         </span>
-        <span class="menu-title">{{__('configurations')}}</span>
-    </a>
-    <!--end:Menu link-->
+        <span class="menu-title">{{__('Configuration')}}</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link" href="{{route('configurations.index')}}">
+                <span class="menu-bullet">
+                    <i class="bi bi-sliders fs-6 me-2"></i>
+                </span>
+                <span class="menu-title">{{__('General Settings')}}</span>
+            </a>
+        </div>
+     
+    </div>
 </div>

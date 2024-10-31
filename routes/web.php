@@ -101,6 +101,9 @@ Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLa
 
 Route::resource('tenders', TenderController::class);
 
+Route::get('/tenders/export/{format}', [TenderController::class, 'export'])
+    ->name('tenders.export')
+    ->where('format', 'excel|pdf');
 
 Route::post('/tenders/{id}/stop', [TenderController::class, 'stopTender'])->name('stopTender');
 

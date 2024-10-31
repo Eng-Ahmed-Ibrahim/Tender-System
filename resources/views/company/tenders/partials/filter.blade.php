@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <div class="dropdown d-inline-block">
+                <div class="dropdown d-inline-block me-2">
                     <button class="btn btn-light dropdown-toggle px-4" type="button" data-bs-toggle="dropdown">
                         <i class="fas fa-sort me-2"></i>{{__('Sort By')}}
                     </button>
@@ -103,6 +103,20 @@
                     </div>
                 </div>
 
+                <!-- New Export Dropdown -->
+                <div class="dropdown d-inline-block me-2">
+                    <button class="btn btn-light dropdown-toggle px-4" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-download me-2"></i>{{__('Export')}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('tenders.export', 'excel') }}" id="exportExcel">
+                            <i class="fas fa-file-excel me-2 text-success"></i>{{__('Export to Excel')}}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('tenders.export', 'pdf') }}" id="exportPdf">
+                            <i class="fas fa-file-pdf me-2 text-danger"></i>{{__('Export to PDF')}}
+                        </a>
+                    </div>
+                </div>
                 <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#createTenderModal">
                     <i class="fas fa-plus me-2"></i>{{__('Create Tender')}}
                 </button>
@@ -110,3 +124,30 @@
         </div>
     </div>
 </div>
+<script>
+
+$('#exportExcel').click(function(e) {
+    e.preventDefault();
+    window.location.href = '/export/excel?' + getFilterParameters();
+});
+
+$('#exportPdf').click(function(e) {
+    e.preventDefault();
+
+    window.location.href = '/export/pdf?' + getFilterParameters();
+});
+
+// Helper function to get current filter parameters
+function getFilterParameters() {
+    return $.param({
+        search: $('#searchInput').val(),
+        startDate: $('#startDate').val(),
+        endDate: $('#endDate').val(),
+        status: $('input[name="status"]:checked').val(),
+        companies: $('.company-filter:checked').map(function() {
+            return $(this).val();
+        }).get(),
+        sort: $('.dropdown-item.active').data('sort')
+    });
+}
+    </script>

@@ -199,7 +199,7 @@
     <!-- Bottom Row -->
     <div class="row g-4">
         <!-- Top Companies -->
-        <div class="col-xl-6">
+        <div class="col-xl-12">
             <div class="content-card">
                 <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                     <h5 class="mb-0">{{__('Top Companies')}}</h5>
@@ -227,7 +227,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <h6 class="mb-0">{{ $company->name }}</h6>
+                                              <a href="{{route('companies.show',$company->id)}}">  <h6 class="mb-0">{{ $company->name }}</h6></a>
                                             </div>
                                         </div>
                                     </td>
@@ -248,18 +248,6 @@
         </div>
 
         <!-- Category Distribution -->
-        <div class="col-xl-6">
-            <div class="content-card">
-                <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
-                    <h5 class="mb-0">{{__('Category Distribution')}}</h5>
-                </div>
-                <div class="card-body p-4">
-                    <div class="chart-container">
-                        <canvas id="categoriesChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

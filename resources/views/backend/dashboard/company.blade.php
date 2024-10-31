@@ -250,7 +250,7 @@
                 <tbody>
                     @foreach($recentApplicants as $applicant)
                     <tr>
-                        <td>{{ $applicant->name }}</td>
+                        <td><a href="{{route('Applicants.show',$applicant->id)}}">{{ $applicant->name }}</a></td>
                         <td>{{ $applicant->tender->title }}</td>
                         <td>{{ $applicant->status }}</td>
                         <td>{{ $applicant->created_at}}</td>

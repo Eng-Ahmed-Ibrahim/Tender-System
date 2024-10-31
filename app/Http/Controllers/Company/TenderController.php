@@ -6,9 +6,12 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Tender;
 use Illuminate\Http\Request;
+use App\Exports\TendersExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -83,7 +86,77 @@ class TenderController extends Controller
          return view('company.tenders.index', compact('tenders', 'companies'));
      }
  
-    
+ 
+
+public function export(Request $request, $format)
+{
+$user = Auth::user();
+
+// Build the base query
+$query = Tender::query()
+    ->when($user->role == 'admin_company', function ($query) use ($user) {
+        return $query->where('company_id', $user->company_id);
+    })
+    ->when($request->filled('search'), function ($query) use ($request) {
+        return $query->where(function ($q) use ($request) {
+            $q->where('title', 'like', "%{$request->search}%")
+              ->orWhere('description', 'like', "%{$request->search}%");
+        });
+    })
+    ->when($request->filled('startDate'), function ($query) use ($request) {
+        return $query->whereDate('created_at', '>=', $request->startDate);
+    })
+    ->when($request->filled('endDate'), function ($query) use ($request) {
+        return $query->whereDate('created_at', '<=', $request->endDate);
+    })
+    ->when($request->filled('status') && $request->status !== 'all', function ($query) use ($request) {
+        return $query->where('status', $request->status);
+    })
+    ->when($request->filled('companies'), function ($query) use ($request) {
+        return $query->whereIn('company_id', $request->companies);
+    })
+    ->when($request->filled('sort'), function ($query) use ($request) {
+        switch ($request->sort) {
+            case 'date-desc':
+                return $query->latest();
+            case 'date-asc':
+                return $query->oldest();
+            case 'title-asc':
+                return $query->orderBy('title', 'asc');
+            case 'title-desc':
+                return $query->orderBy('title', 'desc');
+            default:
+                return $query->latest();
+        }
+    });
+
+// Get the filtered tenders
+$tenders = $query->with(['company'])->get();
+
+// Generate filename
+$filename = 'tenders_export_' . now()->format('Y-m-d');
+
+// Handle export based on format
+if ($format === 'excel') {
+    return Excel::download(
+        new TendersExport($tenders),
+        $filename . '.xlsx'
+    );
+} else {
+    $pdf = app('dompdf.wrapper');
+    return $pdf->loadView('pdf.tenders', [
+        'tenders' => $tenders,
+        'filters' => [
+            'dateRange' => $request->filled('startDate') ?
+                "{$request->startDate} to {$request->endDate}" : 'All Time',
+            'status' => $request->status ?? 'All',
+            'companies' => $request->companies ?? 'All Companies',
+        ],
+        'user' => $user
+    ])->download($filename . '.pdf');
+}
+}
+ 
 
     /**
      * Show the form for creating a new resource.

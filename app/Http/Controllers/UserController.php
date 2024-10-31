@@ -11,6 +11,7 @@ use App\Enums\DashboardTypeEnum;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,9 +19,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    #[Middleware('permission:employee.view')]
     public function index(Request $request)
 {
     $user = Auth::user();
