@@ -25,5 +25,20 @@
     "Oldest First": "Oldest First",
     "Title A-Z": "Title A-Z",
     "Title Z-A": "Title Z-A",
-    "Create Tender": "Create Tender"
+    "Create Tender": "Create Tender",
+    "active_tenders": "Active Tenders",
+    "total_applicants": "Total Applicants",
+    "new_this_month": "new this month",
+    "create_tender": "Create Tender",
+    "view_applicants": "View Applicants",
+    "analytics": "Analytics",
+    "applications_overview": "Applications Overview",
+    "tender": "Tender",
+    "status": "Status",
+    "date": "Date",
+    "active": "Active",
+    "closed": "Closed",
+    "applicant": "Applicant",
+    "recent_applicants": "Recent Applicants",
+    "view_all": "View All"
 }
