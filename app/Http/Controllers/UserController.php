@@ -19,8 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
-    
-    #[Middleware('permission:employee.view')]
+
     public function index(Request $request)
 {
     $user = Auth::user();
