@@ -1,10 +1,9 @@
-<!-- Dashboard Section -->
+@can('Dashboard.view')
 <div class="menu-item pt-5">
     <div class="menu-content">
         <span class="menu-heading fw-bold text-uppercase fs-7">{{ __('Dashboard')}}</span>
     </div>
 </div>
-
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -26,13 +25,13 @@
     </div>
 </div>
 
-<!-- Employees Section -->
+@endcan
+
 <div class="menu-item pt-5">
     <div class="menu-content">
         <span class="menu-heading fw-bold text-uppercase fs-7">{{ __('Employees')}}</span>
     </div>
 </div>
-
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -60,7 +59,6 @@
         </div>
     </div>
 </div>
-
 <!-- Roles and Permissions Section -->
 <div class="menu-item pt-5">
     <div class="menu-content">
@@ -87,18 +85,10 @@
         </div>
        
         
-        <div class="menu-item">
-            <a class="menu-link" href="{{route('permissions.create')}}">
-                <span class="menu-bullet">
-                    <i class="bi bi-plus-circle fs-6 me-2"></i>
-                </span>
-                <span class="menu-title">{{__('Add Permission')}}</span>
-            </a>
-        </div>
     </div>
 </div>
 
-<!-- Company Section -->
+@can('company.view')
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -126,8 +116,8 @@
         </div>
     </div>
 </div>
-
-<!-- Tenders Section -->
+@endcan
+@can('tender.view')
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -157,7 +147,29 @@
     </div>
 </div>
 
-<!-- Applicants Section -->
+@endcan
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+    <span class="menu-link">
+        <span class="menu-icon">
+            <i class="bi bi-people-fill"></i>
+        </span>
+        <span class="menu-title">{{__('users')}}</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link" href="{{ route('applicants.users')}}">
+                <span class="menu-bullet"> 
+                    <i class="bi bi-person-lines-fill fs-6 me-2"></i> 
+                </span> 
+                <span class="menu-title">{{__('All users')}}</span>
+            </a>
+        </div>
+  
+    </div>
+</div> 
+
+@can('applicant.view')
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -177,9 +189,9 @@
         </div>
 
     </div>
-</div>
-
-<!-- Notification Section -->
+</div> 
+@endcan 
+@can('notifcation.view')
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -208,8 +220,8 @@
      
     </div>
 </div>
-
-<!-- Configuration Section -->
+@endcan
+@can('configuration')
 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
     <span class="menu-link">
         <span class="menu-icon">
@@ -230,3 +242,4 @@
      
     </div>
 </div>
+@endcan

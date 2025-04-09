@@ -25,7 +25,7 @@ class UserNotifcationController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to fetch notifications'
+                'message' => __('Failed to fetch notifications')
             ], 500);
         }
     }
@@ -41,7 +41,7 @@ class UserNotifcationController extends Controller
             if (!$notification) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Notification not found'
+                    'message' =>  __('Notification not found')
                 ], 404);
             }
 
@@ -52,13 +52,13 @@ class UserNotifcationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Notification marked as read',
+                'message' =>  __('Notification marked as read'),
                 'unread_count' => $this->getUnreadCount()
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to mark notification as read'
+                'message' =>  __('Failed to mark notification as read')
             ], 500);
         }
     }
@@ -76,13 +76,13 @@ class UserNotifcationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'All notifications marked as read',
+                'message' =>  __('All notifications marked as read'),
                 'unread_count' => 0
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to mark notifications as read'
+                'message' =>  __('Failed to mark notifications as read')
             ], 500);
         }
     }
@@ -106,7 +106,7 @@ class UserNotifcationController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to fetch unread notifications'
+                'message' =>  __('Failed to fetch unread notifications')
             ], 500);
         }
     }

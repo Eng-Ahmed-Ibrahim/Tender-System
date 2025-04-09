@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Tenders;
 
+use App\Models\Configuration;
 use App\Models\Tender;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
@@ -18,20 +19,13 @@ class TenderController extends Controller
         if (!auth()->check()) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not authenticated.',
+                'message' => __('User not authenticated.'),
             ], 401);
         }
     
         $currentDate = now();
         $user = auth()->user();
         
-        // Get tenders where the user has applied
-        $appliedTenderIds = Applicant::where('user_id', $user->id)
-            ->pluck('tender_id');
-        
-        // Initialize base query with applied tenders
-        $query = Tender::whereIn('id', $appliedTenderIds);
-    
         // Get request parameters
         $sortType = $request->input('sort');
         $search = $request->input('search');
@@ -42,6 +36,17 @@ class TenderController extends Controller
         $maxInsurance = $request->input('max_insurance');
         $endDateFilter = $request->input('end_date_filter');
     
+        // Initialize query based on sort type
+        if ($sortType === 'favorite') {
+            // If favorite sort is selected, get only favorite tenders
+            $query = $user->favoriteTenders();
+        } else {
+            // Otherwise, get applied tenders
+            $appliedTenderIds = Applicant::where('user_id', $user->id)
+                ->pluck('tender_id');
+            $query = Tender::whereIn('id', $appliedTenderIds);
+        }
+    
         // Apply sorting
         switch ($sortType) {
             case 'current':
@@ -51,8 +56,7 @@ class TenderController extends Controller
                 $query->where('end_date', '<=', $currentDate);
                 break;
             case 'favorite':
-                $favoriteTenderIds = $user->favoriteTenders()->pluck('id');
-                $query->whereIn('id', $favoriteTenderIds);
+                // Already handled above, no additional filtering needed
                 break;
             case 'lowest_price':
                 $query->orderBy('price', 'asc');
@@ -122,7 +126,6 @@ class TenderController extends Controller
     
         return TenderResource::collection($tenders);
     }
- 
     public function min_max_insurance()
 {
     $lowestPrice  = Tender::min('first_insurance');
@@ -133,8 +136,8 @@ class TenderController extends Controller
         'max_tender_insurance' => $highPrice,
     ]);
 
-
-}
+ 
+} 
     
 
     public function show($id)
@@ -146,5 +149,17 @@ class TenderController extends Controller
         return new TenderResource($tender);
     }
     
+    public function configuration()
+    {
+        $configuration = Configuration::first();
+        if (!$configuration) {
+            $configuration = Configuration::create();
+        }       
+
+        return response()->json([
+            'configuration' => $configuration
+        ]);
+    }
+
 
 }

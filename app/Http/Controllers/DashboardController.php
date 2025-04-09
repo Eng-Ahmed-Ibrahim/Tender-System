@@ -17,77 +17,83 @@ class DashboardController extends Controller
             return $this->adminDashboard();
         }
         
-        return $this->adminDashboard();
+        return $this->adminDashboard();  
     }
-    
+     
     public function company()
     {
-        if (auth()->user()->role === 'admin_company') {
             return $this->companyDashboard();
-        }
-        
+         
+         
     }
     private function adminDashboard()
-    {
-        // Overall statistics
-        $statistics = [
-            'total_tenders' => Tender::count(),
-            'active_tenders' => Tender::where('end_date', '>', now())->count(),
-            'total_companies' => Company::count(),
-            'total_applicants' => User::where('role', 'applicant')->count()
-        ];
-    
-        // Recent tenders
-        $recentTenders = Tender::with(['company', 'applicants'])
-            ->latest()
-            ->take(5)
-            ->get();
-    
-        // Top companies by tenders
-        $topCompanies = Company::withCount('tenders')
-            ->withCount(['tenders as active_tenders_count' => function($query) {
-                $query->where('end_date', '>', now());
-            }])
-            ->orderByDesc('tenders_count')
-            ->take(5)
-            ->get();
-    
-        // Monthly applications chart data
-        $monthlyApplications = Applicant::select(
+{
+    // Overall statistics
+    $statistics = [
+        'total_tenders' => Tender::count(),
+        'active_tenders' => Tender::where('end_date', '>', now())->count(),
+        'total_companies' => Company::count(),
+        'total_applicants' => DB::table('applicants')->count()
+    ];
+
+    // Recent tenders
+    $recentTenders = Tender::with(['company', 'applicants'])
+        ->latest()
+        ->take(5)
+        ->get();
+
+    // Top companies
+    $topCompanies = Company::withCount('tenders')
+        ->withCount(['tenders as active_tenders_count' => function($query) {
+            $query->where('end_date', '>', now());
+        }])
+        ->withCount(['tenders as applicants_count' => function($query) {
+            $query->select(DB::raw('sum(
+                (select count(*) from applicants where applicants.tender_id = tenders.id)
+            )'));
+        }])
+        ->orderByDesc('tenders_count')
+        ->take(5)
+        ->get();
+
+    // Monthly applications - get last 6 months including empty months
+    $months = collect();
+    for ($i = 5; $i >= 0; $i--) {
+        $months->push(now()->subMonths($i)->format('Y-m'));
+    }
+
+    $monthlyApplications = Applicant::select(
             DB::raw('COUNT(*) as count'),
             DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month')
         )
-            ->groupBy('month')
-            ->orderBy('month')
-            ->take(6)
-            ->get();
-    
-        // Recent applicants
-        $recentApplicants = User::where('role', 'applicant')
-            ->with(['applicants' => function($query) {
-                $query->latest()->take(1);
-            }, 'applicants.tender'])
-            ->latest()
-            ->take(5)
-            ->get();
-    
-        // Status distribution instead of categories
-        $tenderStatus = Tender::all();
-           
-    
-        // Activity log (you'll need to implement activity logging)
-        $recentActivities = [];  // Implement based on your activity logging system
-    
-        return view('backend.dashboard.admin', compact(
-            'statistics',
-            'recentTenders',
-            'topCompanies',
-            'monthlyApplications',
-            'recentApplicants',
-            'tenderStatus', // Changed from tenderCategories
-            'recentActivities'
-        ));
-    }
+        ->where('created_at', '>=', now()->subMonths(5)->startOfMonth())
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get()
+        ->keyBy('month');
+
+    // Fill in empty months with 0 counts
+    $formattedMonthlyApplications = $months->map(function ($month) use ($monthlyApplications) {
+        return [
+            'month' => $month,
+            'count' => $monthlyApplications->has($month) ? $monthlyApplications[$month]->count : 0
+        ];
+    });
+
+    // Recent applicants
+    $recentApplicants = Applicant::with(['user', 'tender'])
+        ->latest()
+        ->take(5)
+        ->get();
+
+    return view('backend.dashboard.admin', compact(
+        'statistics',
+        'recentTenders',
+        'topCompanies',
+        'formattedMonthlyApplications', // Changed from monthlyApplications
+        'recentApplicants'
+    ));
+}
     private function companyDashboard()
     {
         $company = auth()->user()->company;

@@ -1,5 +1,7 @@
 @extends('admin.index')
 @section('content')
+
+
 <div class="container-fluid">
     <!-- Page Header -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -75,18 +77,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">{{ __('Companies List') }}</h6>
-            <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                    aria-labelledby="dropdownMenuLink">
-                    <div class="dropdown-header">Export Options:</div>
-                    <a class="dropdown-item" href="#"><i class="fas fa-file-excel mr-2"></i>Export Excel') }}</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-file-pdf mr-2"></i>Export PDF') }}</a>
-                </div>
-            </div>
+          
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -116,31 +107,70 @@
                                     <span class="text-muted">No Admin</span>
                                 @endif
                             </td>
-                            <td>{{ $admin->email ?? 'N/A' }}</td>
-                            <td>{{ $admin->phone ?? 'N/A' }}</td>
+                            <td>{{ $company->email ?? 'N/A' }}</td>
+                            <td>{{ $company->phone ?? 'N/A' }}</td>
                             <td>
                                 <span class="badge badge-info">
                                     {{ $company->users->count() }} Users
                                 </span>
                             </td>
                             <td>
+                                @php
+                                    $displayStatus = $company->status;
+                                    if ($displayStatus === 'unactive') {
+                                        $displayStatus = 'inactive';
+                                    }
+                                @endphp
                                 <span class="badge badge-{{ $company->status === 'active' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($company->status ?? 'Unknown') }}
+                                    {{ ucfirst($displayStatus ?? 'Unknown') }}
                                 </span>
                             </td>
                             <td>{{ $company->created_at ? $company->created_at->format('Y-m-d') : 'N/A' }}</td>
                             <td>
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="editCompany({{ $company->id }})">
+                                <div class="d-flex">
+                                    <a class="btn btn-primary btn-sm d-inline-flex align-items-center justify-content-center action-btn" href="{{route('companies.edit',$company->id)}}">
                                         <i class="fas fa-edit"></i>
-                                    </button>
-                                    <a href="{{route('companies.show',$company->id)}}" class="btn btn-info btn-sm" onclick="viewCompany({{ $company->id }})">
+                                    </a>
+                                    <a class="btn btn-info btn-sm d-inline-flex align-items-center justify-content-center action-btn" href="{{route('companies.show',$company->id)}}">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteCompany({{ $company->id }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="mx-0">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm d-inline-flex align-items-center justify-content-center action-btn" onclick="return confirm('Are you sure you want to delete this company?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('companies.toggle-status', $company->id) }}" method="POST" class="mx-0">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn {{ $company->status === 'active' ? 'btn-warning' : 'btn-success' }} btn-sm d-inline-flex align-items-center justify-content-center action-btn" onclick="return confirm('Are you sure you want to {{ $company->status === 'active' ? 'deactivate' : 'activate' }} this company?')">
+                                            <i class="fas fa-{{ $company->status === 'active' ? 'ban' : 'check' }}"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
-                        </tr>
+                            
+                            <style>
+                            .action-btn {
+                                width: 32px !important;
+                                height: 32px !important;
+                                padding: 0 !important;
+                                margin: 0 2px !important;
+                            }
+                            
+                            /* Target the forms specifically inside table cells */
+                            td form {
+                                margin: 0 2px !important;
+                                padding: 0 !important;
+                            }
+                            
+                            /* Ensure no extra spacing from form elements */
+                            td form button {
+                                margin: 0 !important;
+                            }
+                            </style>
+                        
                         @endforeach
                     </tbody>
                 </table>

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TenderResource extends JsonResource
+class TenderResource extends JsonResource 
 {
     /**
      * Transform the resource into an array.
@@ -17,16 +17,22 @@ class TenderResource extends JsonResource
     {
     
 
-        return [
-            'id' =>$this->id,
-            'title' => $this->title,
-            'description' =>  $this->description,
-            'company' => $this->company->name,
-            'end_date' => $this->end_date,
-            'first_insurance' => $this->first_insurance,
-            'price' => $this->price,
-            'city' => $this->city,
-            'download_QR' => route('tenders.download', $this->id), // Link to download the QR code
-        ];
-    }
+        
+            return [
+                'id' => $this->id,
+                'title' => $this->title,  
+                'title_ar' => $this->title_ar,  
+                'description' => $this->description,  
+                'description_ar' => $this->description_ar,
+                'company' => $this->company->name,  
+                'end_date' => $this->end_date,
+                'first_insurance' => $this->first_insurance,
+                'price' => $this->price, 
+                'city' => $this->city, 
+                'show_applicants' => $this->show_applicants,
+                'download_QR' => route('tenders.download', $this->id), // Link to download the QR code
+                'applicants_count' => $this->applicants()->count(), // Add the count of applicants
+            ];
+        }
+    
 }

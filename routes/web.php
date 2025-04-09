@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\UserDashboard;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LanguageController;
@@ -19,15 +19,19 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\Company\TenderController;
 
+
 Route::get('/', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        return redirect()->route($user->role === 'admin' ? 'admin.dashboard' : 'company.dashboard');
+    }
     return view('welcome');
 });
 
 
-
 Route::get('/admin/dashboard',[DashboardController::class, 'index'])->middleware(['auth', UserDashboard::class . ':admin'])->name('admin.dashboard');
 
-Route::get('/company/dashboard',[DashboardController::class, 'company'])->middleware(['auth',UserDashboard::class . ':admin_company'])->name('company.dashboard');
+Route::get('/company/dashboard',[DashboardController::class, 'company'])->name('company.dashboard');
 
 
 
@@ -62,17 +66,24 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('companies',CompanyController::class);
 
+    Route::patch('/companies/{id}/toggle-status', [CompanyController::class,'toggleStatus'])->name('companies.toggle-status');
     Route::post('/assign-role/{userId}', [UserController::class, 'assignRole'])->name('assign.role');
 
     Route::resource('AdminUsers', UserController::class);
 
     Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
 
+    Route::get('/AdminUsers/{userId}/edit_user', [UserController::class, 'edit_user']);
 
+
+Route::patch('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])
+    ->name('users.toggle-status');
 
     Route::resource('CompanyUsers', CompanyUsersController::class);
 
     Route::resource('Applicants', ApplicantController::class);
+
+    Route::get('/applicants/users',[ApplicantController::class, 'users'])->name('applicants.users');
 
     Route::put('/user/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
 
@@ -84,6 +95,36 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/update-email', [AdminProfileController::class, 'updateEmail'])->name('update.email');
 
+    
+    Route::get('location', [LocationController::class, 'getLocation']);
+
+    Route::get('lang/home', [LanguageController::class, 'index']);
+    
+    Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLang');
+    
+    
+    Route::resource('tenders', TenderController::class);
+    
+    Route::get('/tenders/export/{format}', [TenderController::class, 'export'])
+        ->name('tenders.export')
+        ->where('format', 'excel|pdf');
+    
+    Route::post('/tenders/{id}/stop', [TenderController::class, 'stopTender'])->name('stopTender');
+    
+    Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])->name('tenders.qrcode');
+    
+    Route::get('/tenders/{id}/download', [TenderController::class, 'download'])->name('tenders.download');
+    
+    Route::resource('Admintenders', AdminTenderController::class);
+    
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    
+        Route::get('notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
+        
+        Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');
+
+        Route::post('/admin/users/import', [UserController::class, 'importUsers'])->name('AdminUsers.import');
+
 
 });
 
@@ -92,27 +133,4 @@ Route::post('/save-token', [NotificationController::class, 'saveToken']);
 
 
 
-Route::get('location', [LocationController::class, 'getLocation']);
 
-Route::get('lang/home', [LanguageController::class, 'index']);
-
-Route::get('lang/change', [LanguageController::class, 'change'])->name('changeLang');
-
-
-Route::resource('tenders', TenderController::class);
-
-Route::get('/tenders/export/{format}', [TenderController::class, 'export'])
-    ->name('tenders.export')
-    ->where('format', 'excel|pdf');
-
-Route::post('/tenders/{id}/stop', [TenderController::class, 'stopTender'])->name('stopTender');
-
-Route::get('/tenders/{id}/qrcode', [TenderController::class, 'generateQrCode'])->name('tenders.qrcode');
-
-Route::get('/tenders/{id}/download', [TenderController::class, 'download'])->name('tenders.download');
-
-Route::resource('Admintenders', AdminTenderController::class);
-
-    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::get('notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
-    Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');

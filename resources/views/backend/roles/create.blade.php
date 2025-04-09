@@ -24,8 +24,32 @@
             </div>
             <!--end::Toolbar container-->
         </div>
-        <!--end::Toolbar-->
-        <!--begin::Content-->
+    <!-- Add this right after the card-header section in your roles.blade.php -->
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="ki-duotone ki-shield-tick fs-2 me-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+            <strong>{{ session('success') }}</strong>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="ki-duotone ki-shield-cross fs-2 me-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+            <strong>{{ session('error') }}</strong>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-xxl">
@@ -36,14 +60,14 @@
                         <!--begin::Card title-->
                         <div class="card-title">
                             <!--begin::Search-->
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                            {{-- <div class="d-flex align-items-center position-relative my-1">
+                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4"> 
                                     <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                                <form action="" method="GET">
-                                    <input type="text" name="search" value="{{ request()->input('search') }}" class="form-control form-control-solid w-250px ps-12" placeholder="Search Role" />
-                                </form>                                                        </div>
+                                    <span class="path2"></span> 
+                                </i> --}}
+                                {{-- <form action="" method="GET">
+                                    <input type="text" name="search" value="{{ request()->input('search') }}" class="form-control form-control-solid w-250px ps-12" placeholder="{{__('Search Role')}}" />
+                                </form>                                                        </div> --}}
                             <!--end::Search-->
                         </div>
                         <!--end::Card title-->
@@ -71,7 +95,7 @@
                             <tbody id="roles-table">
                                 @foreach($roles as $role)
                                     <tr id="role-{{ $role->id }}">
-                                        <td>{{ $role->title }}</td>
+                                        <td>{{ __($role->title) }}</td>
                                         <td>
                                             @foreach($role->permissions as $permission)
                                                 <span class="badge bg-secondary"><b>{{ __($permission->name) }}</b></span>
@@ -232,6 +256,64 @@
 
 @section('js')
 <script>
+
+    // Add this to your JavaScript section
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for flash messages
+    const successMessage = "{{ session('success') }}";
+    const errorMessage = "{{ session('error') }}";
+    
+    if (successMessage) {
+        Swal.fire({
+            title: '{{ __("Success!") }}',
+            text: successMessage,
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true
+        });
+    }
+    
+    if (errorMessage) {
+        Swal.fire({
+            title: '{{ __("Error!") }}',
+            text: errorMessage,
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true
+        });
+    }
+    
+    // Form submission validation for permissions
+    const roleForm = document.querySelector('form[action*="role.store"]');
+    if (roleForm) {
+        roleForm.addEventListener('submit', function(e) {
+            const permissionCheckboxes = document.querySelectorAll('input[name="permissions[]"]:checked');
+            
+            if (permissionCheckboxes.length === 0) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: '{{ __("Error!") }}',
+                    text: 'At least one permission must be selected.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // Show loading state
+                const submitBtn = roleForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+                submitBtn.disabled = true; 
+            }
+        }); 
+    }
+});
     document.addEventListener('DOMContentLoaded', function() {
         // Edit Role
         document.querySelectorAll('.edit-role-btn').forEach(button => {

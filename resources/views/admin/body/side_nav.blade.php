@@ -5,7 +5,19 @@
             <!--begin::Logo-->
             <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
                 <!--begin::Logo image-->
-                <a href="">
+                <a
+                @if(auth()->user()->role == 'admin')
+                
+                href="{{route('admin.dashboard')}}"
+                
+                @else 
+                href="{{route('company.dashboard')}}"
+
+                @endif
+
+                "
+                
+                >
 
                     @php
 

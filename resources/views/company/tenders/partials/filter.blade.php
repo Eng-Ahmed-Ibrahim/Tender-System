@@ -8,7 +8,7 @@
                         <i class="fas fa-search text-muted"></i>
                     </span>
                     <input type="text" id="searchInput" class="form-control border-0 bg-light" 
-                           placeholder="Search tenders by title, description...">
+                           placeholder="{{__('Search tenders by title, description...')}}">
                     <button class="btn btn-primary px-4" type="button" id="searchButton">
                         {{__('Search')}}
                     </button>
@@ -117,9 +117,9 @@
                         </a>
                     </div>
                 </div>
-                <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#createTenderModal">
+                <a class="btn btn-primary float-end" href="{{ route('tenders.create') }}">
                     <i class="fas fa-plus me-2"></i>{{__('Create Tender')}}
-                </button>
+                </a>
             </div>
         </div>
     </div>

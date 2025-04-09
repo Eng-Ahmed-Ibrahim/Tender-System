@@ -29,11 +29,11 @@ $unreadCount = auth()->user()->notifications()->where('is_read', false)->count()
     <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
         <div class="d-flex flex-column bgi-no-repeat rounded-top" style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
             <h3 class="text-white fw-semibold px-9 mt-10 mb-6">
-                Notifications
-                <span class="fs-8 opacity-75 ps-3" id="notification-count">{{ $notifications->count() }} reports</span>
+                {{__('Notifications')}}
+                <span class="fs-8 opacity-75 ps-3" id="notification-count">{{ $notifications->count() }} {{__('reports')}}</span>
             </h3>
             <button class="btn btn-sm btn-light-primary mx-9 mb-6" id="enable-notifications" style="display: none;">
-                Enable Push Notifications
+                {{__('Enable Push Notifications')}}
             </button>
         </div>
         
@@ -66,19 +66,13 @@ $unreadCount = auth()->user()->notifications()->where('is_read', false)->count()
                             </div>
                         </div>
                         @if($notification->is_read)
-                            <span class="badge badge-light fs-8 ms-2">Read</span>
+                            <span class="badge badge-light fs-8 ms-2">{{__('Read')}}</span>
                         @endif
                     </div>
                     @endforeach
                 </div>
                 <div class="py-3 text-center border-top">
-                    <a href="{{ route('notifications.index') }}" class="btn btn-color-gray-600 btn-active-color-primary">
-                        View All
-                        <i class="ki-duotone ki-arrow-right fs-5">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </a>
+                  
                 </div>
             </div>
         </div>

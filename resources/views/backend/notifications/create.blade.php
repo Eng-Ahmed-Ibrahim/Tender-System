@@ -6,7 +6,7 @@
             <div class="d-flex align-items-center">
                 <i class="fas fa-bell fa-2x me-3"></i>
                 <h3 class="card-title mb-0 flex-grow-1">{{__('Send Notification')}}</h3>
-                <span class="badge bg-light text-primary" id="selectedCount">0 {{__('selected')}}</span>
+                <span class="badge bg-light text-primary" id="selectedCount">0</span>
             </div>
         </div>
         
@@ -31,34 +31,30 @@
                 @csrf
                 <div class="mb-4">
                     <label class="form-label h6">{{__('Recipients')}}</label>
+                    @if (auth()->user()->role_id == 4)
                     <div class="recipient-type p-3 bg-light rounded mb-3">
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="recipient_type" id="specificUsers" value="specific" checked>
                             <label class="btn btn-outline-primary" for="specificUsers">
                                 <i class="fas fa-users me-2"></i>{{__('Specific Users')}}
                             </label>
-                            
                             <input type="radio" class="btn-check" name="recipient_type" id="allCompanies" value="companies">
                             <label class="btn btn-outline-primary" for="allCompanies">
-                                <i class="fas fa-building me-2"></i>{{__('All Companies')}}
+                                <i class="fas fa-building me-2"></i>{{__('All Companies')}} 
                             </label>
-                            
+                             
                             <input type="radio" class="btn-check" name="recipient_type" id="allUsers" value="all">
                             <label class="btn btn-outline-primary" for="allUsers">
                                 <i class="fas fa-globe me-2"></i>{{__('All Users')}}
                             </label>
-                        </div>
-                    </div>
-
+ 
+                        </div>  
+                    </div> 
+@endif
                     <div id="userSelectSection" class="mb-3">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="position-relative">
-                                    <input type="text" class="form-control mb-3" id="userSearch" 
-                                           placeholder="Search users..." 
-                                           aria-label="Search users">
-                                    <i class="fas fa-search position-absolute top-50 end-3 translate-middle-y text-muted"></i>
-                                </div>
+                               
                                 
                                 <div class="user-select-wrapper">
                                     <select name="users[]" multiple class="form-select user-select" size="12">
@@ -93,15 +89,13 @@
                             </div>
                             
                             <div class="col-md-4">
-                                <div class="card h-100 border-0 shadow-sm">
-                                    <div class="card-body">
-                                        <h6 class="card-title mb-3">
+                                <div class="card h-100 border-0 shadow-sm"> 
+                                    <div class="card-body">  
+                                        <h6 class="card-title mb-3"> 
                                             <i class="fas fa-filter me-2"></i>{{__('Quick Filters')}}
-                                        </h6>
+                                        </h6> 
                                         <div class="d-grid gap-2">
-                                            <button type="button" class="btn btn-outline-primary btn-sm select-companies">
-                                                <i class="fas fa-building me-2"></i>{{__('Select All Companies')}}
-                                            </button>
+                                            
                                             <button type="button" class="btn btn-outline-secondary btn-sm select-others">
                                                 <i class="fas fa-users me-2"></i>{{__('Select All Other Users')}}
                                             </button>
@@ -124,7 +118,7 @@
                         </span>
                         <input type="text" name="title" required 
                                class="form-control @error('title') is-invalid @enderror"
-                               placeholder="Enter notification title">
+                               placeholder="{{__('Enter notification title')}}">
                     </div>
                     @error('title')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -139,7 +133,7 @@
                         </span>
                         <textarea name="body" required rows="4" 
                                   class="form-control @error('body') is-invalid @enderror"
-                                  placeholder="Enter your message here..."></textarea>
+                                  placeholder="{{__('Enter your message here...')}}"></textarea>
                     </div>
                     @error('body')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -285,7 +279,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const recipientTypeRadios = document.querySelectorAll('input[name="recipient_type"]');
     const userSelectSection = document.getElementById('userSelectSection');
     const userSelect = document.querySelector('select[name="users[]"]');
-    const userSearch = document.getElementById('userSearch');
     const selectedCount = document.getElementById('selectedCount');
     const recipientCount = document.getElementById('recipientCount');
     const form = document.getElementById('notificationForm');
@@ -315,39 +308,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Quick filter buttons
-    document.querySelector('.select-companies').addEventListener('click', function() {
-        Array.from(userSelect.options).forEach(option => {
-            if (option.parentElement.label === 'Companies') {
-                option.selected = true;
-            }
+    // Quick filter buttons - Fix for select-others button
+    const selectOthersButton = document.querySelector('.select-others');
+    if (selectOthersButton) {
+        selectOthersButton.addEventListener('click', function() {
+            Array.from(userSelect.options).forEach(option => {
+                if (option.parentElement.label === 'Other Users') {
+                    option.selected = true;
+                }
+            });
+            updateSelectedCount();
         });
-        updateSelectedCount();
-    });
+    }
 
-    document.querySelector('.select-others').addEventListener('click', function() {
-        Array.from(userSelect.options).forEach(option => {
-            if (option.parentElement.label === 'Other Users') {
-                option.selected = true;
-            }
+    // Clear selection button
+    const clearSelectionButton = document.querySelector('.clear-selection');
+    if (clearSelectionButton) {
+        clearSelectionButton.addEventListener('click', function() {
+            userSelect.selectedIndex = -1;
+            updateSelectedCount();
         });
-        updateSelectedCount();
-    });
-
-    document.querySelector('.clear-selection').addEventListener('click', function() {
-        userSelect.selectedIndex = -1;
-        updateSelectedCount();
-    });
+    }
     
     // Search functionality
-    userSearch.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        Array.from(userSelect.options).forEach(option => {
-            const searchData = option.getAttribute('data-search');
-            const matches = searchData && searchData.includes(searchTerm);
-            option.style.display = matches || !searchTerm ? '' : 'none';
+    const userSearch = document.getElementById('userSearch');
+    if (userSearch) {
+        userSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            Array.from(userSelect.options).forEach(option => {
+                const searchData = option.getAttribute('data-search');
+                const matches = searchData && searchData.includes(searchTerm);
+                option.style.display = matches || !searchTerm ? '' : 'none';
+            });
         });
-    });
+    }
     
     // Update counter when selection changes
     userSelect.addEventListener('change', updateSelectedCount);

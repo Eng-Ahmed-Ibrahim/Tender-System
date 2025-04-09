@@ -105,7 +105,7 @@ class ConfigurationController extends Controller
         $this->translateAndSave($request->all(), 'update');
 
 
-        return redirect()->route('configurations.index')->with('success', 'Configuration updated successfully.');
+        return redirect()->route('configurations.index')->with('success', __('Configuration updated successfully.'));
     }
 
 

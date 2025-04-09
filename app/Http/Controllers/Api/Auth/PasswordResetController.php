@@ -24,7 +24,7 @@ class PasswordResetController extends Controller
                 ->first();
 
     if (!$user) {
-        return response()->json(['message' => 'Identifier does not exist'], 404);
+        return response()->json(['message' => __('Identifier does not exist')], 404);
     }
 
     $verificationCode = 5555; // You can replace this with dynamic code generation logic
@@ -47,7 +47,7 @@ class PasswordResetController extends Controller
     }
 
     return response()->json([
-        'message' => 'Verification code sent successfully',
+        'message' => __('Verification code sent successfully'),
         'code' => $verificationCode // For testing purposes; remove this in production
     ]);
 }
@@ -64,14 +64,14 @@ class PasswordResetController extends Controller
             ->first();
     
         if (!$passwordReset) {
-            return response()->json(['message' => 'Invalid verification code'], 400);
+            return response()->json(['message' => __('Invalid verification code')], 400);
         }
     
-        if (Carbon::parse($passwordReset->created_at)->addMinutes(60)->isPast()) {
-            return response()->json(['message' => 'Verification code has expired'], 400);
+        if (Carbon::parse($passwordReset->created_at)->addMinutes(1)->isPast()) {
+            return response()->json(['message' => __('Verification code has expired')], 400);
         }
     
-        return response()->json(['message' => 'Verification code is valid']);
+        return response()->json(['message' => __('Verification code is valid')]);
     }
     
     public function resetPassword(Request $request)
@@ -88,7 +88,7 @@ class PasswordResetController extends Controller
         ->first();
             
         if (!$user) {
-            return response()->json(['message' => 'User not found.'], 404);
+            return response()->json(['message' => __('User not found.')], 404);
         }
     
         // Reset the user's password
@@ -98,7 +98,7 @@ class PasswordResetController extends Controller
         // Optional: Send email confirmation (if needed)
         // Mail::to($user->email)->send(new PasswordResetSuccess($user));
     
-        return response()->json(['message' => 'Password has been reset successfully.']);
+        return response()->json(['message' => __('Password has been reset successfully.')]);
     }
     
     

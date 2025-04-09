@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use Barryvdh\DomPDF\PDF;
 use App\Exports\UsersExport;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Enums\DashboardTypeEnum;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,7 @@ class UserController extends Controller
 
     // Apply company filters based on user role
     if ($user->role == 'admin') {
-        $query->whereNull('company_id');
+        $query->whereNull('company_id')->where('role','admin');
         $roles = Role::whereNull('company_id')->get();
     } else {
         $query->where('company_id', $user->company_id);
@@ -110,6 +111,22 @@ class UserController extends Controller
     // Return the view with data
     return view('backend.users.index', compact('users', 'roles', 'statistics'));
 }
+
+public function importUsers(Request $request)
+{
+    $request->validate([
+        'excel_file' => 'required|file|mimes:xlsx,xls,csv',
+    ]);
+
+    try {
+        Excel::import(new UsersImport, $request->file('excel_file'));
+
+        return redirect()->route('AdminUsers.index')->with('success', 'Users imported successfully.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Import failed: ' . $e->getMessage());
+    }
+}
+
 public function export(Request $request)
 {
     $format = $request->format ?? 'csv';
@@ -127,7 +144,7 @@ public function export(Request $request)
     }
 
     $users = $query->get();
-    $roles = Role::all();
+    $roles = Role::all(); 
     
 
     switch ($format) {
@@ -145,27 +162,44 @@ public function export(Request $request)
  
     public function create()
     {
-        $roles = Role::all();
-        return view('backend.users.create',compact('roles'));
+        $user = Auth::user();
+        if ($user->role === 'admin') { 
+            $roles = Role::whereNull('company_id')->get();
+        } else {
+            $roles = Role::where('company_id',$user->company_id)->get();
+        }   
+       
+        return view('backend.users.create',compact('roles')); 
     }
-
-    /**
+ 
+    /** 
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
 
         $user= Auth::User();
-        $userId = $user->id;
+
+        if($user->role == 'admin_company'){
+
+            $company_id = $user->company_id;
+            $rolee = 'admin_company';
+        }else {
+
+            $company_id = null;
+            $rolee =   'admin';
+
+
+        }
         
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
-            'phone' => 'nullable|string',
-            'address' => 'nullable|string',
-            'role_id' => 'required|exists:roles,id',
-        ]);
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'role_id' => 'required|exists:roles,id', 
+        ]); 
     
         // Begin a database transaction
         DB::beginTransaction();
@@ -174,7 +208,8 @@ public function export(Request $request)
             $user = new User();
             $user->fill($validatedData);
             $user->password = Hash::make($validatedData['password']);
-            //$user->company_id = $userId;
+            $user->company_id = $company_id;
+            $user->role =  $rolee;
             $user->save();
     
             // Assign the role to the user
@@ -198,23 +233,25 @@ public function export(Request $request)
         }
     }
 
- public function assignRole(Request $request, $userId)
-{
-// Validate the incoming request data
-$request->validate([
-    'role_id' => 'required|exists:roles,id',
-]);
-
-// Find the user by ID
-$user = User::findOrFail($userId);
-
-// Update the user's role
-$user->role_id = $request->role_id;
-$user->save();
-
-    return redirect()->back()->with('success', 'Role assigned successfully.');
-}
-
+    public function assignRole(Request $request, $userId)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+        ]);
+    
+        // Find the user by ID
+        $user = User::findOrFail($userId);
+    
+        // Retrieve the role by ID
+        $role = Role::findOrFail($request->role_id);
+    
+        // Assign the role using Spatie's method
+        $user->syncRoles([$role->name]);
+    
+        return redirect()->back()->with('success', 'Role assigned successfully.');
+    }
+    
 
 public function updateRole(Request $request, $userId)
 {
@@ -242,49 +279,156 @@ public function updateRole(Request $request, $userId)
         // Commit the transaction
         DB::commit();
 
-        return redirect()->back()->with('success', 'Role updated successfully');
+        return redirect()->back()->with('success', __('Role updated successfully'));
     } catch (Exception $e) {
         // Rollback the transaction if an exception occurs
         DB::rollback();
 
         // Handle the error (e.g., log it or display a message)
-        return redirect()->back()->with('error', 'Failed to update role: ' . $e->getMessage());
+        return redirect()->back()->with('error', __('Failed to update role: ' . $e->getMessage()));
     }
 }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $userauth = Auth::user();
+        if ($userauth->role === 'admin') { 
+            $roles = Role::whereNull('company_id')->get();
+        } else {
+            $roles = Role::where('company_id',$user->company_id)->get();
+ 
+        }   
+         
+        return view('backend.users.edit', compact('user', 'roles'));
+    } 
+    public function edit_user($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json(['user' => $user]);
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
-    {
-        
+{
+    // Validate incoming request
+    $validator = Validator::make($request->all(), [
+        'name' => [
+            'required',
+            'string',
+            'max:255',
+            'regex:/^[A-Za-z0-9\s.,!?@#$%^&*()_\-+=[\]{}|:;<>\'"\\/\\\\]+$/' // English characters regex
+        ],
+        'email' => [
+            'required',
+            'string',
+            'email',
+            'max:255',
+            'unique:users,email,' . $user->id
+        ],
+        'password' => [
+            'nullable',
+            'string',
+            'min:8'
+        ],
+        'phone' => [
+            'nullable',
+            'regex:/^\d{11}$/'
+        ],
+        'address' => [
+            'nullable',
+            'string',
+            'regex:/^[A-Za-z0-9\s.,!?@#$%^&*()_\-+=[\]{}|:;<>\'"\\/\\\\]+$/' // English characters regex
+        ],
+        'role_id' => [
+            'required',
+            'exists:roles,id'
+        ]
+    ], [
+        'name.regex' => __('Name must contain only English characters.'),
+        'phone.regex' => __('Phone number must be exactly 11 digits.'),
+        'address.regex' => __('Address must contain only English characters.')
+    ]);
 
-        
+    if ($validator->fails()) {
+        return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
     }
+
+    // Update user data
+    $user->name = $request->name;
+    $user->email = $request->email;
+    
+    // Only update password if provided
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+    
+    $user->phone = $request->phone;
+    $user->address = $request->address;
+    $user->role_id = $request->role_id;
+    
+    $user->save();
+    
+    return redirect()
+        ->route('AdminUsers.index')
+        ->with('success', __('User updated successfully.'));
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+   /**
+ * Remove the specified user from storage.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function destroy($id)
+{
+    try {
         $user = User::findOrFail($id);
-    
-        if (Auth::user()->can('delete.user')) {
-            $user->delete();
-            return redirect()->back()->with('success', 'User deleted successfully.');
-        } else {
-            return redirect()->back()->with('error', 'You do not have permission to delete this user.');
-        }
+        $user->delete();
+        
+        return redirect()->route('admin.users.index')
+            ->with('success', __('User deleted successfully'));
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->with('error', __('Failed to delete user: ') . $e->getMessage());
     }
-    
+}
+
+/**
+ * Toggle the active status of the specified user.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function toggleStatus($id)
+{
+    try {
+        $user = User::findOrFail($id);
+        $user->is_active = !$user->is_active;
+        $user->save();
+        
+        $status = $user->is_active ? 'activated' : 'deactivated';
+        
+        return redirect()->back()
+            ->with('success', __("User {$status} successfully"));
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->with('error', __('Failed to update user status: ') . $e->getMessage());
+    }
+}
+     
 
     public function updateRoleUser(Request $request, User $user)
     {

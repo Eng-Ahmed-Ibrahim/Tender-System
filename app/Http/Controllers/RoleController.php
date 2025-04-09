@@ -55,17 +55,17 @@ $user = User::findOrFail($userId);
 $user->role_id = $request->role_id;
 $user->save();
 
-    return redirect()->back()->with('success', 'Role assigned successfully.');
+    return redirect()->back()->with('success', __('Role assigned successfully.'));
 }
 
 
 
 
+// Add this to your store method in the controller
 public function store(Request $request)
 {
     $user = Auth::user();
     $userId = $user->company_id;
-
     if (auth()->user()->role == "admin_company" && $userId) {
         $company = Company::where('id', $userId)->first();
         $CompanyName = $company ? $company->name : 'UnknownCompany'.$user->email;
@@ -73,30 +73,43 @@ public function store(Request $request)
         $CompanyName = 'Admin';
     }
 
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'permissions' => 'array',
-        'permissions.*' => 'exists:permissions,id',
-    ]);
-
-    $role = Role::create([
-        'title' => $request->input('title'),
-        'name' => strtolower($request->input('title')) . '_' . $CompanyName,
-        'company_id' => $userId ?? null,
-    ]);
-
-    $permissions = Permission::whereIn('id', $request->input('permissions', []))->pluck('id');
-
-    // Attach permissions to the role
-    if ($permissions->isNotEmpty()) {
-        $role->syncPermissions($permissions);
+    try {
+        // Check if permissions are provided
+        if (!$request->has('permissions') || empty($request->permissions)) {
+            return redirect()->back()
+                ->with('error', __('At least one permission must be selected for the role.'))
+                ->withInput();
+        }
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'permissions' => 'required|array|min:1',
+            'permissions.*' => 'exists:permissions,id',
+        ], [
+            'permissions.required' => 'At least one permission must be selected.',
+            'permissions.min' => 'At least one permission must be selected.'
+        ]);
+        
+        $role = Role::create([
+            'title' => $request->input('title'),
+            'name' => strtolower($request->input('title')) . '_' . $CompanyName,
+            'company_id' => $userId ?? null,
+        ]);
+        
+        $permissions = Permission::whereIn('id', $request->input('permissions', []))->pluck('id');
+        
+        // Attach permissions to the role
+        if ($permissions->isNotEmpty()) {
+            $role->syncPermissions($permissions);
+        }
+         
+        return redirect()->back()->with('success', 'Role "' . $role->title . '" created successfully with ' . $permissions->count() . ' permissions.');
+    } catch (\Exception $e) {
+        return redirect()->back() 
+            ->with('error', __('Error creating role: ' . $e->getMessage()))
+            ->withInput(); 
     }
-
-    // Redirect with success message
-    return redirect()->back();
 }
-
-
 public function role_permission($roleId)
 {
     

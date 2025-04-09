@@ -59,22 +59,23 @@
                             </div>
                         </td>
                         <td>
-                            @if(auth()->user()->role === 'admin')
+                            @if(auth()->user()->role === 'admin' ||  auth()->user()->role === 'admin_company') 
                             <form id="roleForm{{ $user->id }}" action="{{ route('assign.role', $user->id) }}" method="POST">
                                 @csrf
                                 <select name="role_id" class="form-select form-select-sm role-select"
                                         style="width: 150px;"
                                         onchange="submitRoleForm({{ $user->id }})">
-                                    <option value="" disabled {{ is_null($user->role_id) ? 'selected' : '' }}>
+                                    <option value="" disabled {{ is_null($user->roles->first()) ? 'selected' : '' }}>
                                         {{ __('No Role') }}
                                     </option>
                                     @foreach($roles as $role)
-                                        <option value="{{ $role->id }}" {{ $user->role_id === $role->id ? 'selected' : '' }}>
+                                        <option value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
                                             {{ $role->title }}
                                         </option>
                                     @endforeach
                                 </select>
                             </form>
+                            
                             
                             <script>
                                 function submitRoleForm(userId) {
@@ -90,18 +91,19 @@
                         </td>
                         <td>
                             @php
+                                $status = $user->is_active == 1 ? 'active' : 'inactive';
                                 $statusClass = [
                                     'active' => 'success',
                                     'inactive' => 'warning',
                                     'suspended' => 'danger'
-                                ][$user->status ?? 'inactive'];
+                                ][$status];
                             @endphp
                             <span class="badge bg-{{ $statusClass }}-subtle text-{{ $statusClass }}">
-                                {{ __(ucfirst($user->status ?? 'Inactive')) }}
+                                {{ __(ucfirst($status)) }}
                             </span>
                         </td>
                         <td>
-                            <div>
+                            <div> 
                                 {{ $user->created_at->format('M d, Y') }}
                                 <div class="text-muted small">
                                     {{ $user->created_at->format('h:i A') }}
@@ -114,18 +116,34 @@
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                 
-                                    <li><hr class="dropdown-divider"></li>
+                                    <!-- Other dropdown items would go here -->
+                                   
+                                    <!-- Edit User Link -->
                                     <li>
-                                        <form action="{{ route('AdminUsers.destroy', $user->id) }}" 
-                                              method="POST" 
-                                              class="d-inline">
+                                        <a href="{{ route('AdminUsers.edit', $user->id) }}" class="dropdown-item text-primary">
+                                            <i class="fa fa-edit me-2"></i> {{ __('Edit') }}
+                                        </a>
+                                    </li>
+                                    
+                                    <li><hr class="dropdown-divider"></li>
+                                   
+                                    <li>
+                                        <form action="{{ route('AdminUsers.destroy', $user->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" 
-                                                    class="dropdown-item text-danger" 
-                                                    onclick="confirmDelete(this)">
-                                                <i class="fas fa-trash-alt me-2"></i>{{ __('Delete') }}
+                                            <button type="submit" class="dropdown-item text-danger delete-btn">
+                                                <i class="fa fa-trash me-2"></i> {{ __('Delete') }}
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form action="{{ route('users.toggle-status', $user->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="dropdown-item {{ $user->is_active ? 'text-warning' : 'text-success' }}">
+                                                <i class="fa fa-{{ $user->is_active ? 'ban' : 'check' }} me-2"></i>
+                                                {{ $user->is_active ? __('Deactivate') : __('Activate') }}
                                             </button>
                                         </form>
                                     </li>

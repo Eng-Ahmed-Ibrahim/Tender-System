@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Company;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,25 +28,41 @@ class AuthenticatedSessionController extends Controller
         // Authenticate the user
         $request->authenticate();
     
-        // Regenerate the session to prevent session fixation
-        $request->session()->regenerate();
+        // Get authenticated user
+        $user = Auth::user();
     
-        // Check if the user is authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login')->withErrors(['email' => 'Authentication failed.']);
+        }
     
-            // Redirect based on the user's dashboard role
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard'); 
-            } elseif ($user->role === 'admin_company') {
-                return redirect()->route('company.dashboard'); 
+        // Check if the user is active
+        if (!$user->is_active) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('login')->withErrors(['email' => 'Your account is inactive. Please contact support.']);
+        }
+    
+        // Check company status if the user is a company admin
+        if (in_array($user->role, ['admin_company', 'company'])) {
+            $company = \App\Models\Company::find($user->company_id);
+    
+            if (!$company || $company->status !== 'active') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect()->route('login')->withErrors(['email' => 'Your company account is inactive. Please contact support.']);
             }
         }
     
-        // Fallback: Redirect to a default page if no cogitnditions were met
-        return redirect()->back(); // Change 'home' to a suitable route for your application
+        // Regenerate the session for security
+        $request->session()->regenerate();
+    
+        // Redirect based on role
+        return redirect()->route($user->role === 'admin' ? 'admin.dashboard' : 'company.dashboard');
     }
     
+     
 
     /**
      * Destroy an authenticated session.

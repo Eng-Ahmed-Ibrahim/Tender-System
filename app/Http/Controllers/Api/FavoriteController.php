@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\Tender;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth; 
 
 class FavoriteController extends Controller
 {
-    public function store(Request $request, $tenderId)
+    public function store(Request $request, $tenderId) 
     {
         $tender = Tender::findOrFail($tenderId);
         $user = Auth::user();
@@ -19,13 +19,13 @@ class FavoriteController extends Controller
     
             return response()->json([
                 'success' => true,
-                'message' => 'Tender added to favorites.',
+                'message' => __('Tender added to favorites.'),
             ]);
         }
     
         return response()->json([
             'success' => false,
-            'message' => 'Tender is already in favorites.',
+            'message' => __('Tender is already in favorites.'),
         ]);
     }
     
@@ -39,7 +39,7 @@ class FavoriteController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Tender removed from favorites.',
+            'message' => __('Tender removed from favorites.'),
         ]);
     }
 }

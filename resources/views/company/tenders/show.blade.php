@@ -145,7 +145,10 @@
         <div class="col-lg-8">
             <div class="d-flex justify-content-between align-items-start mb-4">
                 <div>
-                    <h1 class="display-5 fw-bold mb-3">{{ $tender->title }}</h1>
+                    <h1 class="display-5 fw-bold mb-3">
+                        {{ session()->get('locale') == 'ar' ? $tender->title_ar : $tender->title }}
+
+                    </h1>
                     <div class="d-flex flex-wrap gap-4 mb-3">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-building me-2 opacity-75"></i>
@@ -153,7 +156,7 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <i class="fas fa-calendar me-2 opacity-75"></i>
-                            <span>Created {{ Carbon::parse($tender->created_at)->format('M d, Y') }}</span>
+                            <span>{{__('Created')}} {{ Carbon::parse($tender->created_at)->format('M d, Y') }}</span>
                         </div>
                     </div>
                 </div>
@@ -174,19 +177,20 @@
             <!-- Simple Countdown -->
             <div class="simple-countdown" id="simple-countdown">
                 <i class="fas fa-clock"></i>
-                <span id="simple-countdown-text">Calculating...</span>
+                <span id="simple-countdown-text">{{__('Calculating...')}}</span>
             </div>
 
             <!-- Description Preview -->
             <div class="mt-4">
                 <p class="lead opacity-75 mb-0">
-                    {!! Str::limit(strip_tags($tender->description), 150) !!}
-                </p>
+                    {{ session()->get('locale') == 'ar' ? $tender->description_ar : $tender->description }}
+ 
+                </p> 
             </div>
         </div>
         
         <div class="col-lg-4">
-            <!-- Detailed Countdown -->
+            <!-- Detailed Countdown --> 
             <div class="countdown-section">
                 <h5 class="text-white mb-3">{{ __('Time Remaining') }}</h5>
                 <div id="detailed-countdown" data-end="{{ $tender->end_date }}">
@@ -239,7 +243,7 @@
                 <div class="card-body p-4">
                     <h5 class="card-title mb-4">{{ __('Tender Details') }}</h5>
                     <div class="tender-description mb-4">
-                        {!! $tender->description !!}
+                        {{ session()->get('locale') == 'ar' ? $tender->description_ar : $tender->description }}
                     </div>
 
                     <div class="row g-4">
@@ -281,7 +285,7 @@
 
             <!-- Applicants Section -->
 
-            @if($tender->end_date > now())
+            @if(auth()->user() && (auth()->user()->role == 'admin' || auth()->user()->role == 'admin_company'|| $tender->end_date < now()))
             <div class="content-card">
                 <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center p-4">
                     <h5 class="mb-0">{{ __('Applicants') }}</h5>
@@ -349,7 +353,7 @@
                     @endforelse
                 </div>
             </div>
-        @endif
+            @endif
         
         </div>
 

@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/ApiAllTenders', [TenderController::class, 'index']);
 
+    Route::get('/Apiconfiguration', [TenderController::class, 'configuration']);
+
     Route::get('/ApiAllTenders/{tender}', [TenderController::class, 'show']);
 
     Route::get('/tenders/{Id}/company', [ApplicantController::class, 'getUsersByTenderId']);
@@ -39,8 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::delete('applications/file', [ApplicantController::class, 'deleteFile']);
 
-
-});
+  
+});  
 
 Route::middleware('auth:sanctum')->group(function () {
 

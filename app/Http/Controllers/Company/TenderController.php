@@ -26,8 +26,8 @@ class TenderController extends Controller
      {
          $query = Tender::query();
      
-         if (auth()->user()->role === 'admin_company') {
-             $query->where('company_id', auth()->user()->company_id);
+         if(auth()->user()->role == 'admin_company' || auth()->user()->role == 'company') {
+            $query->where('company_id', auth()->user()->company_id);
          }
      
          if ($request->filled('search')) {
@@ -177,24 +177,38 @@ if ($format === 'excel') {
         $validatedData = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'title' => 'required|string|max:255',
+            'title_ar' => 'string|max:255',
             'city' => 'required|string|max:255',
             'first_insurance' => 'required',
             'price' => 'required',
             'description' => 'required|string',
-            'end_date' => 'required|date',
-            'edit_end_date' => 'required|date',
+            'description_ar' => 'string',
+            'end_date' => 'required|date|after:now', // Added after:now validation
+            'edit_end_date' => 'required|date|after:now', // Added after:now validation
             'show_applicants' => 'boolean',
         ]);
-
-        $qrCode =  QrCode::generate(url('/tenders/' . $validatedData['company_id']));
-
+        
+        // Additional check for dates in case the validation rule is bypassed
+        if (\Carbon\Carbon::parse($validatedData['end_date'])->isPast() || 
+            \Carbon\Carbon::parse($validatedData['edit_end_date'])->isPast()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Both end date and edit end date must be in the future.'
+            ], 422);
+        }
+        
+        $qrCode = QrCode::generate(url('/tenders/' . $validatedData['company_id']));
         $qrCodePath = 'qrcodes/tender_' . time() . '.svg'; //
         Storage::disk('public')->put($qrCodePath, $qrCode);
-
+        
         $tender = Tender::create(array_merge($validatedData, ['qr_code' => $qrCodePath]));
-
-        return response()->json(['success' => true, 'message' => 'Tender created successfully.', 'tender' => $tender]);
-        }
+        
+        return response()->json([
+            'success' => true, 
+            'message' => __('Tender created successfully.'), 
+            'tender' => $tender
+        ]);
+    }
     /**
      * Display the specified resource.
      */
@@ -246,10 +260,12 @@ public function update(Request $request, string $id)
     $validatedData = $request->validate([
         'company_id' => 'required|exists:companies,id',
         'title' => 'required|string|max:255',
+        'title_ar' => 'required|string|max:255',
         'city' => 'required|string|max:255',
         'first_insurance' => 'number|max:255',
         'price' => 'number|max:255',
         'description' => 'required|string',
+        'description_ar' => 'required|string',
         'end_date' => 'required|date',
         'edit_end_date' => 'required|date',
         'show_applicants' => 'boolean',
@@ -271,7 +287,7 @@ public function update(Request $request, string $id)
     $tender->update($validatedData);
 
     // Return a response indicating success
-    return response()->json(['success' => true, 'message' => 'Tender updated successfully.', 'tender' => $tender]);
+    return response()->json(['success' => true, 'message' =>  __('Tender updated successfully.'), 'tender' => $tender]);
 }
 
 

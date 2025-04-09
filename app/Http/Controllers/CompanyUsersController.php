@@ -18,7 +18,7 @@ class CompanyUsersController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
-            'role' => 'required|string|in:user,user_company,admin_company',
+            'role' => 'required|string|in:company,admin_company',
             'company_id' => 'required|exists:companies,id'
         ]);
 
@@ -34,7 +34,7 @@ class CompanyUsersController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User created successfully',
+            'message' => __('User created successfully'),
             'user' => $user
         ]);
     }
@@ -44,43 +44,63 @@ class CompanyUsersController extends Controller
         return response()->json($user);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'role' => 'required|string|in:user,admin,manager',
-            'password' => $request->has('password') ? 'nullable|string|min:8|confirmed' : '',
-        ]);
-
-        $userData = [
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'role' => $validated['role'],
-        ];
-
-        if ($request->filled('password')) {
-            $userData['password'] = Hash::make($validated['password']);
+        try {
+            $user = User::findOrFail($id);
+            
+            // Define validation rules
+            $rules = [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email,' . $id,
+                'phone' => 'nullable|string|min:11|max:11',
+                'role' => 'required|string|in:company,admin_company',
+            ];
+            
+            // Only validate password if it's being changed
+            if ($request->has('password') && !empty($request->password)) {
+                $rules['password'] = 'required|min:8|confirmed';
+            }
+            
+            // Validate the request
+            $validator = Validator::make($request->all(), $rules);
+            
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            }
+            
+            // Update user data
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->role = $request->role;
+            
+            // Update password if provided
+            if ($request->has('password') && !empty($request->password)) {
+                $user->password = Hash::make($request->password);
+            }
+            
+            $user->save();
+            
+            return response()->json([
+                'success' => true, 
+                'message' => 'User updated successfully',
+                'user' => $user
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Error updating user: ' . $e->getMessage()
+            ], 500);
         }
-
-        $user->update($userData);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User updated successfully',
-            'user' => $user
-        ]);
     }
-
     public function destroy(User $user)
     {
         $user->delete();
         
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully'
+        return response()->json([ 
+            'success' => true, 
+            'message' => __('User deleted successfully')
         ]);
     }
 }

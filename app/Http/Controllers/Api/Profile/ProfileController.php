@@ -30,7 +30,7 @@ class ProfileController extends Controller
         }
     
         // Handle the case where no authenticated user is found
-        return response()->json(['message' => 'User not authenticated'], 401);
+        return response()->json(['message' => __('User not authenticated')], 401);
     }
     
 
@@ -38,7 +38,7 @@ class ProfileController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['message' => __('Logged out successfully')], 200);
     }
 
 
@@ -57,7 +57,7 @@ class ProfileController extends Controller
     
         // Check if the provided password matches the current password
         if (!Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Password is incorrect'], 422);
+            return response()->json(['message' => __('Password is incorrect')], 422);
         }
     
         // Update user details only if they are provided
@@ -77,7 +77,7 @@ class ProfileController extends Controller
         $user->save();
     
         // Return a response
-        return response()->json(['message' => 'Profile updated successfully']);
+        return response()->json(['message' => __('Profile updated successfully')]);
     }
     
     public function changePassword(Request $request)
@@ -93,14 +93,14 @@ class ProfileController extends Controller
 
         // Check if the current password matches
         if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['message' => 'Current password is incorrect'], 422);
+            return response()->json(['message' => __('Current password is incorrect')], 422);
         }
 
         // Update the password
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return response()->json(['message' => 'Password changed successfully']);
+        return response()->json(['message' => __('Password changed successfully')]);
     }
 
     public function changePhoto(Request $request)
@@ -129,7 +129,7 @@ class ProfileController extends Controller
             $user->save();
         }
     
-        return response()->json(['message' => 'Photo updated successfully', 'photo_url' => asset('storage/' . $user->photo)]);
+        return response()->json(['message' => __('Photo updated successfully'), 'photo_url' => asset('storage/' . $user->photo)]);
     }
     
     public function deleteAccount(Request $request)
@@ -181,7 +181,7 @@ class ProfileController extends Controller
         
     
             return response()->json([
-                'message' => 'Account deleted successfully'
+                'message' => __('Account deleted successfully')
             ], 200);
     
         } catch (Exception $e) {
@@ -191,7 +191,7 @@ class ProfileController extends Controller
             Log::error('Account deletion failed: ' . $e->getMessage());
     
             return response()->json([
-                'message' => 'Failed to delete account',
+                'message' => __('Failed to delete account'),
                 'error' => config('app.debug') ? $e->getMessage() : null
             ], 500);
         }

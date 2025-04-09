@@ -24,7 +24,11 @@
                 </div>
             </div>
 
-            <h5 class="card-title mb-3">{{ $tender->title }}</h5>
+            <h5 class="card-title mb-3">
+
+                {{ session()->get('locale') == 'ar' ? $tender->title_ar : $tender->title }}
+            </h5>
+
             <div class="mb-3 text-muted small">
                 <div class="d-flex align-items-center mb-2">
                     <i class="fas fa-building me-2"></i>
@@ -35,9 +39,11 @@
                     {{__('Ends')}}: {{ \Carbon\Carbon::parse($tender->end_date)->format('M d, Y') }}
                 </div>
             </div>
-
+ 
             <div class="description-truncate mb-3">
-                {!! $tender->description !!}
+ 
+                {{ session()->get('locale') == 'ar' ? $tender->description_ar : $tender->description }}
+
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-auto">

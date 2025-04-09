@@ -25,15 +25,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
 
-            'api' => [
-                \App\Http\Middleware\ApiCountryDetection::class,
-                'throttle:api',
-                \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            ],
+
 
         ]);
         
-
+  $middleware->group('api', [
+            \App\Http\Middleware\SetLocale::class,  // SetLocale should be early
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
 
 
     })

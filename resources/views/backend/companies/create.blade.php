@@ -164,7 +164,10 @@
                                            name="phone" 
                                            class="form-control @error('phone') is-invalid @enderror"
                                            value="{{ old('phone') }}"
-                                           placeholder="+1 (234) 567-8900">
+                                           minlength="11"
+                                           maxlength="11"
+                                           placeholder="01xxxxxxxxx"
+                                           >
                                     @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -185,7 +188,20 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{{__('Commercial photo')}}</label>
+                                <input type="file" 
+                                       name="commercial_photo" 
+                                       class="form-control form-control-lg @error('commercial_photo') is-invalid @enderror"
+                                       accept="image/*">
+                                @error('commercial_photo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="text-muted d-block mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    {{__('Recommended size: 200x200px (Max: 2MB)')}}
+                                </small>
+                            </div>
                             <!-- Logo -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">{{__('Company Logo')}}</label>
@@ -259,7 +275,20 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{{__('Admin Phone')}}<span class="text-danger">*</span></label>
+                                <input type="tel" 
+                                       name="admin_phone" 
+                                       class="form-control form-control-lg @error('admin_phone') is-invalid @enderror"
+                                       value="{{ old('admin_phone') }}"
+                                       required
+                                       minlength="11"
+                                       maxlength="11"
+                                       placeholder="011xxxxxxx">
+                                @error('admin_phone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <!-- Password -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">{{__('Password')}}<span class="text-danger">*</span></label>
@@ -277,7 +306,7 @@
                                 </small>
                             </div>
 
-                            <!-- Confirm Password -->
+                            {{-- <!-- Confirm Password -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">{{__('Confirm Password')}}<span class="text-danger">*</span></label>
                                 <input type="password" 
@@ -285,7 +314,7 @@
                                        class="form-control form-control-lg"
                                        required
                                        placeholder="{{__('Confirm password')}}">
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -320,7 +349,7 @@
                                     <div class="form-check">
                                         <input type="radio" 
                                                name="status" 
-                                               value="inactive" 
+                                               value="unactive" 
                                                class="form-check-input"
                                                {{ old('status') == 'inactive' ? 'checked' : '' }}>
                                         <label class="form-check-label">{{__('Inactive')}}</label>
@@ -335,11 +364,11 @@
                 </div>
 
                 <!-- Form Actions -->
-                <div class="d-flex justify-content-end gap-3 mb-4">
-                    <a href="{{ route('companies.index') }}" class="btn btn-light btn-lg px-5">
+                <div class="justify-content-end mb-4">
+                    <a href="{{ route('companies.index') }}" class="btn btn-light btn-lg px-4 me-3">
                         <i class="fas fa-times me-2"></i>{{__('Cancel')}}
                     </a>
-                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                    <button type="submit" class="btn btn-primary btn-lg px-4">
                         <i class="fas fa-save me-2"></i>{{__('Create Company')}}
                     </button>
                 </div>
@@ -404,28 +433,27 @@
         }
     
         function handleSuccess(response) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: response.message || 'Company created successfully',
-                showConfirmButton: false,
-                timer: 2000,
-                willClose: () => {
-                    window.location.href = response.redirect || "{{ route('companies.index') }}";
-                }
-            });
+    Swal.fire({
+        icon: 'success',
+        title: "{{ __('Success') }}",
+        text: response.message || "{{ __('Company created successfully') }}",
+        showConfirmButton: false,
+        timer: 2000,
+        willClose: () => {
+            window.location.href = response.redirect || "{{ route('companies.index') }}";
         }
-    
+    });
+}
+
         function handleError(xhr) {
-            setLoadingState(false);
-            
-            if (xhr.status === 422) {
-                handleValidationErrors(xhr.responseJSON.errors);
-            } else {
-                handleGeneralError();
-            }
-        }
+    setLoadingState(false);
     
+    if (xhr.status === 422) {
+        handleValidationErrors(xhr.responseJSON.errors);
+    } else {
+        handleGeneralError(xhr);  // Pass the xhr object
+    }
+}
         function handleValidationErrors(errors) {
             Object.keys(errors).forEach(field => {
                 const input = $(`[name="${field}"]`);
@@ -455,10 +483,52 @@
             }
         }
     
-        function handleGeneralError() {
-            showToast('error', 'Error', 'Something went wrong! Please try again.');
-        }
+        function handleGeneralError(xhr) {
+    // Default error message
+    let errorMessage = 'Something went wrong! Please try again.';
     
+    try {
+        if (xhr && xhr.responseJSON) {
+            // Get the message from response
+            if (xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+                
+                // Check for integrity constraint violation error
+                if (errorMessage.includes('Integrity constraint violation') && 
+                    errorMessage.includes('cannot be null')) {
+                    
+                    // Extract the column name
+                    const matches = errorMessage.match(/Column '(\w+)' cannot be null/);
+                    if (matches && matches[1]) {
+                        const fieldName = matches[1].charAt(0).toUpperCase() + matches[1].slice(1);
+                        errorMessage = `${fieldName} is required. Please provide a value.`;
+                    } else {
+                        errorMessage = 'A required field is missing. Please fill all required fields.';
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Error parsing error response:', e);
+    }
+    
+    // Log the error to console for debugging
+    console.error('Server error:', xhr);
+    
+    // Show error toast
+    Swal.fire({
+        icon: 'error',
+        title: {{ __('Error')}},
+        text: errorMessage,
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true
+    });
+    
+    return false;
+}
         function showToast(icon, title, text) {
             Swal.fire({
                 icon: icon,
@@ -507,8 +577,8 @@
                     if (file.size > 2 * 1024 * 1024) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'File Too Large',
-                            text: 'Please select an image under 2MB',
+                             title: @json(__("File Too Large")),
+    text: @json(__("Please select an image under 2MB")),  
                             toast: true,
                             position: 'top-end',
                             showConfirmButton: false,

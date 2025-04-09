@@ -121,7 +121,7 @@
         </div>
     </div>
 
-    <div class="card-body pt-5">
+    <div class="card-body pt-5"> 
         <form id="filterForm" class="row g-4">
             <!-- Search Input -->
             <div class="col-12 col-md-3">
@@ -232,7 +232,6 @@
 </style>
 @endpush
 
-@push('scripts')
 <script>
 $(document).ready(function() {
     // Initialize Select2
@@ -298,7 +297,6 @@ $(document).ready(function() {
     });
 });
 </script>
-@endpush
 
     <!-- Applicants List -->
     <div class="card">
@@ -352,7 +350,7 @@ $(document).ready(function() {
                                                 {{ $latestApplication->tender->title }}
                                             </a>
                                             <div class="text-muted small">
-                                                {{ $latestApplication->created_at->format('M d, Y') }}
+                                                {{ $latestApplication->created_at}}
                                             </div>
                                         </div>
                                     @else
@@ -416,12 +414,10 @@ $(document).ready(function() {
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-5">
-                                    <img src="/images/no-data.svg" 
-                                         alt="No Data" 
-                                         style="width: 120px; margin-bottom: 1rem;">
+                        @empty 
+                            <tr> 
+                                <td colspan="6" class="text-center py-5"> 
+                                  
                                     <h4>{{ __('No Applicants Found') }}</h4>
                                     <p class="text-muted">
                                         {{ __('There are no applicants matching your search criteria.') }}
@@ -465,114 +461,151 @@ $(document).ready(function() {
 
 @endsection
 
-@push('scripts')
 <script>
+// This code handles the applicant filtering functionality with improved select handling
 document.addEventListener('DOMContentLoaded', function() {
-    // Filter form handling
+    // Get references to filter form and elements
     const filterForm = document.getElementById('filterForm');
-    const filterInputs = filterForm.querySelectorAll('input, select');
+    const searchInput = document.querySelector('input[name="search"]');
+    const resetButton = document.getElementById('resetFilters');
+    const tenderSelect = document.querySelector('select[name="tender"]');
+    const companySelect = document.querySelector('select[name="company"]');
+    const dateRangePicker = document.getElementById('dateRangePicker');
+    
+    if (!filterForm) return;
 
-    filterInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            applyFilters();
-        });
-    });
-
-    // Search input with debounce
-    const searchInput = filterForm.querySelector('input[name="search"]');
-    let searchTimeout;
-
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            applyFilters();
-        }, 500);
-    });
-
-    function applyFilters() {
-        const tableBody = document.querySelector('tbody');
-        const formData = new FormData(filterForm);
-        const params = new URLSearchParams(formData);
-
-        // Show loading state
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="6" class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </td>
-            </tr>
-        `;
-
-        // Fetch filtered results
-        fetch(`${window.location.pathname}?${params.toString()}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.text())
-        .then(html => {
-            document.querySelector('.table-responsive').innerHTML = html;
-            history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
-            initializeComponents();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center py-5">
-                        <div class="alert alert-danger mb-0">
-                            ${error.message || '{{ __("An error occurred while fetching data") }}'}
-                        </div>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // View application details
-    window.viewApplication = function(applicationId) {
-        const modal = document.getElementById('applicationModal');
-        const modalContent = document.getElementById('applicationModalContent');
-
-        modalContent.innerHTML = `
-            <div class="text-center py-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        `;
-
-        const modalInstance = new bootstrap.Modal(modal);
-        modalInstance.show();
-
-        fetch(`/applications/${applicationId}`)
-            .then(response => response.text())
-            .then(html => {
-                modalContent.innerHTML = html;
-            })
-            .catch(error => {
-                modalContent.innerHTML = `
-                    <div class="alert alert-danger m-3">
-                        ${error.message || '{{ __("Failed to load application details") }}'}
-                    </div>
-                `;
+    // Initialize Select2 with explicit event handlers
+    if (window.jQuery && jQuery.fn.select2) {
+        // Initialize Select2 for tender select
+        if (tenderSelect) {
+            jQuery(tenderSelect).select2({
+                minimumResultsForSearch: 10,
+                dropdownParent: jQuery('#filterForm')
+            }).on('select2:select', function(e) {
+                console.log('Tender selected:', e.params.data.id);
+                filterForm.submit();
             });
+        }
+        
+        // Initialize Select2 for company select
+        if (companySelect) {
+            jQuery(companySelect).select2({
+                minimumResultsForSearch: 10,
+                dropdownParent: jQuery('#filterForm')
+            }).on('select2:select', function(e) {
+                console.log('Company selected:', e.params.data.id);
+                filterForm.submit();
+            });
+        }
     }
 
-    // Initialize tooltips and other components
-    function initializeComponents() {
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(tooltip => {
-            new bootstrap.Tooltip(tooltip);
+    // Initialize DateRangePicker if jQuery and daterangepicker are available
+    if (window.jQuery && jQuery.fn.daterangepicker) {
+        jQuery('#dateRangePicker').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear',
+                applyLabel: 'Apply',
+                fromLabel: 'From',
+                toLabel: 'To',
+                customRangeLabel: 'Custom',
+                weekLabel: 'W',
+                daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
+                            'July', 'August', 'September', 'October', 'November', 'December'],
+                firstDay: 1
+            },
+            ranges: {
+               'Today': [moment(), moment()],
+               'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+               'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+               'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+               'This Month': [moment().startOf('month'), moment().endOf('month')],
+               'Last Month': [moment().subtract(1, 'month').startOf('month'), 
+                             moment().subtract(1, 'month').endOf('month')]
+            }
+        });
+
+        // Handle date range picker events
+        jQuery('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+            jQuery(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            jQuery('input[name="date_from"]').val(picker.startDate.format('YYYY-MM-DD'));
+            jQuery('input[name="date_to"]').val(picker.endDate.format('YYYY-MM-DD'));
+            filterForm.submit();
+        });
+        
+        jQuery('#dateRangePicker').on('cancel.daterangepicker', function() {
+            jQuery(this).val('');
+            jQuery('input[name="date_from"]').val('');
+            jQuery('input[name="date_to"]').val('');
+            filterForm.submit();
         });
     }
 
-    // Initial initialization
-    initializeComponents();
+    // Add form submit event listener to log form data
+    filterForm.addEventListener('submit', function(e) {
+        // Don't prevent default - we want the form to submit
+        // But log the data for debugging
+        const formData = new FormData(filterForm);
+        console.log('Form submitted with data:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+    });
+
+    // Debounce function for search input
+    let searchTimeout;
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                filterForm.submit();
+            }, 500);
+        });
+    }
+    
+    // Manually add change event listeners to select elements
+    if (tenderSelect) {
+        tenderSelect.addEventListener('change', function() {
+            console.log('Tender changed to:', this.value);
+            filterForm.submit();
+        });
+    }
+    
+    if (companySelect) {
+        companySelect.addEventListener('change', function() {
+            console.log('Company changed to:', this.value);
+            filterForm.submit();
+        });
+    }
+    
+    // Handle reset button
+    if (resetButton) {
+        resetButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Reset all form fields
+            filterForm.reset();
+            
+            // Reset Select2 dropdowns if using jQuery
+            if (window.jQuery && jQuery.fn.select2) {
+                if (tenderSelect) jQuery(tenderSelect).val('').trigger('change');
+                if (companySelect) jQuery(companySelect).val('').trigger('change');
+            }
+            
+            // Reset date range fields
+            if (dateRangePicker) {
+                dateRangePicker.value = '';
+                document.querySelector('input[name="date_from"]').value = '';
+                document.querySelector('input[name="date_to"]').value = '';
+            }
+            
+            // Navigate to the page without query parameters
+            window.location.href = window.location.pathname;
+        });
+    }
 });
 </script>
-@endpush
 
 @push('styles')
 <style>

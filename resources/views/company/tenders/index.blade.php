@@ -67,10 +67,7 @@
     @include('company.tenders.partials.tender-grid')
 </div>
 
-    <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-5">
-        {{ $tenders->links('pagination::bootstrap-4') }}
-    </div>
+
 </div>
 
 <!-- QR Code Modal -->

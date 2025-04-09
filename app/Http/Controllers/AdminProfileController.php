@@ -60,7 +60,7 @@ public function update(Request $request)
     // Check if the old password matches the current password
     if (!Hash::check($request->old_password, auth()->user()->password)) {
         // Flash error message to the session if the old password is incorrect
-        session()->flash('error', 'Your current password does not match our records.');
+        session()->flash('error', __('Your current password does not match our records.'));
         return redirect()->back();
     }
 
@@ -70,7 +70,7 @@ public function update(Request $request)
     ]);
 
     // Flash success message to the session after password update
-    session()->flash('success', 'Your password has been updated successfully.');
+    session()->flash('success', __('Your password has been updated successfully.'));
     
     return redirect()->back();
 }
@@ -86,7 +86,7 @@ public function updateEmail(Request $request)
     // Check if the password is correct
     if (!Hash::check($request->confirmemailpassword, auth()->user()->password)) {
         // Flash error message if the password doesn't match
-        session()->flash('error', 'The password you entered is incorrect.');
+        session()->flash('error', __('The password you entered is incorrect.'));
         return redirect()->back();
     }
 
@@ -96,7 +96,7 @@ public function updateEmail(Request $request)
     $user->save();
 
     // Flash success message upon successful email update
-    session()->flash('success', 'Your email address has been updated successfully.');
+    session()->flash('success', __('Your email address has been updated successfully.'));
     
     return redirect()->back();
 }

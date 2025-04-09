@@ -5,7 +5,6 @@
                 <!-- Search Box -->
                 <div class="col-lg-4">
                     <div class="position-relative">
-                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <input type="text" 
                                class="search-box ps-5" 
                                name="search"
@@ -98,9 +97,7 @@
 
                         <!-- Bulk Actions -->
                         <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fas fa-cog me-2"></i>{{ __('Bulk Actions') }}
-                            </button>
+                      
                             <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item" href="#" onclick="bulkAction('activate')">
@@ -120,7 +117,8 @@
                                 </li>
                             </ul>
                         </div>
-
+                    
+                        
                         <!-- Add User Button -->
                         <a href="{{ route('AdminUsers.create') }}" style="padding-top:17px;">
                             <i class="fas fa-plus me-2"></i>{{ __('Add User') }}
@@ -129,4 +127,55 @@
                 </div>
             </div>
         </form>
+
+       {{-- Modal Trigger + Sample Excel Download --}}
+<div class="d-flex gap-2 align-items-center mt-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importUsersModal">
+        <i class="fas fa-file-import me-2"></i>{{ __('Import Users') }}
+    </button>
+
+  
+</div>
+<!-- Import Users Modal -->
+<div class="modal fade" id="importUsersModal" tabindex="-1" aria-labelledby="importUsersModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Changed to modal-lg for more width -->
+      <form action="{{ route('AdminUsers.import') }}" method="POST" enctype="multipart/form-data" class="modal-content">
+          @csrf
+          <div class="modal-header">
+              <h5 class="modal-title" id="importUsersModalLabel">{{ __('Import Users from Excel') }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Close') }}"></button>
+          </div>
+          <div class="modal-body">
+             <!-- Excel File Upload -->
+              <div class="form-group mb-3">
+                  <label for="excel_file">{{ __('Choose Excel File (.xlsx, .xls)') }}</label>
+                  <input type="file" name="excel_file" class="form-control" required>
+                  <div class="mt-2">
+                      <a href="{{asset('assets/excel.xlsx')}}" class="btn btn-outline-secondary">
+                          <i class="fas fa-download me-2"></i>{{ __('Download Sample') }}
+                      </a>
+                  </div>
+              </div>
+              
+              <!-- Image Preview with centered container -->
+              <div class="text-center mt-3 mb-3">
+                  <img src="{{asset('assets/Capture.PNG')}}" alt="{{ __('Image Preview') }}" class="img-fluid" style="max-width: 100%;">
+              </div>
+              
+              <div class="alert alert-info">
+                  {{ __('Please make sure your Excel file matches the sample format.') }}
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-upload me-2"></i>{{ __('Import') }}
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  {{ __('Cancel') }}
+              </button>
+          </div>
+      </form>
+    </div>
+  </div>
+
 </div>

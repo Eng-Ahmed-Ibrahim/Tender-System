@@ -146,11 +146,7 @@
                 <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">{{__('Applications Overview')}}</h5>
-                        <div class="btn-group">
-                            <button class="btn btn-sm btn-light" onclick="updateChart('weekly')">Week</button>
-                            <button class="btn btn-sm btn-light" onclick="updateChart('monthly')">Month</button>
-                            <button class="btn btn-sm btn-light" onclick="updateChart('yearly')">Year</button>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="card-body p-4">
@@ -169,27 +165,27 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="activity-timeline">
-                        @foreach($recentApplicants as $applicant)
-                            <div class="activity-item mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar me-3">
-                                        <div class="avatar-content rounded-circle bg-light d-flex align-items-center justify-content-center"
-                                             style="width: 40px; height: 40px;">
-                                            {{ strtoupper(substr($applicant->name, 0, 2)) }}
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">{{ $applicant->name }}</h6>
-                                        <p class="mb-0 text-muted small">
-                                            Applied for: {{ $applicant->applicants->first()?->tender->title }}
-                                        </p>
-                                        <small class="text-muted">
-                                            {{ $applicant->created_at->diffForHumans() }}
-                                        </small>
+                        @foreach($recentApplicants as $application)
+                        <div class="activity-item mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar me-3">
+                                    <div class="avatar-content rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                         style="width: 40px; height: 40px;">
+                                        {{ strtoupper(substr($application->user->name, 0, 2)) }}
                                     </div>
                                 </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ $application->user->name }}</h6>
+                                    <p class="mb-0 text-muted small">
+                                        Applied for: {{ $application->tender->title }}
+                                    </p>
+                                    <small class="text-muted">
+                                        {{ $application->created_at->diffForHumans() }}
+                                    </small>
+                                </div>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
                     </div>
                 </div>
             </div>
@@ -213,7 +209,7 @@
                                     <th>{{__('Tenders')}}</th>
                                     <th>{{__('Active')}}</th>
                                     <th>{{__('Applications')}}</th>
-                                </tr>
+                                </tr> 
                             </thead>
                             <tbody>
                                 @foreach($topCompanies as $company)
@@ -234,9 +230,7 @@
                                     <td>{{ $company->tenders_count }}</td>
                                     <td>{{ $company->active_tenders_count }}</td>
                                     <td>
-                                        <div class="progress" style="height: 5px; width: 100px;">
-                                            <div class="progress-bar" style="width: {{ ($company->active_tenders_count / max($company->tenders_count, 1)) * 100 }}%"></div>
-                                        </div>
+                                        {{$company->applicants_count}}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -251,21 +245,30 @@
     </div>
 </div>
 
-@push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Applications Chart
     const applicationsCtx = document.getElementById('applicationsChart').getContext('2d');
+    
+    // Format month names for display (e.g., "Jan 2023")
+    const monthLabels = {!! json_encode($formattedMonthlyApplications->pluck('month')->map(function($month) {
+        return \Carbon\Carbon::createFromFormat('Y-m', $month)->format('M Y');
+    })) !!};
+    
     const applicationsChart = new Chart(applicationsCtx, {
         type: 'line',
         data: {
-            labels: {!! json_encode($monthlyApplications->pluck('month')) !!},
+            labels: monthLabels,
             datasets: [{
                 label: 'Applications',
-                data: {!! json_encode($monthlyApplications->pluck('count')) !!},
+                data: {!! json_encode($formattedMonthlyApplications->pluck('count')) !!},
                 borderColor: '#4158D0',
                 backgroundColor: 'rgba(65, 88, 208, 0.1)',
+                borderWidth: 2,
+                pointBackgroundColor: '#4158D0',
+                pointRadius: 4,
+                pointHoverRadius: 6,
                 fill: true,
                 tension: 0.4
             }]
@@ -276,6 +279,17 @@ document.addEventListener('DOMContentLoaded', function() {
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    backgroundColor: '#2D3748',
+                    titleFont: {
+                        size: 14
+                    },
+                    bodyFont: {
+                        size: 12
+                    },
+                    padding: 12,
+                    displayColors: false
                 }
             },
             scales: {
@@ -284,6 +298,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     grid: {
                         drawBorder: false,
                         color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        stepSize: 1
                     }
                 },
                 x: {
@@ -295,8 +312,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Categorie
+    // Update chart function
+    window.updateChart = function(period) {
+        // You'll need to implement AJAX calls to fetch different time periods
+        console.log('Update chart for:', period);
+        // Implement AJAX call here to fetch new data and update chart
+    };
 });
 </script>
-@endpush
 @endsection

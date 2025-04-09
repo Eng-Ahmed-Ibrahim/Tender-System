@@ -35,7 +35,7 @@ class NotificationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Notification sent successfully'
+                'message' => __('Notification sent successfully')
             ]);
         } catch (\Exception $e) {
             Log::error('Notification error:', [
@@ -45,8 +45,8 @@ class NotificationController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to send notification'
+                'message' => __('Failed to send notification')
             ], 500);
         }
-    }
+    } 
 }

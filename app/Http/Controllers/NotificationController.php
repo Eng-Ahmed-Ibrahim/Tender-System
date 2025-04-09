@@ -104,9 +104,9 @@ class NotificationController extends Controller
     
             DB::commit();
     
-            $message = "Successfully sent {$successCount} notifications.";
+            $message = "{{__('Successfully sent {$successCount} notifications.')}}";
             if ($failedCount > 0) {
-                $message .= " Failed to send {$failedCount} notifications.";
+                $message .= "{{__('Failed to send {$failedCount} notifications.')}}";
             }
     
             if (!empty($errors)) {
@@ -122,7 +122,7 @@ class NotificationController extends Controller
             \Log::error('Notification system error: ' . $e->getMessage());
             
             return redirect()->route('notifications.create')
-                ->with('error', 'System error while sending notifications. Please try again.');
+                ->with('error', __('System error while sending notifications. Please try again.'));
         }
     }
     
@@ -173,7 +173,7 @@ class NotificationController extends Controller
         $user = auth()->user(); // Assuming user is authenticate
         $user->update(['fcm_token' => $request->token]); // or save token in another way
 
-        return response()->json(['message' => 'Token stored successfully']);
+        return response()->json(['message' => __('Token stored successfully')]);
     }
 }
 

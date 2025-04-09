@@ -41,7 +41,7 @@ class ApplicantController extends Controller
         if (now()>$deadline){
 
             return response()->json([
-                'message' => 'أنتهت المهلة للتعديل'
+                'message' => __('period of edit has finished')
             ]);
 
         } else {
@@ -53,7 +53,7 @@ class ApplicantController extends Controller
             $dayWord = ($remainingDays == 1) ? 'يوم' : 'أيام';
 
             return response()->json([
-                'message' => "اخر موعد لتعديل الملف هو $remainingDays $dayWord"
+                'message' => __("last time to update is $remainingDays $dayWord")
             ]);
 
 
@@ -91,6 +91,30 @@ class ApplicantController extends Controller
                 'message' => 'انتهت المهلة لتعديل الطلب.' // The deadline for modifying the application has passed
             ], 403);
         }
+        $end_date = $tender->end_date;
+
+        // Ensure $end_date is a Carbon instance
+        if (!($end_date instanceof \Carbon\Carbon)) { 
+            $end_date = \Carbon\Carbon::parse($end_date);
+        } 
+        $current_time = now();
+    // For existing applications, check if the deadline has passed
+if ($application) {
+    if ($current_time > $end_date) {
+        return response()->json([
+            'success' => false,
+            'message' => 'انتهت وقت الطلب.' // The deadline for modifying the application has passed
+        ], 403);
+    }
+} else {
+    // For new applications, check if the tender end_date has passed
+    if ($current_time > $end_date) {
+        return response()->json([
+            'success' => false,
+            'message' => 'انتهت وقت التقديم للمناقصة.' // The deadline for tender submission has passed
+        ], 403);
+    }
+}
     
         if (!$application) {
             // Store the uploaded file
