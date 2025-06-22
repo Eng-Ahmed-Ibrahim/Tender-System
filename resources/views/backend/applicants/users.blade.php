@@ -76,8 +76,8 @@
                 <div class="row g-3">
                     <div class="col-sm-6 col-md-3">
                         <div class="stats-card">
-                            <h3 class="mb-1">{{ $statistics['total_applicants'] }}</h3>
-                            <p class="mb-0 text-white-50">{{ __('users') }}</p>
+                            <h3 class="mb-0" style="display: inline-block">{{ $statistics['total_applicants'] }}</h3>
+                            <p class="mb-0 text-white-50" style="display: inline-block">{{ __('users') }}</p>
                         </div>
                     </div>
                  
@@ -88,23 +88,10 @@
     </div>
 
     <!-- Filters -->
-<!-- Advanced Filter Section -->
+<!-- Advanced Filter Section  -->
 <div class="card card-flush mb-5 shadow-sm">
-    <div class="card-header min-h-65px">
-        <h3 class="card-title align-items-start flex-column">
-          
-        </h3>
-        <div class="card-toolbar">
-            <button type="button" class="btn btn-sm btn-light" id="resetFilters">
-                <i class="ki-duotone ki-filter-off fs-2">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>
-                {{ __('Reset') }}
-            </button>
-        </div>
-    </div>
-    <div class="card-body pt-5">
+
+    <div class="card-body ">
         <div class="d-flex justify-content-between mb-4">
             <h3 class="card-title">{{ __('Applicants') }}</h3>
             <a href="{{ route('Applicants.create') }}" class="btn btn-primary">

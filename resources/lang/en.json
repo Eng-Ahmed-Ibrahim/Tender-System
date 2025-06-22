@@ -41,5 +41,7 @@
     "closed": "Closed",
     "applicant": "Applicant",
     "recent_applicants": "Recent Applicants",
-    "view_all": "View All"
+    "view_all": "View All",
+  "last_time_update": "{1}Last time to update is :count day|[2,*]Last time to update is :count days"
+
 }

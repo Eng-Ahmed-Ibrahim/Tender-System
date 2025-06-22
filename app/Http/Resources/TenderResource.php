@@ -29,6 +29,7 @@ class TenderResource extends JsonResource
                 'first_insurance' => $this->first_insurance,
                 'price' => $this->price, 
                 'city' => $this->city, 
+                'country' => $this->country, 
                 'show_applicants' => $this->show_applicants,
                 'download_QR' => route('tenders.download', $this->id), // Link to download the QR code
                 'applicants_count' => $this->applicants()->count(), // Add the count of applicants

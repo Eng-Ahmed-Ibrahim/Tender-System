@@ -18,11 +18,11 @@
                     <select class="form-select form-select-solid" 
             name="role" 
             data-control="select2" 
-            data-placeholder="{{ __('Select Role') }}">
+            data-placeholder="{{ __('Select Role') }}"> 
         <option value="">{{ __('All Roles') }}</option>
-        @foreach($roles as $role)
+        @foreach($roles as $role) 
             <option value="{{ $role->id }}" 
-                    {{ (string)request('role') === (string)$role->id ? 'selected' : '' }}>
+                    {{ request('role') == $role->id ? 'selected' : '' }}>
                 {{ $role->title }}
             </option>
         @endforeach
@@ -74,7 +74,7 @@
                         </a>
                     </div>
 
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2"> 
                         <!-- Export Buttons -->
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">

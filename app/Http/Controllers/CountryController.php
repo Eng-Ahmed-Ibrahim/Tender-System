@@ -4,32 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\BaseController;
 
-class CountryController extends BaseController
+class CountryController extends Controller
 {
-    protected $modelClass = Country::class;
-    protected $viewPrefix = 'backend.countries';
-    protected $routePrefix = 'countries';
-
-    protected function rules()
+    public function index()
     {
-        return [
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:10|unique:countries,code', // Ensure unique validation for 'code'
-        ];
+        $countries = Country::orderBy("id", "DESC")->get();
+        return view("country.index", compact('countries'));
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            "name" => "required|unique:countries,name"
+        ]);
+        Country::create([
+            "name" => $request->name,
+            "name_ar" => $request->name_ar,
+
+        ]);
+        session()->flash("success", __("Created Successfully"));
+        return back();
     }
 
-
-    public function updateCountrySession(Request $request)
+    public function update(Request $request, $id)
     {
-        $countryId = $request->input('country_id');
+        $country = Country::findOrFail($id);
 
-        $request->session()->put('country_id', $countryId);
-    
-        return redirect()->back();
+        $request->validate([
+            'name' => [
+                'required',
+                Rule::unique('countries')->ignore($country->id)
+            ]
+        ]);
+
+        $country->update([
+            'name' => $request->name,
+            'name_ar' => $request->name_ar,
+        ]);
+
+        session()->flash('success', __('Updated Successfully'));
+        return back();
     }
-
-    
-
+    public function delete( $id)
+    {
+        $country = Country::findOrFail($id);
+        $country->delete();
+        session()->flash('success', __('Deleted Successfully'));
+        return back();
+    }
 }

@@ -19,23 +19,5 @@ class Country extends Model
     
     protected $guarded=[];
 
-    public function NormalAds() {
-        return $this->hasMany(NormalAds::class, 'country_id');
-    }
-    
-    public function CommercialAds() {
-        return $this->hasMany(CommercialAd::class, 'country_id');
-    }
-    
-    
-    public function popUpAds(){
-
-        return $this->hasMany(PopUpAds::class,'country_id');
-    }
-    
-    public function banners(){
-
-        return $this->hasMany(Banner::class,'country_id');
-    }
 
 }

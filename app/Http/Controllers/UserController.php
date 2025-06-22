@@ -48,11 +48,11 @@ class UserController extends Controller
               ->orWhere('email', 'LIKE', "%{$search}%");
         });
     }
-
+   
     if ($request->filled('role')) {
-        $query->where('role_id', $request->role);
+        Log::debug('Role filter applied: ' . $request->input('role'));
+        $query->where('role_id', $request->input('role'));
     }
-
     // Date range filter
     if ($request->filled('date_from') && $request->filled('date_to')) {
         $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
@@ -126,38 +126,43 @@ public function importUsers(Request $request)
         return back()->with('error', 'Import failed: ' . $e->getMessage());
     }
 }
-
 public function export(Request $request)
 {
-    $format = $request->format ?? 'csv';
+    $format = $request->input('format', 'csv');
     $user = Auth::user();
-    
-    $query = User::query()
-        ->when($user->dashboard === 'company', function($query) use ($user) {
-            return $query->where('company_id', $user->id);
-        });
 
+    $query = User::query();
 
+    // Apply role-based user access
+    if ($user->role === 'admin') {
+        $query->whereNull('company_id')->where('role','admin'); // Admin sees users without a company
+    } else {
+        $query->where('company_id', $user->company_id); // Others see their company's users
+    }
 
-    if ($request->filled('role')) {
+    // Check if 'role' is present in the request
+    if ($request->has('role') && !empty($request->role)) {
         $query->where('role_id', $request->role);
     }
 
     $users = $query->get();
-    $roles = Role::all(); 
-    
+    $roles = Role::all(); // Used only in PDF export
 
     switch ($format) {
         case 'excel':
-            return Excel::download(new UsersExport($users), 'users.xlsx');
+            return Excel::download(new UsersExport($users), 'employees.xlsx');
+
         case 'pdf':
-            $pdf = app('dompdf.wrapper');
-            return $pdf->loadView('pdf.users', compact('users','roles'))
-                      ->download('users.pdf');
+            $pdf = app('dompdf.wrapper'); 
+            return $pdf->loadView('pdf.users', compact('users', 'roles')) 
+                       ->download('users.pdf');
+
+        case 'csv':
         default:
             return (new UsersExport($users))->download('users.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 }
+
 
  
     public function create()
@@ -232,7 +237,6 @@ public function export(Request $request)
             return redirect()->back()->with('error', 'Failed to create user: ' . $e->getMessage());
         }
     }
-
     public function assignRole(Request $request, $userId)
     {
         // Validate the incoming request data
@@ -248,10 +252,13 @@ public function export(Request $request)
     
         // Assign the role using Spatie's method
         $user->syncRoles([$role->name]);
+        
+        // Save the role_id in the users table
+        $user->role_id = $request->role_id;
+        $user->save();
     
         return redirect()->back()->with('success', 'Role assigned successfully.');
     }
-    
 
 public function updateRole(Request $request, $userId)
 {

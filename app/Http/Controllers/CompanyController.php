@@ -7,6 +7,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Tender;
 use App\Models\Company;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -136,9 +137,8 @@ class CompanyController extends Controller
     {
       
         $company = Company::findOrFail($id);
-
         $tenders = Tender::where('company_id',$id)->get();
-
+        $countries = Country::all();
         // Get some statistics
         $statistics = [
             'total_users' => $company->users->count(),
@@ -147,7 +147,7 @@ class CompanyController extends Controller
             'last_updated' => $company->updated_at->format('F d, Y'),
         ];
 
-        return view('backend.companies.show', compact('company', 'statistics','tenders'));
+        return view('backend.companies.show', compact('company', 'statistics','tenders','countries'));
 
     }
     /**

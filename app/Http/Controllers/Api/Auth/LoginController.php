@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class LoginController extends Controller
 {
 
-    public function login(Request $request)
-{
+    public function login(Request $request){
     // Validate the request
     $validator = Validator::make($request->all(), [
         'identifier' => 'required|string', // This will be either email or phone
@@ -56,6 +55,7 @@ class LoginController extends Controller
 
     return response()->json([
         'message' => __('Login successful.'),
+        "email"=>$user->email,
         'token' => $token,
     ], 200);
 }

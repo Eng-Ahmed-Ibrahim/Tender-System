@@ -208,6 +208,7 @@ class ApplicantController extends Controller
             'company'
         ])->findOrFail($id);
 
+        // return $applicant;
         // Get statistics
         $statistics = [
             'total_applications' => $applicant->applicants->count(),

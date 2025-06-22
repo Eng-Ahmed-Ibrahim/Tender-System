@@ -17,6 +17,14 @@ class Tender extends Model
     {
         return $this->belongsTo(Company::class,'company_id');
     } 
+    public function city()
+    {
+        return $this->belongsTo(City::class,'city_id');
+    } 
+    public function country()
+    {
+        return $this->belongsTo(Country::class,'country_id');
+    } 
 
     public function favoritedBy()
 {
@@ -27,7 +35,7 @@ class Tender extends Model
 public function applicants()
 {
     return $this->belongsToMany(User::class, 'applicants')
-                ->withPivot('application_details', 'files')
+                ->withPivot('application_details', 'files','financial_file','quantity_file')
                 ->withTimestamps();
 }
 
