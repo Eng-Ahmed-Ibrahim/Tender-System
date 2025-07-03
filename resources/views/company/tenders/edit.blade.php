@@ -69,7 +69,7 @@
                                 <div class="form-group">
                                     <label for="title">{{ __('First Insurance') }}</label>
                                     <input type="number" name="first_insurance" class="form-control"
-                                        value="{{ $tender->first_insurance }}" required>
+                                        value="{{ $tender->first_insurance }}" >
                                 </div>
 
                                 <div class="form-group">

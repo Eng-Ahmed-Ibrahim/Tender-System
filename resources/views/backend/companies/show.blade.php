@@ -497,7 +497,7 @@
 
                         <div class="col-md-6">
                             <label for="first_insurance" class="form-label">{{ __('First Insurance') }}</label>
-                            <input type="number" name="first_insurance" class="form-control" required>
+                            <input type="number" name="first_insurance" class="form-control" >
                         </div>
                     </div>
 

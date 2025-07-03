@@ -19,18 +19,19 @@ class ApplicantController extends Controller
 
 
 
-    public function getUsersByTenderId($tenderId)
+    public function getUsersByTenderId(Request $request , $tenderId)
     {
 
 
         $tender = Tender::findOrFail($tenderId);
 
-        $users = $tender->applicants;
+        // $users = $tender->applicants;
+        $users = $tender->applicants()->where('users.id', '!=', $request->user()->id)->get();
 
         return UserResource::collection($users);
     }
 
-    public function deadline(Request $request ,$tenderId)
+    public function deadline(Request $request, $tenderId)
     {
 
         $tender = Tender::findOrFail($tenderId);
@@ -50,12 +51,12 @@ class ApplicantController extends Controller
 
             $dayWord = ($remainingDays == 1) ? 'يوم' : 'أيام';
 
-return response()->json([
-     'message' => trans_choice('last_time_update', $remainingDays, ['count' => $remainingDays]),
-    "data"=>[
-        "deadline"=>$deadline,
-    ],
-]);
+            return response()->json([
+                'message' => trans_choice('last_time_update', $remainingDays, ['count' => $remainingDays]),
+                "data" => [
+                    "deadline" => $deadline,
+                ],
+            ]);
         }
     }
 
@@ -175,7 +176,8 @@ return response()->json([
     {
         // Validate the request
         $validatedData = $request->validate([
-            'tender_id' => 'required|exists:tenders,id'
+            'tender_id' => 'required|exists:tenders,id',
+            "type" => "required|in:technical_file,financial_file,quantity_file"
         ]);
 
         $userId = Auth::user()->id;
@@ -198,30 +200,44 @@ return response()->json([
         $deadline = $tender->edit_end_date;
 
         // Check if the deadline for modifying the application has passed
-        if (now()->greaterThan($deadline)) {
+        if ( now()->greaterThan($deadline)) {
             return response()->json([
                 'success' => false,
                 'message' => __('The deadline to modify the request has expired.') // The deadline for modifying the application has passed
-            ], 403);
+            ], 410);
         }
 
         try {
             // Begin transaction
             DB::beginTransaction();
 
-            // Delete the physical file if it exists
-            if ($application->files && Storage::disk('public')->exists($application->files)) {
+            // return response()->json([
+            //     "data"=>[
+                    
+            //         $application->financial_file ? 1 :0,
+            //         Storage::disk('public')->exists($application->financial_file),
+            //         "financial_file"=>$application->financial_file
+            //     ]
+            // ]);
+            if ($request->type =="technical_file" && $application->files && Storage::disk('public')->exists($application->files)) {
                 Storage::disk('public')->delete($application->files);
+                $application->update([
+                    "files"=>null,
+                ]);
             }
-            if ($application->financial_file && Storage::disk('public')->exists($application->financial_file)) {
+            if ($request->type =="financial_file" && $application->financial_file && Storage::disk('public')->exists($application->financial_file)) {
                 Storage::disk('public')->delete($application->financial_file);
+                $application->update([
+                    "financial_file"=>null,
+                ]);
             }
-            if ($application->quantity_file && Storage::disk('public')->exists($application->quantity_file)) {
+            if ($request->type =="quantity_file" && $application->quantity_file && Storage::disk('public')->exists($application->quantity_file)) {
                 Storage::disk('public')->delete($application->quantity_file);
+                $application->update([
+                    "quantity_file"=>null,
+                ]);
             }
 
-            // Delete the application record
-            $application->delete();
 
             // Commit transaction
             DB::commit();

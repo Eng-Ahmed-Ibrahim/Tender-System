@@ -33,6 +33,7 @@ class TenderResource extends JsonResource
                 'show_applicants' => $this->show_applicants,
                 'download_QR' => route('tenders.download', $this->id), // Link to download the QR code
                 'applicants_count' => $this->applicants()->count(), // Add the count of applicants
+                "applicants"=>count($this->applicants) > 0 ?  $this->applicants[0]?->pivot : [],
             ];
         }
     

@@ -155,7 +155,7 @@ class ApplicantController extends Controller
         // Search functionality
         if ($request->filled('search')) {
             $searchTerm = $request->search;
-            $query->where('name',$searchTerm);
+            $query->where('name',$searchTerm)->orWhere('email', 'like', '%' . $searchTerm . '%');
         }
     
         // Filter by tender
@@ -308,7 +308,7 @@ public function store(Request $request)
     
     // Handle photo upload
     $photoName = null;
-    if ($request->hasFile('photo')) {
+    if ($request->hasFile('')) {
         $photoName = time() . '_' . $request->file('photo')->getClientOriginalName();
         $request->file('photo')->storeAs('photos', $photoName, 'public');
     }

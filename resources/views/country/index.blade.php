@@ -2,22 +2,22 @@
 
 @section('content')
     <style>
-
-
         .flex-end {
             display: flex;
             justify-content: flex-end;
         }
-        td,th{
+
+        td,
+        th {
             text-align: center;
         }
     </style>
     <style>
-    .flex-root {
-    flex: 0;
-    margin-top: 0;
-}
-</style>
+        .flex-root {
+            flex: 0;
+            margin-top: 0;
+        }
+    </style>
     <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
         <div class="d-flex flex-column flex-column-fluid" style="flex: 0 !important;">
             <div id="kt_app_content" class="app-content flex-column-fluid">
@@ -44,7 +44,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>{{ __('Name') }}</th>
-                                        <th>{{ __('Name Ar' ) }}</th>
+                                        <th>{{ __('Name Ar') }}</th>
+                                        <th>{{ __('Currency') }}</th>
+                                        <th>{{ __('Currency Ar') }}</th>
                                         <th style="    width: 30%;">{{ __('Actions') }}</th>
                                     </tr>
                                 </thead>
@@ -54,10 +56,14 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $country->name }}</td>
                                             <td>{{ $country->name_ar }}</td>
+                                            <td>{{ $country->currency }}</td>
+                                            <td>{{ $country->currency_ar }}</td>
                                             <td>
                                                 <button class="btn btn-sm btn-info editBtn" data-id="{{ $country->id }}"
                                                     data-name="{{ $country->name }}" data-bs-toggle="modal"
                                                     data-name_ar="{{ $country->name_ar }}"
+                                                    data-currency="{{ $country->currency }}"
+                                                    data-currency_ar="{{ $country->currency_ar }}"
                                                     data-bs-target="#editModal">
                                                     {{ __('Edit') }}
                                                 </button>
@@ -96,11 +102,20 @@
                                             <label for="name" class="form-label">{{ __('Name') }}</label>
                                             <input type="text" name="name" class="form-control" required>
                                         </div>
-                                    </div>
-                                    <div class="modal-body">
+
                                         <div class="mb-3">
                                             <label for="name_ar" class="form-label">{{ __('Name Ar') }}</label>
                                             <input type="text" name="name_ar" class="form-control" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="currency" class="form-label">{{ __('Currency') }}</label>
+                                            <input type="text" name="currency" class="form-control" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="currency_ar" class="form-label">{{ __('Currency Ar') }}</label>
+                                            <input type="text" name="currency_ar" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -137,6 +152,16 @@
                                             <input type="text" name="name_ar" id="edit_name_ar" class="form-control"
                                                 required>
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="edit_currency" class="form-label">{{ __('Currency') }}</label>
+                                            <input type="text" name="currency" id="edit_currency"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="edit_currency_ar" class="form-label">{{ __('Currency Ar') }}</label>
+                                            <input type="text" name="currency_ar" id="edit_currency_ar"
+                                                class="form-control" required>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
@@ -156,18 +181,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             const editButtons = document.querySelectorAll('.editBtn');
 
-            
+
             editButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const id = this.getAttribute('data-id');
                     const name = this.getAttribute('data-name');
                     const name_ar = this.getAttribute('data-name_ar');
-                    
+                    const currency = this.getAttribute('data-currency');
+                    const currency_ar = this.getAttribute('data-currency_ar');
+
 
                     // Fill the edit modal
                     document.getElementById('edit_id').value = id;
                     document.getElementById('edit_name').value = name;
                     document.getElementById('edit_name_ar').value = name_ar;
+                    document.getElementById('edit_currency').value = currency;
+                    document.getElementById('edit_currency_ar').value = currency_ar;
 
                     // Set the form action dynamically
                     const form = document.getElementById('editForm');

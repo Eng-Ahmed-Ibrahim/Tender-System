@@ -17,11 +17,16 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "name" => "required|unique:countries,name"
+            "name" => "required|unique:countries,name",
+            "name_ar" => "required|unique:countries,name_ar",
+            "currency" => "required|string|max:3", // Assuming currency is a 3-letter code
+            "currency_ar" => "required|string", // Assuming currency is a 3-letter code
         ]);
         Country::create([
             "name" => $request->name,
             "name_ar" => $request->name_ar,
+            "currency"=>$request->currency,
+            "currency_ar"=>$request->currency_ar,
 
         ]);
         session()->flash("success", __("Created Successfully"));
@@ -42,6 +47,8 @@ class CountryController extends Controller
         $country->update([
             'name' => $request->name,
             'name_ar' => $request->name_ar,
+            'currency' => $request->currency,
+            'currency_ar' => $request->currency_ar,
         ]);
 
         session()->flash('success', __('Updated Successfully'));

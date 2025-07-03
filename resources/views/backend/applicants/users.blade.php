@@ -244,8 +244,8 @@ $(document).ready(function() {
                                         <div class="flex-shrink-0 me-3">
                                             <div class="avatar {{ !$applicant->avatar ? 'bg-primary text-white' : '' }}" 
                                                  style="width: 40px; height: 40px; border-radius: 10px;">
-                                                @if($applicant->avatar)
-                                                    <img src="{{ $applicant->avatar }}" 
+                                                @if($applicant->photo)
+                                                    <img src="{{ asset('storage/photos/' . $applicant->photo) }}" 
                                                          alt="{{ $applicant->name }}"
                                                          class="w-100 h-100 rounded">
                                                 @else
@@ -323,9 +323,7 @@ $(document).ready(function() {
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
-                                    <img src="/images/no-data.svg" 
-                                         alt="No Data" 
-                                         style="width: 120px; margin-bottom: 1rem;">
+                             
                                     <h4>{{ __('No Applicants Found') }}</h4>
                                     <p class="text-muted">
                                         {{ __('There are no applicants matching your search criteria.') }}

@@ -71,7 +71,7 @@
                                 <div class="form-group mb-4">
                                     <label for="first_insurance" class="form-label">{{ __('First Insurance') }}</label>
                                     <input type="number" name="first_insurance" id="first_insurance" class="form-control"
-                                        required>
+                                        >
                                     <div class="invalid-feedback" id="first_insurance-error">Please enter English characters
                                         only.</div>
                                 </div>

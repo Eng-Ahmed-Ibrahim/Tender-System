@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum','VerifiedAccount', 'throttle:1,20'])->group(fu
 });
 
 
-Route::middleware('auth:sanctum','VerifiedAccount')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/tenders/{tenderId}/favorite', [FavoriteController::class, 'store']);

@@ -72,17 +72,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('companies', CompanyController::class);
 
     Route::patch('/companies/{id}/toggle-status', [CompanyController::class, 'toggleStatus'])->name('companies.toggle-status');
+    
     Route::post('/assign-role/{userId}', [UserController::class, 'assignRole'])->name('assign.role');
-
     Route::resource('AdminUsers', UserController::class);
-
     Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
-
     Route::get('/AdminUsers/{userId}/edit_user', [UserController::class, 'edit_user']);
-
-
     Route::patch('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])
         ->name('users.toggle-status');
+        Route::put('/user/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::post('/admin/users/import', [UserController::class, 'importUsers'])->name('AdminUsers.import');
 
     Route::resource('CompanyUsers', CompanyUsersController::class);
 
@@ -90,7 +88,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/applicants/users', [ApplicantController::class, 'users'])->name('applicants.users');
 
-    Route::put('/user/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
 
 
 
@@ -128,7 +125,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');
 
-    Route::post('/admin/users/import', [UserController::class, 'importUsers'])->name('AdminUsers.import');
 
     Route::prefix("/admin/countries")->name("admin.country.")->controller(CountryController::class)->group(function () {
         Route::get('/', 'index')->name("index");
